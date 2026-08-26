@@ -1,0 +1,38 @@
+schema = 1
+description = "Unified User Interface WebSocket sessions"
+entrypoint = "service.ts"
+
+[execution]
+mode = "session"
+
+[access]
+mode = "authenticated"
+
+[access.unauthenticated]
+action = "reject"
+status = 401
+message = "Authentication is required."
+
+[lifecycle]
+default_enabled = true
+
+[instances]
+minimum = 1
+desired = 4
+maximum = 100
+
+[workers_per_instance]
+minimum = 0
+desired = 0
+maximum = 1000
+max_in_flight = 1
+
+[routing]
+affinity = ["auth.user_id"]
+
+[session]
+disconnect_grace = "2m"
+maximum_drain_age = "24h"
+replay_messages = 1000
+replay_bytes = "10MB"
+max_message_size = "1MB"

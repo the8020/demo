@@ -1,0 +1,4 @@
+schema = 1
+description = "Form controls, shared binding, and Zod validation demonstration"
+entrypoint = "program.ts"
+default_layout = "layouts/main.json"

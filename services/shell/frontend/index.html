@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Platform</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <strong>Platform</strong><span id="connection-state" role="status"
+      >Connecting…</span>
+    </header>
+    <div id="notice" class="notice" role="alert" hidden></div>
+    <main id="app" aria-live="polite">
+      <p class="loading">Opening your session…</p>
+    </main>
+    <script id="platform-boot" type="application/json">
+    { "__platform_boot_placeholder__": true }
+    </script>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

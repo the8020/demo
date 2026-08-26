@@ -1,0 +1,5 @@
+{
+  "loginUrl": "/example/core-ui/login/",
+  "postLoginUrl": "/example/core-ui/shell/",
+  "sessionWebSocketPath": "/example/core-ui/session/connect"
+}

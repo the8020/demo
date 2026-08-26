@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true,
+    "lib": ["deno.ns", "dom", "dom.iterable", "esnext"]
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1.0.14",
+    "@platform/http": "../../../runtime/deno/http/mod.ts",
+    "@platform/kernel": "../../../runtime/deno/kernel/mod.ts",
+    "@platform/uui": "../../../runtime/deno/uui/mod.ts",
+    "@platform/uui/internal": "../../../runtime/deno/uui/internal.ts",
+    "@platform/protocol": "../../../.development/generated/runtime/protocol.ts",
+    "@packages/": "../../",
+    "hono": "jsr:@hono/hono@4.9.8",
+    "zod": "npm:zod@4.1.5"
+  },
+  "tasks": {
+    "check": "deno fmt --check . && deno lint . && deno check services/login/service.ts services/shell/service.ts services/session/service.ts programs/demo-form/program.ts programs/demo-master-detail/program.ts services/shell/frontend/main.ts",
+    "test": "deno test --allow-read=../..,../../../runtime,../../../.development/generated/runtime,/tmp --allow-write=/tmp ."
+  }
+}

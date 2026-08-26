@@ -1,0 +1,4 @@
+schema = 1
+description = "Responsive master-detail and nested program demonstration"
+entrypoint = "program.ts"
+default_layout = "layouts/main.json"

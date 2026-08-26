@@ -1,0 +1,23 @@
+schema = 1
+description = "Bootstrap administrator login"
+entrypoint = "service.ts"
+
+[execution]
+mode = "request"
+
+[access]
+mode = "public"
+
+[lifecycle]
+default_enabled = true
+
+[instances]
+minimum = 1
+desired = 1
+maximum = 2
+
+[workers_per_instance]
+minimum = 1
+desired = 1
+maximum = 2
+max_in_flight = 1

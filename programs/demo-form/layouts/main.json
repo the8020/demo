@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "id": "main",
+  "root": {
+    "id": "root",
+    "type": "grid",
+    "columns": 2,
+    "responsive": "stack",
+    "children": [
+      {
+        "id": "account",
+        "type": "section",
+        "title": "Account",
+        "controls": ["username", "primary-email", "confirmation-email", "role"]
+      },
+      {
+        "id": "profile",
+        "type": "section",
+        "title": "Profile",
+        "controls": ["biography", "enabled"]
+      },
+      {
+        "id": "result",
+        "type": "section",
+        "title": "Result",
+        "controls": ["saveCount", "status"]
+      }
+    ]
+  }
+}

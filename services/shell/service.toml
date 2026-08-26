@@ -1,0 +1,28 @@
+schema = 1
+description = "Unified User Interface shell"
+entrypoint = "service.ts"
+
+[execution]
+mode = "request"
+
+[access]
+mode = "authenticated"
+
+[access.unauthenticated]
+action = "redirect"
+redirect_url = "/example/core-ui/login/"
+status = 302
+
+[lifecycle]
+default_enabled = true
+
+[instances]
+minimum = 1
+desired = 2
+maximum = 4
+
+[workers_per_instance]
+minimum = 1
+desired = 1
+maximum = 2
+max_in_flight = 32
