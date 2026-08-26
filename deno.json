@@ -6,6 +6,8 @@
     "useUnknownInCatchVariables": true,
     "lib": ["deno.ns", "dom", "dom.iterable", "esnext"]
   },
+  "fmt": { "exclude": ["services/shell/.generated"] },
+  "lint": { "exclude": ["services/shell/.generated"] },
   "imports": {
     "@std/assert": "jsr:@std/assert@1.0.14",
     "@platform/http": "../../../runtime/deno/http/mod.ts",
