@@ -1,0 +1,11 @@
+schema = 1
+description = "Serves a self-contained interactive component demonstration"
+entrypoint = "service.ts"
+
+[defaults.timeouts]
+request = "30m"
+
+[openapi]
+title = "Static Demo Site"
+version = "1.0.0"
+description = "Static HTML and local browser assets served through the platform runtime"
