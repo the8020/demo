@@ -1,0 +1,7 @@
+schema = 1
+description = "Returns a path variable from the first proof package"
+entrypoint = "service.ts"
+
+[openapi]
+title = "Example 1 Variables"
+version = "1.0.0"
