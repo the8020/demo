@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A self-contained component playground served by the 80|20 runtime."
+    >
+    <title>80|20 UI Playground</title>
+    <link
+      rel="icon"
+      href="__THE8020_BASE_PATH__/assets/favicon.svg"
+      type="image/svg+xml"
+    >
+    <link rel="stylesheet" href="__THE8020_BASE_PATH__/assets/styles.css">
+    <script type="module" src="__THE8020_BASE_PATH__/assets/app.js"></script>
+  </head>
+  <body data-base-path="__THE8020_BASE_PATH__">
+    <header class="navbar">
+      <div class="container navbar-inner">
+        <a class="brand" href="__THE8020_BASE_PATH__/">
+          <span class="brand-mark" aria-hidden="true">P</span>
+          <span>80|20 Lab</span>
+        </a>
+        <nav class="navbar-actions" aria-label="Page controls">
+          <span
+            class="badge badge-success"><span class="status-dot"></span>Service ready</span>
+          <button class="btn btn-ghost btn-sm" id="theme-toggle" type="button"
+            aria-pressed="false">
+            Dark mode
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow">Static service demonstration</p>
+            <h1>Controls that feel alive.</h1>
+            <p class="hero-copy">
+              A responsive, dependency-free playground using familiar Bootstrap-style components.
+              Every stylesheet, script, and image on this page is served by the Deno service.
+            </p>
+            <div class="button-row">
+              <button class="btn btn-primary" id="run-demo"
+                type="button">Run demo</button>
+              <a class="btn btn-secondary" href="#controls">Explore controls</a>
+            </div>
+          </div>
+          <div class="hero-console" aria-label="Runtime summary">
+            <div class="console-bar">
+              <span></span><span></span><span></span>
+              <code>the8020/demo/static</code>
+            </div>
+            <div class="console-body">
+              <p><span class="console-prompt">$</span> curl localhost:9090/the8020/demo/static/</p>
+              <p class="console-success">HTTP/1.1 200 OK</p>
+              <p><span class="console-key">content-type</span>: text/html; charset=utf-8</p>
+              <p><span class="console-key">runtime</span>: Deno Worker</p>
+              <div class="pulse-line"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="controls">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Interactive controls</p>
+              <h2>Dial in a workload</h2>
+            </div>
+            <p>Move the sliders and watch the summary update immediately.</p>
+          </div>
+
+          <div class="grid grid-2">
+            <article class="card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Capacity</p>
+                  <h3>Runtime profile</h3>
+                </div>
+                <span class="badge">Live</span>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="workers">Workers</label>
+                  <output id="workers-output" for="workers">4</output>
+                </div>
+                <input
+                  class="form-range"
+                  id="workers"
+                  type="range"
+                  min="1"
+                  max="16"
+                  value="4"
+                  data-range-output="workers-output"
+                >
+                <div class="range-labels"><span>1</span><span>16</span></div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="concurrency">Requests per worker</label>
+                  <output id="concurrency-output" for="concurrency">8</output>
+                </div>
+                <input
+                  class="form-range"
+                  id="concurrency"
+                  type="range"
+                  min="1"
+                  max="32"
+                  value="8"
+                  data-range-output="concurrency-output"
+                >
+                <div class="range-labels"><span>1</span><span>32</span></div>
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="memory">Memory limit</label>
+                  <output id="memory-output" for="memory">512 MB</output>
+                </div>
+                <input
+                  class="form-range"
+                  id="memory"
+                  type="range"
+                  min="128"
+                  max="2048"
+                  step="128"
+                  value="512"
+                  data-range-output="memory-output"
+                  data-suffix=" MB"
+                >
+                <div
+                  class="range-labels"><span>128 MB</span><span>2 GB</span></div>
+              </div>
+            </article>
+
+            <article class="card summary-card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Preview</p>
+                  <h3>Effective capacity</h3>
+                </div>
+                <span class="status-icon" aria-hidden="true">✓</span>
+              </div>
+              <div class="metric">
+                <span>Concurrent requests</span>
+                <strong id="capacity-total">32</strong>
+              </div>
+              <div class="progress" role="progressbar"
+                aria-label="Capacity utilization" aria-valuemin="0"
+                aria-valuemax="100" aria-valuenow="42">
+                <div class="progress-bar" id="capacity-bar"></div>
+              </div>
+              <div class="stat-grid">
+                <div><span>Workers</span><strong id="workers-total">4</strong></div>
+                <div><span>Per worker</span><strong id="per-worker-total">8</strong></div>
+                <div><span>Memory</span><strong id="memory-total">512 MB</strong></div>
+              </div>
+              <div class="alert alert-info" role="status" id="capacity-message">
+                This profile is balanced for a development workload.
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section downloads-section" id="downloads">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Streaming downloads</p>
+              <h2>Generated bytes or a real file</h2>
+            </div>
+            <p>Both paths use ordinary HTTP responses and the browser's native download manager.</p>
+          </div>
+
+          <div class="grid grid-2 download-grid">
+            <article class="card download-card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">No backing file</p>
+                  <h3>Generated stream</h3>
+                </div>
+                <span class="badge">64 KiB chunks</span>
+              </div>
+              <p class="muted">
+                Choose a size. The Worker creates zero-filled chunks only as the client is ready to receive them.
+              </p>
+              <div class="form-group download-size-control">
+                <div class="label-row">
+                  <label for="download-size">Download size</label>
+                  <output id="download-size-output"
+                    for="download-size">25 MiB</output>
+                </div>
+                <input
+                  class="form-range"
+                  id="download-size"
+                  type="range"
+                  min="0"
+                  max="1024"
+                  step="1"
+                  value="25"
+                  aria-describedby="download-size-help"
+                >
+                <div
+                  class="range-labels"><span>1 KiB</span><span>1 GiB</span></div>
+                <small id="download-size-help">
+                  The first position is 1 KiB; the remaining positions select 1–1024 MiB.
+                </small>
+              </div>
+              <a
+                class="btn btn-primary btn-block"
+                id="download-generated"
+                href="__THE8020_BASE_PATH__/downloads/generated?size=26214400"
+                download="the8020-generated-26214400-bytes.bin"
+              >Download generated file</a>
+              <dl class="download-facts">
+                <div>
+                  <dt>Storage</dt>
+                  <dd>None</dd>
+                </div>
+                <div>
+                  <dt>Length</dt>
+                  <dd id="generated-length">26,214,400 bytes</dd>
+                </div>
+                <div>
+                  <dt>Response</dt>
+                  <dd>ReadableStream</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="card download-card">
+              <div class="card-header">
+                <div>
+                  <p class="card-kicker">Read-only package mount</p>
+                  <h3>Physical static file</h3>
+                </div>
+                <span class="badge badge-success">25 MiB</span>
+              </div>
+              <p class="muted">
+                This file physically exists in the service package and is opened as a native file-backed stream.
+              </p>
+              <div class="file-preview" aria-hidden="true">
+                <span class="file-icon">BIN</span>
+                <div><strong>static-25mb.bin</strong><small>26,214,400 bytes on disk</small></div>
+              </div>
+              <a
+                class="btn btn-secondary btn-block"
+                id="download-static"
+                href="__THE8020_BASE_PATH__/downloads/static-25mb.bin"
+                download="the8020-static-25mb.bin"
+              >Download physical file</a>
+              <dl class="download-facts">
+                <div>
+                  <dt>Storage</dt>
+                  <dd>25 MiB</dd>
+                </div>
+                <div>
+                  <dt>Length</dt>
+                  <dd>26,214,400 bytes</dd>
+                </div>
+                <div>
+                  <dt>Response</dt>
+                  <dd>FsFile stream</dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+
+          <div class="alert alert-info download-status" id="download-status"
+            role="status" aria-live="polite">
+            Ready. Transfer progress will appear in your browser's Downloads panel.
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Component sampler</p>
+              <h2>Forms, states, and feedback</h2>
+            </div>
+          </div>
+
+          <div class="grid grid-3">
+            <article class="card">
+              <div
+                class="card-header compact"><h3>Deployment</h3><span class="badge badge-warning">Draft</span></div>
+              <label class="form-label" for="environment">Environment</label>
+              <select class="form-select" id="environment">
+                <option value="Development">Development</option>
+                <option value="Staging">Staging</option>
+                <option value="Production">Production</option>
+              </select>
+              <label class="form-check form-switch">
+                <input type="checkbox" id="autoscale" checked>
+                <span class="switch-control" aria-hidden="true"></span>
+                <span><strong>Autoscaling</strong><small>Adjust workers under load</small></span>
+              </label>
+              <label class="form-check form-switch">
+                <input type="checkbox" id="tracing">
+                <span class="switch-control" aria-hidden="true"></span>
+                <span><strong>Request tracing</strong><small>Capture detailed spans</small></span>
+              </label>
+              <button class="btn btn-primary btn-block" id="save-profile"
+                type="button">Save profile</button>
+            </article>
+
+            <article class="card">
+              <div
+                class="card-header compact"><h3>Service health</h3><span class="badge badge-success">Healthy</span></div>
+              <ul class="health-list">
+                <li><span><i class="health-dot good"></i>HTTP listener</span><strong>12 ms</strong></li>
+                <li><span><i class="health-dot good"></i>Deno supervisor</span><strong>Ready</strong></li>
+                <li><span><i class="health-dot good"></i>Worker pool</span><strong>4 / 4</strong></li>
+                <li><span><i class="health-dot neutral"></i>Queue depth</span><strong>0</strong></li>
+              </ul>
+              <div
+                class="alert alert-success">All systems are operating normally.</div>
+            </article>
+
+            <article class="card">
+              <div
+                class="card-header compact"><h3>Actions</h3><span class="badge">Demo</span></div>
+              <p
+                class="muted">Exercise browser-side behavior without any external dependencies.</p>
+              <div class="stack">
+                <button class="btn btn-primary" id="show-toast"
+                  type="button">Show notification</button>
+                <button class="btn btn-secondary" id="toggle-alert"
+                  type="button">Toggle alert state</button>
+                <button class="btn btn-danger-outline" id="reset-demo"
+                  type="button">Reset controls</button>
+              </div>
+              <div class="alert alert-warning is-hidden" id="dynamic-alert"
+                role="alert">
+                Example warning state is now visible.
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid grid-2 align-start">
+          <div>
+            <p class="eyebrow">Details</p>
+            <h2>What this page proves</h2>
+            <p class="section-copy">
+              The kernel resolves the canonical service path, selects a service instance, and streams each response from a sandboxed Deno Worker.
+            </p>
+          </div>
+          <div class="accordion" id="demo-accordion">
+            <div class="accordion-item">
+              <button class="accordion-button" type="button"
+                aria-expanded="true" aria-controls="panel-runtime">
+                Runtime path <span aria-hidden="true">+</span>
+              </button>
+              <div class="accordion-panel" id="panel-runtime">
+                HTML, CSS, JavaScript, and SVG files are read from the package's read-only mount and returned with explicit content types.
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-button" type="button"
+                aria-expanded="false" aria-controls="panel-security">
+                File safety <span aria-hidden="true">+</span>
+              </button>
+              <div class="accordion-panel" id="panel-security" hidden>
+                Only known public assets are exposed. Unknown asset paths return 404 and cannot traverse the package filesystem.
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-button" type="button"
+                aria-expanded="false" aria-controls="panel-browser">
+                Browser behavior <span aria-hidden="true">+</span>
+              </button>
+              <div class="accordion-panel" id="panel-browser" hidden>
+                Local JavaScript drives sliders, status feedback, theme switching, notifications, and accessible accordion state.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>80|20 static service demo</span>
+        <code>/the8020/demo/static</code>
+      </div>
+    </footer>
+
+    <div class="toast" id="demo-toast" role="status" aria-live="polite"
+      aria-atomic="true" hidden>
+      <span class="toast-icon" aria-hidden="true">✓</span>
+      <div><strong>Profile saved</strong><small>Your demo settings were applied.</small></div>
+      <button type="button" aria-label="Dismiss notification">×</button>
+    </div>
+  </body>
+</html>

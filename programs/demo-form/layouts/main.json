@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "main",
+  "root": {
+    "id": "root",
+    "type": "stack",
+    "children": [
+      {
+        "id": "form-section",
+        "type": "section",
+        "title": "Form fields",
+        "children": [
+          {
+            "id": "form-groups",
+            "type": "grid",
+            "columns": 2,
+            "responsive": "stack",
+            "children": [
+              {
+                "id": "account",
+                "type": "field-group",
+                "title": "Account",
+                "controls": [
+                  "username",
+                  "primary-email",
+                  "confirmation-email",
+                  "role"
+                ]
+              },
+              {
+                "id": "profile",
+                "type": "field-group",
+                "title": "Profile",
+                "controls": ["biography", "enabled"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "result-section",
+        "type": "section",
+        "title": "Result",
+        "children": [
+          {
+            "id": "result",
+            "type": "field-group",
+            "title": "Latest operation",
+            "controls": ["saveCount", "status"]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+schema = 1
+description = "Returns a path variable through the shared demo helper import"
+entrypoint = "service.ts"
+
+[openapi]
+title = "80|20 Imported Variables Demo"
+version = "1.0.0"

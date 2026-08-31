@@ -1,0 +1,234 @@
+import { assertEquals, assertRejects } from "@std/assert";
+import { BACK_EVENT, callScreen, z } from "@packages/the8020/uui/mod.ts";
+import type {
+  ScreenEventMessage,
+  UUIClientMessage,
+  UUIWorkerOutbound,
+} from "@packages/the8020/uui/mod.ts";
+import {
+  bindSession,
+  type SessionChannel,
+} from "@packages/the8020/uui/internal.ts";
+import demoForm from "./demo-form/program.ts";
+import masterDetail from "./demo-master-detail/program.ts";
+import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";
+
+type WorkerScreenShow = Extract<UUIWorkerOutbound, { type: "screen.show" }>;
+
+class ProgramChannel implements SessionChannel {
+  readonly sessionId = "ui-session-program-test";
+  #client: UUIClientMessage[] = [];
+  #clientWaiters: Array<(message: UUIClientMessage) => void> = [];
+  #server: UUIWorkerOutbound[] = [];
+  #serverWaiters: Array<(message: UUIWorkerOutbound) => void> = [];
+  #clientSequence = 0;
+
+  send(message: UUIWorkerOutbound): void {
+    const waiter = this.#serverWaiters.shift();
+    if (waiter === undefined) this.#server.push(message);
+    else waiter(message);
+  }
+
+  receive(): Promise<UUIClientMessage> {
+    const message = this.#client.shift();
+    if (message !== undefined) return Promise.resolve(message);
+    return new Promise((resolve) => this.#clientWaiters.push(resolve));
+  }
+
+  async screen(): Promise<WorkerScreenShow> {
+    while (true) {
+      const message = this.#server.shift() ?? await new Promise<
+        UUIWorkerOutbound
+      >((resolve) => this.#serverWaiters.push(resolve));
+      if (message.type === "screen.show") return message;
+    }
+  }
+
+  event(
+    screen: WorkerScreenShow,
+    action: string,
+    changes: ScreenEventMessage["changes"] = [],
+  ): void {
+    const message: ScreenEventMessage = {
+      type: "screen.event",
+      protocol: 1,
+      clientSequence: ++this.#clientSequence,
+      sessionId: this.sessionId,
+      screenId: screen.screen.id,
+      screenRevision: screen.screen.revision,
+      action,
+      eventType: action === BACK_EVENT ? BACK_EVENT : "action",
+      changes,
+    };
+    const waiter = this.#clientWaiters.shift();
+    if (waiter === undefined) this.#client.push(message);
+    else waiter(message);
+  }
+}
+
+Deno.test("form program mutates its model and returns through Back", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = demoForm();
+    const initial = await channel.screen();
+    assertEquals(
+      initial.screen.title,
+      "[[icon=edit color=primary]] Form and binding demonstration",
+    );
+    assertEquals(
+      initial.screen.header.actions[0]?.label,
+      "[[icon=save color=#ffffff]] Save",
+    );
+    assertEquals(
+      initial.screen.controls.find((control) => control.id === "biography")
+        ?.rowSpan,
+      2,
+    );
+    channel.event(initial, "save", [{
+      bind: "email",
+      value: "changed@example.com",
+    }]);
+    const saved = await channel.screen();
+    const model = saved.screen.model as Record<string, unknown>;
+    assertEquals(model.email, "changed@example.com");
+    assertEquals(model.saveCount, 1);
+    assertEquals(model.status, "Saved 1 time.");
+    channel.event(saved, BACK_EVENT);
+    await running;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("master-detail statically calls form and resumes its natural stack", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = masterDetail();
+    const master = await channel.screen();
+    assertEquals(master.screen.id, "demo-master-detail");
+    const visibleOrders = (master.screen.model as { orders: unknown[] }).orders;
+    const orderPages = master.screen.pagination?.lists.find((item) =>
+      item.bind === "orders"
+    );
+    assertEquals(visibleOrders.length, orderPages?.pageSize);
+    assertEquals(orderPages?.totalItems, 60);
+    assertEquals(orderPages?.totalPages, 3);
+    channel.event(master, "open-form");
+
+    const child = await channel.screen();
+    assertEquals(child.screen.id, "demo-form");
+    channel.event(child, BACK_EVENT);
+
+    const resumed = await channel.screen();
+    assertEquals(resumed.screen.id, "demo-master-detail");
+    channel.event(resumed, BACK_EVENT);
+    await running;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("responsive field demo publishes semantic lengths and row spans", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = responsiveFieldsDemo();
+    const screen = await channel.screen();
+    assertEquals(screen.screen.id, "demo-responsive-fields");
+    const lengths = new Map(
+      screen.screen.controls.map((control) => [control.bind, control.length]),
+    );
+    assertEquals(lengths.get("honorific"), "short");
+    assertEquals(lengths.get("firstName"), "medium");
+    assertEquals(lengths.get("email"), "long");
+    assertEquals(
+      screen.screen.controls.find((control) => control.bind === "spanningNote")
+        ?.rowSpan,
+      2,
+    );
+    assertEquals(
+      (screen.screen.layout as { root: { children: unknown[] } }).root.children
+        .length,
+      5,
+    );
+    assertEquals(screen.screen.actions, []);
+    assertEquals(screen.screen.header.actions, [{
+      id: "reset",
+      label: "[[icon=refresh color=warning]] Reset",
+    }]);
+    channel.event(screen, BACK_EVENT);
+    await running;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("demo exception actions escape to the session framework", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const form = demoForm();
+    const formScreen = await channel.screen();
+    channel.event(formScreen, "throw-type-error");
+    await assertRejects(
+      () => form,
+      TypeError,
+      "intentionally raised an uncaught TypeError",
+    );
+
+    const master = masterDetail();
+    const masterScreen = await channel.screen();
+    channel.event(masterScreen, "throw-value-error");
+    await assertRejects(() => master, Error, "order number 'ORD-0' is invalid");
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("programs may retain ordinary class and closure state", async () => {
+  class ClassProgram {
+    #visits = 0;
+
+    async run(): Promise<void> {
+      const model = { visits: ++this.#visits };
+      const event = await callScreen({
+        id: "class-program",
+        schema: z.object({ visits: z.number() }),
+        model,
+      });
+      assertEquals(event.action, BACK_EVENT);
+    }
+  }
+  const closureProgram = (): () => Promise<void> => {
+    let visits = 0;
+    return async () => {
+      const model = { visits: ++visits };
+      const event = await callScreen({
+        id: "closure-program",
+        schema: z.object({ visits: z.number() }),
+        model,
+      });
+      assertEquals(event.action, BACK_EVENT);
+    };
+  };
+
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const classRunning = new ClassProgram().run();
+    const classScreen = await channel.screen();
+    assertEquals(classScreen.screen.model, { visits: 1 });
+    channel.event(classScreen, BACK_EVENT);
+    await classRunning;
+
+    const closureRunning = closureProgram()();
+    const closureScreen = await channel.screen();
+    assertEquals(closureScreen.screen.model, { visits: 1 });
+    channel.event(closureScreen, BACK_EVENT);
+    await closureRunning;
+  } finally {
+    unbind();
+  }
+});

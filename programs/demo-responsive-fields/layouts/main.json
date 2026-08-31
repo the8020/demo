@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "id": "responsive-fields-main",
+  "root": {
+    "id": "root",
+    "type": "stack",
+    "children": [
+      {
+        "id": "two-groups-section",
+        "type": "section",
+        "title": "Two field groups",
+        "children": [
+          {
+            "id": "two-group-grid",
+            "type": "grid",
+            "columns": 2,
+            "responsive": "stack",
+            "children": [
+              {
+                "id": "identity-group",
+                "type": "field-group",
+                "title": "Identity",
+                "controls": ["honorific", "firstName", "lastName", "employeeId"]
+              },
+              {
+                "id": "contact-group",
+                "type": "field-group",
+                "title": "Contact",
+                "controls": ["email", "phone", "extension", "timeZone"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "lengths-section",
+        "type": "section",
+        "title": "Semantic field lengths",
+        "children": [
+          {
+            "id": "lengths-group",
+            "type": "field-group",
+            "title": "Exact row proportions",
+            "controls": [
+              "shortOne",
+              "shortTwo",
+              "shortThree",
+              "shortFour",
+              "mediumOne",
+              "mediumTwo",
+              "longOne",
+              "longTwo"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "four-groups-section",
+        "type": "section",
+        "title": "Four field groups",
+        "children": [
+          {
+            "id": "four-group-grid",
+            "type": "grid",
+            "columns": 4,
+            "responsive": "stack",
+            "children": [
+              {
+                "id": "account-group",
+                "type": "field-group",
+                "title": "Account",
+                "controls": ["username", "role"]
+              },
+              {
+                "id": "locale-group",
+                "type": "field-group",
+                "title": "Locale",
+                "controls": ["language", "locale"]
+              },
+              {
+                "id": "address-group",
+                "type": "field-group",
+                "title": "Address",
+                "controls": ["street", "postalCode", "city", "country"]
+              },
+              {
+                "id": "preferences-group",
+                "type": "field-group",
+                "title": "Preferences",
+                "controls": ["accent", "notifications", "summary"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "adaptive-section",
+        "type": "section",
+        "title": "Incomplete rows expand naturally",
+        "children": [
+          {
+            "id": "adaptive-group",
+            "type": "field-group",
+            "title": "Six short fields followed by one long field",
+            "controls": [
+              "adaptiveOne",
+              "adaptiveTwo",
+              "adaptiveThree",
+              "adaptiveFour",
+              "adaptiveFive",
+              "adaptiveSix",
+              "adaptiveNote"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "row-spans-section",
+        "type": "section",
+        "title": "Fields can span rows without reordering",
+        "children": [
+          {
+            "id": "row-spans-group",
+            "type": "field-group",
+            "title": "Two-row textarea with following fields",
+            "controls": [
+              "spanningNote",
+              "spanningShortOne",
+              "spanningShortTwo",
+              "spanningLong"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

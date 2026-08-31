@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "id": "main",
+  "root": {
+    "id": "root",
+    "type": "split",
+    "ratio": [50, 50],
+    "responsive": "stack",
+    "children": [
+      {
+        "id": "orders-list",
+        "type": "list",
+        "title": "Orders",
+        "bind": "orders",
+        "key": "id",
+        "display": ["number", "customer", "status"]
+      },
+      {
+        "id": "order-detail",
+        "type": "detail",
+        "title": "Order details",
+        "controls": [
+          "selectedOrder.number",
+          "selectedOrder.customer",
+          "selectedOrder.status"
+        ]
+      }
+    ]
+  }
+}

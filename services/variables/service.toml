@@ -1,0 +1,7 @@
+schema = 1
+description = "Returns a path variable through a package-local helper"
+entrypoint = "service.ts"
+
+[openapi]
+title = "80|20 Variables Demo"
+version = "1.0.0"
