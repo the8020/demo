@@ -25,7 +25,11 @@ const ResponsiveFieldsScreen = z.object({
   mediumTwo: field(z.string(), { label: "Medium 2" }),
   longOne: field(z.string(), { label: "Long 1", length: "long" }),
   longTwo: field(z.string(), { label: "Long 2", length: "long" }),
-  username: field(z.string(), { label: "Username" }),
+  username: field(z.string(), {
+    label: "Username",
+    description:
+      "This deliberately long hint proves that supporting field messages stay on one reserved line across neighboring cards.",
+  }),
   role: field(z.enum(["Admin", "Operator", "Viewer"]), {
     label: "Role",
     length: "short",
@@ -62,9 +66,11 @@ const ResponsiveFieldsScreen = z.object({
     control: "textarea",
     length: "long",
     rowSpan: 2,
+    description:
+      "The supporting-message slot participates in this field's two-row geometry.",
   }),
   spanningShortOne: field(z.string(), {
-    label: "Row 1 short A",
+    label: "A deliberately long one-line short-field label",
     length: "short",
   }),
   spanningShortTwo: field(z.string(), {

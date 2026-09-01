@@ -144,9 +144,25 @@ Deno.test("responsive field demo publishes semantic lengths and row spans", asyn
     assertEquals(lengths.get("firstName"), "medium");
     assertEquals(lengths.get("email"), "long");
     assertEquals(
+      screen.screen.controls.find((control) =>
+        control.bind === "spanningShortOne"
+      )?.label,
+      "A deliberately long one-line short-field label",
+    );
+    assertEquals(
       screen.screen.controls.find((control) => control.bind === "spanningNote")
         ?.rowSpan,
       2,
+    );
+    assertEquals(
+      screen.screen.controls.find((control) => control.bind === "username")
+        ?.description,
+      "This deliberately long hint proves that supporting field messages stay on one reserved line across neighboring cards.",
+    );
+    assertEquals(
+      screen.screen.controls.find((control) => control.bind === "spanningNote")
+        ?.description,
+      "The supporting-message slot participates in this field's two-row geometry.",
     );
     assertEquals(
       (screen.screen.layout as { root: { children: unknown[] } }).root.children

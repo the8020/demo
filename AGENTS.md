@@ -43,6 +43,10 @@
   keepalive, and ten-minute inactive session value.
 - Source checks resolve sibling `kernel` and `uui` repositories; deployed
   Workers use only the canonical runtime `@the8020/*` and `@packages/*` aliases.
+- The responsive-fields program deliberately mixes hinted and unhinted fields
+  across sibling cards, gives its two-row textarea a hint, and includes an
+  overlong short-field label, providing the browser fixture for reserved
+  one-line field-message, label-ellipsis, and row-span geometry.
 
 # Work Guidance
 
@@ -58,7 +62,8 @@
   types, missing-file behavior, `HEAD` semantics, generated-download bounds and
   byte counts, and the complete physical 25 MiB response.
 - `program_test.ts` covers the three UUI demos, nested invocation, shared model
-  bindings, field metadata, and deliberate exception behavior.
+  bindings, field metadata including responsive hint fixtures, and deliberate
+  exception behavior.
 - Package-owned `deno task check` formats, lints, and type-checks every service
   and program; `deno task test` runs the service and program tests.
 
