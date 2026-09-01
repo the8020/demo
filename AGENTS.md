@@ -35,6 +35,12 @@
   service runtime's read-only package mount.
 - Variable-service responses identify `the8020/demo`; the import variant uses
   the package-local shared greeting helper rather than a second package.
+- Variable services exercise the canonical scale-to-zero defaults: zero
+  minimum/maximum Workers, zero minimum sandboxes, and four Workers per sandbox.
+  The static service keeps eight minimum Workers across at least two sandboxes,
+  permits 1,000 Workers, and packs at most 50 of its Workers per sandbox. All
+  are stateless with concurrency 32, 70% target utilization, two-minute Worker
+  keepalive, and ten-minute inactive session value.
 - Source checks resolve sibling `kernel` and `uui` repositories; deployed
   Workers use only the canonical runtime `@the8020/*` and `@packages/*` aliases.
 

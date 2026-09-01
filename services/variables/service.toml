@@ -1,6 +1,23 @@
-schema = 1
+schema = 2
 description = "Returns a path variable through a package-local helper"
 entrypoint = "service.ts"
+
+[lifecycle]
+default_enabled = false
+service_type = "stateless"
+session_keep_alive = "10m"
+
+[scaling]
+minimum_workers = 0
+maximum_workers = 0
+concurrency_per_worker = 32
+target_utilization = 0.70
+worker_keep_alive = "2m"
+
+[placement]
+sandbox_group = ""
+minimum_sandboxes = 0
+workers_per_sandbox = 4
 
 [openapi]
 title = "80|20 Variables Demo"
