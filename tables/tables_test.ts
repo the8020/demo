@@ -1,6 +1,12 @@
 import { assertEquals } from "@std/assert";
-import { kernelInvokeSymbol } from "@the8020/kernel";
+import {
+  kernelDatabaseBackendSymbol,
+  kernelInvokeSymbol,
+} from "@the8020/kernel";
 
+(globalThis as unknown as Record<symbol, unknown>)[
+  kernelDatabaseBackendSymbol
+] = "sqlite";
 (globalThis as unknown as Record<symbol, unknown>)[kernelInvokeSymbol] = (
   operation: string,
 ) => {
