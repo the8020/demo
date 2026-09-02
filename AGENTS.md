@@ -48,10 +48,11 @@
   overlong short-field label, providing the browser fixture for reserved
   one-line field-message, label-ellipsis, and row-span geometry.
 - The form program exposes screen actions for one message, all four semantic
-  kinds, long Markdown, a delayed background sequence, and a 105-message burst.
-  These fixtures exercise UUI roundtrip clearing, asynchronous delivery,
-  expanded/scrolling content, stacked-card geometry, and the
-  10-toast/100-history limits through the public `sendMessage()` import.
+  kinds, alternating long Markdown and short stacked messages, a delayed
+  background sequence, and a 105-message burst. These fixtures exercise UUI
+  roundtrip clearing, asynchronous delivery, expanding a long card after a
+  shorter predecessor, stacked-card geometry, and the 10-toast/100-history
+  limits through the public `sendMessage()` import.
 
 # Work Guidance
 

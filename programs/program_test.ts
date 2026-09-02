@@ -162,7 +162,11 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
     assertEquals(markdown.message.includes("# Deployment summary"), true);
     assertEquals(markdown.message.includes("| Component | Result |"), true);
     assertEquals((await channel.message()).level, "success");
-    assertEquals((await channel.message()).level, "warning");
+    const followUp = await channel.message();
+    assertEquals(followUp.level, "warning");
+    assertEquals(followUp.message.includes("## Follow-up validation"), true);
+    assertEquals(followUp.message.includes("| Check | State |"), true);
+    assertEquals((await channel.message()).level, "error");
     screen = await channel.screen();
 
     channel.event(screen, "message-async");

@@ -179,7 +179,23 @@ Run \`deno task check\` for a local verification, review the table above, and co
     "info",
   );
   sendMessage("A short success card is stacked underneath.", "success");
-  sendMessage("A short warning card completes the stack.", "warning");
+  sendMessage(
+    `## Follow-up validation
+
+This second Markdown message is intentionally longer than the short card before it, so advancing the stack proves that a hidden card can expand when it becomes active.
+
+| Check | State |
+| --- | --- |
+| Package scan | Complete |
+| Service health | Ready |
+
+- Inspect the expanded message
+- Dismiss it when finished
+
+The remaining detail keeps this card taller than the standard collapsed stack row without making the short messages around it grow.`,
+    "warning",
+  );
+  sendMessage("A short error card completes the alternating stack.", "error");
 }
 
 async function sendAsyncMessages(signal: AbortSignal): Promise<void> {
