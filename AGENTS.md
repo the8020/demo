@@ -6,8 +6,9 @@
 
 # Ownership
 
-- Own the `the8020/demo/static`, `the8020/demo/variables`, and
-  `the8020/demo/variables-import` services; the demo form, master-detail, and
+- Own the `the8020/demo/static`, `the8020/demo/variables`,
+  `the8020/demo/variables-import`, and disabled-by-default
+  `the8020/demo/database` services; the demo form, master-detail, and
   responsive-fields programs; shared demo helpers; and their tests/assets.
 - The form and master-detail programs deliberately expose uncaught exception
   actions so standard UUI recovery can be exercised across package boundaries.
@@ -35,6 +36,11 @@
   service runtime's read-only package mount.
 - Variable-service responses identify `the8020/demo`; the import variant uses
   the package-local shared greeting helper rather than a second package.
+- `tables/` is the integration fixture for the platform database DSL. Customers,
+  orders, and order items cover reusable columns, logical references, generated
+  identity, exact decimals, JSON/bytes/datetime, indexes, and a composite key.
+  The database service exercises transactional creation, a join/aggregate read,
+  and rollback through normal Kysely.
 - Variable services exercise the canonical scale-to-zero defaults: zero
   minimum/maximum Workers, zero minimum sandboxes, and four Workers per sandbox.
   The static service keeps eight minimum Workers across at least two sandboxes,
@@ -78,6 +84,10 @@
 - `program_test.ts` covers the three UUI demos, nested invocation, shared model
   bindings, field metadata including responsive hint fixtures, synchronous and
   asynchronous message variants and limits, and deliberate exception behavior.
+- `tables_test.ts` verifies canonical descriptors, imported reusable columns,
+  logical references, composite keys, and exact decimal metadata. Live platform
+  smoke tests exercise the database service against the kernel-owned SQLite
+  connection.
 - Package-owned `deno task check` formats, lints, and type-checks every service
   and program; `deno task test` runs the service and program tests.
 
