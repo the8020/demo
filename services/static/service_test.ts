@@ -12,6 +12,7 @@ function context() {
       serviceGeneration: 1,
       canonicalBasePath,
       originalUrl: `http://localhost:9090${canonicalBasePath}/`,
+      client: { ipAddress: "203.0.113.4", networkScope: "public" as const },
       auth: { authenticated: false },
       execution: {
         nodeId: "node-test",

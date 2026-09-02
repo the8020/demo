@@ -14,6 +14,10 @@ import masterDetail from "./demo-master-detail/program.ts";
 import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";
 
 type WorkerScreenShow = Extract<UUIWorkerOutbound, { type: "screen.show" }>;
+type WorkerNotification = Extract<
+  UUIWorkerOutbound,
+  { type: "notification.show" }
+>;
 
 class ProgramChannel implements SessionChannel {
   readonly sessionId = "ui-session-program-test";
@@ -37,11 +41,24 @@ class ProgramChannel implements SessionChannel {
 
   async screen(): Promise<WorkerScreenShow> {
     while (true) {
-      const message = this.#server.shift() ?? await new Promise<
-        UUIWorkerOutbound
-      >((resolve) => this.#serverWaiters.push(resolve));
+      const message = await this.#nextServer();
       if (message.type === "screen.show") return message;
     }
+  }
+
+  async message(): Promise<WorkerNotification> {
+    while (true) {
+      const message = await this.#nextServer();
+      if (message.type === "notification.show") return message;
+    }
+  }
+
+  async messages(count: number): Promise<WorkerNotification[]> {
+    const messages: WorkerNotification[] = [];
+    for (let index = 0; index < count; index++) {
+      messages.push(await this.message());
+    }
+    return messages;
   }
 
   event(
@@ -63,6 +80,12 @@ class ProgramChannel implements SessionChannel {
     const waiter = this.#clientWaiters.shift();
     if (waiter === undefined) this.#client.push(message);
     else waiter(message);
+  }
+
+  #nextServer(): Promise<UUIWorkerOutbound> {
+    const message = this.#server.shift();
+    if (message !== undefined) return Promise.resolve(message);
+    return new Promise((resolve) => this.#serverWaiters.push(resolve));
   }
 }
 
@@ -95,6 +118,66 @@ Deno.test("form program mutates its model and returns through Back", async () =>
     assertEquals(model.saveCount, 1);
     assertEquals(model.status, "Saved 1 time.");
     channel.event(saved, BACK_EVENT);
+    await running;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("form program demonstrates bounded, Markdown, and async messages", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = demoForm();
+    let screen = await channel.screen();
+    assertEquals(
+      screen.screen.actions.map((action) => action.id),
+      [
+        "message-single",
+        "message-types",
+        "message-markdown",
+        "message-async",
+        "message-limits",
+      ],
+    );
+
+    channel.event(screen, "message-single");
+    assertEquals(await channel.message(), {
+      type: "notification.show",
+      level: "info",
+      message: "The demo sent one informational message.",
+    });
+    screen = await channel.screen();
+
+    channel.event(screen, "message-types");
+    assertEquals(
+      (await channel.messages(4)).map((message) => message.level),
+      ["info", "success", "warning", "error"],
+    );
+    screen = await channel.screen();
+
+    channel.event(screen, "message-markdown");
+    const markdown = await channel.message();
+    assertEquals(markdown.level, "info");
+    assertEquals(markdown.message.includes("# Deployment summary"), true);
+    assertEquals(markdown.message.includes("| Component | Result |"), true);
+    assertEquals((await channel.message()).level, "success");
+    assertEquals((await channel.message()).level, "warning");
+    screen = await channel.screen();
+
+    channel.event(screen, "message-async");
+    screen = await channel.screen();
+    assertEquals(
+      (await channel.messages(3)).map((message) => message.level),
+      ["info", "success", "warning"],
+    );
+
+    channel.event(screen, "message-limits");
+    const burst = await channel.messages(105);
+    assertEquals(burst[0]?.message, "Burst message 1 of 105.");
+    assertEquals(burst.at(-1)?.message, "Burst message 105 of 105.");
+    screen = await channel.screen();
+    channel.event(screen, BACK_EVENT);
     await running;
   } finally {
     unbind();

@@ -47,11 +47,24 @@
   across sibling cards, gives its two-row textarea a hint, and includes an
   overlong short-field label, providing the browser fixture for reserved
   one-line field-message, label-ellipsis, and row-span geometry.
+- The form program exposes screen actions for one message, all four semantic
+  kinds, long Markdown, a delayed background sequence, and a 105-message burst.
+  These fixtures exercise UUI roundtrip clearing, asynchronous delivery,
+  expanded/scrolling content, stacked-card geometry, and the
+  10-toast/100-history limits through the public `sendMessage()` import.
 
 # Work Guidance
 
 - Keep the page lightweight, responsive, accessible, and useful for visually
   exercising common Bootstrap-style controls.
+- User-visible descriptions, hints, placeholders, notices, and empty-state copy
+  must help the user act or understand a user-visible outcome. Never add copy
+  solely to explain internal architecture, storage, persistence, sessions,
+  transport, or implementation details; omit it entirely and keep those details
+  in DOX or developer documentation. For example, never show
+  `Value is stored per-session in the user storage.` or
+  `The value is sent directly to kernel secret storage and is not shown again.`
+  in the UI.
 - Add new browser files to the service allowlist and its verification together.
 - Preserve response-stream backpressure and client cancellation; never allocate
   the selected generated-download size eagerly.
@@ -62,8 +75,8 @@
   types, missing-file behavior, `HEAD` semantics, generated-download bounds and
   byte counts, and the complete physical 25 MiB response.
 - `program_test.ts` covers the three UUI demos, nested invocation, shared model
-  bindings, field metadata including responsive hint fixtures, and deliberate
-  exception behavior.
+  bindings, field metadata including responsive hint fixtures, synchronous and
+  asynchronous message variants and limits, and deliberate exception behavior.
 - Package-owned `deno task check` formats, lints, and type-checks every service
   and program; `deno task test` runs the service and program tests.
 
