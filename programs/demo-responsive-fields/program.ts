@@ -1,4 +1,4 @@
-import { BACK_EVENT, callScreen, field, z } from "@packages/the8020/uui/mod.ts";
+import { BACK_EVENT, callScreen, field, z } from "/p/the8020/uui/mod.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
 const ResponsiveFieldsScreen = z.object({

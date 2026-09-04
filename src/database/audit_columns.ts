@@ -1,4 +1,4 @@
-import { columns, t } from "@the8020/db";
+import { columns, t } from "/p/the8020/db/mod.ts";
 
 export const auditColumns = columns({
   createdAt: t.datetime().defaultNow(),

@@ -7,7 +7,7 @@ import {
   ScreenChannel,
   sendMessage,
   z,
-} from "@packages/the8020/uui/mod.ts";
+} from "/p/the8020/uui/mod.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
 const FormScreen = z.object({

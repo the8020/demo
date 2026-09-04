@@ -4,17 +4,14 @@ import {
   callScreen,
   UUI_PROTOCOL_VERSION,
   z,
-} from "@packages/the8020/uui/mod.ts";
+} from "/p/the8020/uui/mod.ts";
 import type {
   ScreenEventMessage,
   ScreenSnapshot,
   UUIClientMessage,
   UUIWorkerOutbound,
-} from "@packages/the8020/uui/mod.ts";
-import {
-  bindSession,
-  type SessionChannel,
-} from "@packages/the8020/uui/internal.ts";
+} from "/p/the8020/uui/mod.ts";
+import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
 import demoForm from "./demo-form/program.ts";
 import masterDetail from "./demo-master-detail/program.ts";
 import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";

@@ -1,4 +1,4 @@
-import { db, sql } from "@the8020/db";
+import { db, sql } from "/p/the8020/db/mod.ts";
 import { defineService, z } from "@the8020/http";
 import Customers from "../../tables/customers.ts";
 import OrderItems from "../../tables/order_items.ts";

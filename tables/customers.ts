@@ -6,7 +6,7 @@ import {
   table,
   type TableDatabase,
   type Updateable,
-} from "@the8020/db";
+} from "/p/the8020/db/mod.ts";
 import { auditColumns } from "../src/database/audit_columns.ts";
 
 const Customers = table("the8020__demo__customers", {
@@ -19,7 +19,7 @@ const Customers = table("the8020__demo__customers", {
     .nullable(),
 });
 
-declare module "@the8020/db/types" {
+declare module "/p/the8020/db/types.ts" {
   interface Database extends TableDatabase<typeof Customers> {}
 }
 

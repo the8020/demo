@@ -46,7 +46,7 @@
   All are stateless with concurrency 32, 70% target utilization, two-minute
   Worker keepalive, and ten-minute inactive session value.
 - Source checks resolve sibling `kernel` and `uui` repositories; deployed
-  Workers use only the canonical runtime `@the8020/*` and `@packages/*` aliases.
+  Workers use only the canonical runtime `@the8020/*` and `/p/*` aliases.
 - The responsive-fields program deliberately mixes hinted and unhinted fields
   across sibling cards, gives its two-row textarea a hint, and includes an
   overlong short-field label, providing the browser fixture for reserved

@@ -6,7 +6,7 @@ import {
   table,
   type TableDatabase,
   type Updateable,
-} from "@the8020/db";
+} from "/p/the8020/db/mod.ts";
 import Orders from "./orders.ts";
 
 const OrderItems = table("the8020__demo__order_items", {
@@ -19,7 +19,7 @@ const OrderItems = table("the8020__demo__order_items", {
   indexes: [{ columns: ["sku"] }],
 });
 
-declare module "@the8020/db/types" {
+declare module "/p/the8020/db/types.ts" {
   interface Database extends TableDatabase<typeof OrderItems> {}
 }
 

@@ -16,7 +16,7 @@ import {
   return Promise.reject(new Error(`unexpected operation ${operation}`));
 };
 
-const { descriptorOf } = await import("@the8020/db");
+const { descriptorOf } = await import("/p/the8020/db/mod.ts");
 const Customers = (await import("./customers.ts")).default;
 const Orders = (await import("./orders.ts")).default;
 const OrderItems = (await import("./order_items.ts")).default;
