@@ -2,6 +2,9 @@ import {
   BACK_EVENT,
   callScreen,
   field,
+  presentModal,
+  presentPage,
+  ScreenChannel,
   sendMessage,
   z,
 } from "@packages/the8020/uui/mod.ts";
@@ -60,6 +63,15 @@ const initial: z.infer<typeof FormScreen> = {
   status: "",
 };
 
+const PresentationScreen = z.object({
+  value: field(z.string(), { label: "Value", length: "long" }),
+  status: field(z.string(), {
+    label: "Background status",
+    length: "long",
+    readOnly: true,
+  }),
+});
+
 export default async function demoForm(): Promise<void> {
   const model = structuredClone(initial);
   const asyncMessages = new AbortController();
@@ -87,6 +99,8 @@ export default async function demoForm(): Promise<void> {
           { id: "status", bind: "status" },
         ],
         actions: [
+          { id: "confirm-choice", label: "Confirm Yes/No" },
+          { id: "presentation-flow", label: "Presentation flow" },
           { id: "message-single", label: "Single message" },
           { id: "message-types", label: "Message types" },
           { id: "message-markdown", label: "Long Markdown" },
@@ -111,6 +125,15 @@ export default async function demoForm(): Promise<void> {
       });
       if (event.action === "throw-type-error") raiseDemoTypeError();
       if (event.action === BACK_EVENT) return;
+      if (event.action === "confirm-choice") {
+        const confirmed = await confirmDecision("Would you like to continue?");
+        if (confirmed === true) {
+          sendMessage("You chose Yes.", "success");
+        } else if (confirmed === false) {
+          sendMessage("You chose No.", "info");
+        }
+      }
+      if (event.action === "presentation-flow") await runPresentationFlow();
       if (event.action === "reset") {
         Object.assign(model, structuredClone(initial));
       }
@@ -142,6 +165,102 @@ export default async function demoForm(): Promise<void> {
   } finally {
     asyncMessages.abort();
     await Promise.allSettled(pendingMessageRuns);
+  }
+}
+
+async function confirmDecision(
+  question: string,
+): Promise<boolean | undefined> {
+  return await presentModal(async () => {
+    const event = await callScreen({
+      id: "demo-confirm-decision",
+      title: "Confirm choice",
+      description: question,
+      schema: z.object({}),
+      model: {},
+      actions: [
+        { id: "no", label: "No" },
+        { id: "yes", label: "Yes", kind: "primary" },
+      ],
+    });
+    if (event.action === "yes") return true;
+    if (event.action === "no") return false;
+    return undefined;
+  });
+}
+
+async function runPresentationFlow(): Promise<void> {
+  await presentModal(async () => {
+    const model = {
+      value: "Edit this before the background redraw",
+      status: "Waiting for background redraw",
+    };
+    while (true) {
+      const channel = new ScreenChannel();
+      const redraw = setTimeout(() => {
+        model.status = "Background redraw completed";
+        channel.redraw();
+      }, 800);
+      let action: string;
+      try {
+        action = (await callScreen({
+          id: "presentation-modal-b",
+          title: "Presentation modal B",
+          description: "This ordinary screen is running in a modal surface.",
+          schema: PresentationScreen,
+          model,
+          channel,
+          actions: [
+            { id: "open-modal", label: "Open nested modal" },
+            { id: "open-page", label: "Open page" },
+          ],
+          header: {
+            actions: [{ id: "close", label: "Close modal" }],
+          },
+        })).action;
+      } finally {
+        clearTimeout(redraw);
+      }
+      if (action === BACK_EVENT || action === "close") return;
+      if (action === "open-modal") {
+        await presentModal(() => presentationLeaf("Presentation modal C"));
+      }
+      if (action === "open-page") await runPresentationPage();
+    }
+  });
+}
+
+async function runPresentationPage(): Promise<void> {
+  await presentPage(async () => {
+    const model = { value: "Page D", status: "Ready" };
+    while (true) {
+      const event = await callScreen({
+        id: "presentation-page-d",
+        title: "Presentation page D",
+        description: "The earlier page and modal remain suspended behind it.",
+        schema: PresentationScreen,
+        model,
+        actions: [{ id: "open-modal", label: "Open modal E" }],
+      });
+      if (event.action === BACK_EVENT) return;
+      if (event.action === "open-modal") {
+        await presentModal(() => presentationLeaf("Presentation modal E"));
+      }
+    }
+  });
+}
+
+async function presentationLeaf(title: string): Promise<void> {
+  const model = { value: title, status: "Ready" };
+  while (true) {
+    const event = await callScreen({
+      id: "presentation-leaf",
+      title,
+      schema: PresentationScreen,
+      model,
+      header: { actions: [{ id: "close", label: "Close modal" }] },
+    });
+    if (event.action === BACK_EVENT || event.action === "close") return;
   }
 }
 

@@ -1,7 +1,13 @@
 import { assertEquals, assertRejects } from "@std/assert";
-import { BACK_EVENT, callScreen, z } from "@packages/the8020/uui/mod.ts";
+import {
+  BACK_EVENT,
+  callScreen,
+  UUI_PROTOCOL_VERSION,
+  z,
+} from "@packages/the8020/uui/mod.ts";
 import type {
   ScreenEventMessage,
+  ScreenSnapshot,
   UUIClientMessage,
   UUIWorkerOutbound,
 } from "@packages/the8020/uui/mod.ts";
@@ -13,7 +19,10 @@ import demoForm from "./demo-form/program.ts";
 import masterDetail from "./demo-master-detail/program.ts";
 import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";
 
-type WorkerScreenShow = Extract<UUIWorkerOutbound, { type: "screen.show" }>;
+interface WorkerScreenShow {
+  surfaceId: string;
+  screen: ScreenSnapshot;
+}
 type WorkerNotification = Extract<
   UUIWorkerOutbound,
   { type: "notification.show" }
@@ -42,7 +51,13 @@ class ProgramChannel implements SessionChannel {
   async screen(): Promise<WorkerScreenShow> {
     while (true) {
       const message = await this.#nextServer();
-      if (message.type === "screen.show") return message;
+      if (
+        message.type === "presentation.show" &&
+        message.presentation.activeSurfaceId !== null
+      ) {
+        const surface = message.presentation.surfaces.at(-1)!;
+        return { surfaceId: surface.surfaceId, screen: surface.screen };
+      }
     }
   }
 
@@ -68,9 +83,10 @@ class ProgramChannel implements SessionChannel {
   ): void {
     const message: ScreenEventMessage = {
       type: "screen.event",
-      protocol: 1,
+      protocol: UUI_PROTOCOL_VERSION,
       clientSequence: ++this.#clientSequence,
       sessionId: this.sessionId,
+      surfaceId: screen.surfaceId,
       screenId: screen.screen.id,
       screenRevision: screen.screen.revision,
       action,
@@ -133,6 +149,8 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
     assertEquals(
       screen.screen.actions.map((action) => action.id),
       [
+        "confirm-choice",
+        "presentation-flow",
         "message-single",
         "message-types",
         "message-markdown",
@@ -182,6 +200,57 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
     assertEquals(burst.at(-1)?.message, "Burst message 105 of 105.");
     screen = await channel.screen();
     channel.event(screen, BACK_EVENT);
+    await running;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("form program presents a Yes/No confirmation and reports the choice", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = demoForm();
+    let form = await channel.screen();
+
+    channel.event(form, "confirm-choice");
+    let confirmation = await channel.screen();
+    assertEquals(confirmation.screen.id, "demo-confirm-decision");
+    assertEquals(confirmation.screen.title, "Confirm choice");
+    assertEquals(
+      confirmation.screen.description,
+      "Would you like to continue?",
+    );
+    assertEquals(
+      confirmation.screen.actions.map((action) => [
+        action.id,
+        action.label,
+        action.kind,
+      ]),
+      [
+        ["no", "No", undefined],
+        ["yes", "Yes", "primary"],
+      ],
+    );
+    channel.event(confirmation, "yes");
+    assertEquals(await channel.message(), {
+      type: "notification.show",
+      level: "success",
+      message: "You chose Yes.",
+    });
+
+    form = await channel.screen();
+    channel.event(form, "confirm-choice");
+    confirmation = await channel.screen();
+    channel.event(confirmation, "no");
+    assertEquals(await channel.message(), {
+      type: "notification.show",
+      level: "info",
+      message: "You chose No.",
+    });
+
+    form = await channel.screen();
+    channel.event(form, BACK_EVENT);
     await running;
   } finally {
     unbind();

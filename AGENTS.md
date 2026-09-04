@@ -41,12 +41,10 @@
   identity, exact decimals, JSON/bytes/datetime, indexes, and a composite key.
   The database service exercises transactional creation, a join/aggregate read,
   and rollback through normal Kysely.
-- Variable services exercise the canonical scale-to-zero defaults: zero
+- Demo services exercise the canonical scale-to-zero defaults: zero
   minimum/maximum Workers, zero minimum sandboxes, and four Workers per sandbox.
-  The static service keeps eight minimum Workers across at least two sandboxes,
-  permits 1,000 Workers, and packs at most 50 of its Workers per sandbox. All
-  are stateless with concurrency 32, 70% target utilization, two-minute Worker
-  keepalive, and ten-minute inactive session value.
+  All are stateless with concurrency 32, 70% target utilization, two-minute
+  Worker keepalive, and ten-minute inactive session value.
 - Source checks resolve sibling `kernel` and `uui` repositories; deployed
   Workers use only the canonical runtime `@the8020/*` and `@packages/*` aliases.
 - The responsive-fields program deliberately mixes hinted and unhinted fields
@@ -59,6 +57,13 @@
   roundtrip clearing, asynchronous delivery, expanding a long card after a
   shorter predecessor, stacked-card geometry, and the 10-toast/100-history
   limits through the public `sendMessage()` import.
+- The form program's Presentation flow is the browser fixture for an ordinary
+  screen shown as a modal, a nested modal, a later page and modal, restoration
+  of the earlier page-plus-modal continuation, and a `ScreenChannel` background
+  redraw that preserves a dirty browser value.
+- The form program also includes an inline Yes/No confirmation modal whose
+  result returns to the calling screen and emits a choice-specific UUI message;
+  it deliberately requires no separate package or program.
 
 # Work Guidance
 
