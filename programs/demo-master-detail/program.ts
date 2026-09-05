@@ -1,4 +1,4 @@
-import { BACK_EVENT, callScreen, field, z } from "/p/the8020/uui/mod.ts";
+import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
 import demoForm from "../demo-form/program.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
@@ -50,12 +50,14 @@ export default async function masterDetail(): Promise<void> {
     selectedOrderId: orders[0]!.id,
     selectedOrder: structuredClone(orders[0]!),
   };
+  const screenModel = new Model(model);
   while (true) {
+    screenModel.data = model;
     const event = await callScreen({
       id: "demo-master-detail",
       title: "Master-detail demonstration",
       schema: MasterDetailScreen,
-      model,
+      model: screenModel,
       layout,
       header: {
         actions: [

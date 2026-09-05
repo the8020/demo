@@ -1,3 +1,4 @@
+import { Model } from "/p/the8020/uui/mod.ts";
 import { assertEquals, assertRejects } from "@std/assert";
 import {
   BACK_EVENT,
@@ -12,6 +13,7 @@ import type {
   UUIWorkerOutbound,
 } from "/p/the8020/uui/mod.ts";
 import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
+import { BrowserDownloads } from "/p/the8020/uui/services/shell/frontend/downloads.ts";
 import demoForm from "./demo-form/program.ts";
 import masterDetail from "./demo-master-detail/program.ts";
 import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";
@@ -33,7 +35,13 @@ class ProgramChannel implements SessionChannel {
   #serverWaiters: Array<(message: UUIWorkerOutbound) => void> = [];
   #clientSequence = 0;
 
-  send(message: UUIWorkerOutbound): void {
+  constructor(
+    readonly observe?: (message: UUIWorkerOutbound | Uint8Array) => void,
+  ) {}
+
+  send(message: UUIWorkerOutbound | Uint8Array): void {
+    this.observe?.(message);
+    if (message instanceof Uint8Array) return;
     const waiter = this.#serverWaiters.shift();
     if (waiter === undefined) this.#server.push(message);
     else waiter(message);
@@ -86,10 +94,20 @@ class ProgramChannel implements SessionChannel {
       surfaceId: screen.surfaceId,
       screenId: screen.screen.id,
       screenRevision: screen.screen.revision,
+      instanceId: screen.screen.state.instanceId,
+      screenState: {
+        version: screen.screen.state.version,
+        scroll: screen.screen.state.scroll,
+        elements: {},
+      },
       action,
       eventType: action === BACK_EVENT ? BACK_EVENT : "action",
       changes,
     };
+    this.input(message);
+  }
+
+  input(message: UUIClientMessage): void {
     const waiter = this.#clientWaiters.shift();
     if (waiter === undefined) this.#client.push(message);
     else waiter(message);
@@ -153,6 +171,8 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
         "message-markdown",
         "message-async",
         "message-limits",
+        "download-file",
+        "download-csv",
       ],
     );
 
@@ -199,6 +219,90 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
     channel.event(screen, BACK_EVENT);
     await running;
   } finally {
+    unbind();
+  }
+});
+
+Deno.test("form downloads run in the background and capture the selected CSV size", async () => {
+  const downloads = new Map<
+    string,
+    { contentType: string; stream: ReadableStream<Uint8Array> }
+  >();
+  const channel = new ProgramChannel((message) => {
+    if (message instanceof Uint8Array) browser.bytes(message);
+    else if (
+      message.type === "download.begin" || message.type === "download.end" ||
+      message.type === "download.error"
+    ) browser.receive(message);
+  });
+  const browser = new BrowserDownloads((command) =>
+    channel.input({
+      ...command,
+      protocol: UUI_PROTOCOL_VERSION,
+      clientSequence: 0,
+      sessionId: channel.sessionId,
+    }), (metadata, stream) => {
+    downloads.set(metadata.filename, {
+      contentType: metadata.contentType,
+      stream,
+    });
+    return Promise.resolve(() => {});
+  });
+  const unbind = bindSession(channel);
+  try {
+    const running = demoForm();
+    let screen = await channel.screen();
+    const rows = screen.screen.controls.find((control) =>
+      control.bind === "downloadRows"
+    )!;
+    assertEquals([rows.control, rows.minimum, rows.maximum, rows.step], [
+      "range",
+      1_000,
+      1_000_000,
+      1_000,
+    ]);
+    assertEquals(
+      (screen.screen.model as { downloadRows: number }).downloadRows,
+      100_000,
+    );
+
+    channel.event(screen, "download-file");
+    screen = await channel.screen();
+    channel.event(screen, "download-csv", [{
+      bind: "downloadRows",
+      value: 25_000,
+    }]);
+    screen = await channel.screen();
+    assertEquals(
+      (screen.screen.model as { downloadRows: number }).downloadRows,
+      25_000,
+    );
+    // Both streams remain unconsumed while the form accepts another interaction.
+    channel.event(screen, "reset");
+    screen = await channel.screen();
+    assertEquals(
+      (screen.screen.model as { downloadRows: number }).downloadRows,
+      100_000,
+    );
+
+    const file = downloads.get("demo-example.txt")!;
+    assertEquals(file.contentType, "text/plain; charset=utf-8");
+    assertEquals(
+      await new Response(file.stream).text(),
+      "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n",
+    );
+    const csv = downloads.get("calculations-25000.csv")!;
+    assertEquals(csv.contentType, "text/csv; charset=utf-8");
+    const lines = (await new Response(csv.stream).text()).trimEnd().split(
+      "\r\n",
+    );
+    assertEquals(lines.length, 25_001);
+    assertEquals(lines[0], "row,previous_total,total");
+    assertEquals(lines.at(-1), "25000,312487500,312512500");
+    channel.event(screen, BACK_EVENT);
+    await running;
+  } finally {
+    browser.close();
     unbind();
   }
 });
@@ -261,13 +365,12 @@ Deno.test("master-detail statically calls form and resumes its natural stack", a
     const running = masterDetail();
     const master = await channel.screen();
     assertEquals(master.screen.id, "demo-master-detail");
-    const visibleOrders = (master.screen.model as { orders: unknown[] }).orders;
-    const orderPages = master.screen.pagination?.lists.find((item) =>
+    const orderList = master.screen.lists.find((item) =>
       item.bind === "orders"
-    );
-    assertEquals(visibleOrders.length, orderPages?.pageSize);
-    assertEquals(orderPages?.totalItems, 60);
-    assertEquals(orderPages?.totalPages, 3);
+    )!;
+    assertEquals(orderList.rows.length, orderList.state.pageSize);
+    assertEquals(orderList.totalItems, 60);
+    assertEquals(orderList.state.measured, false);
     channel.event(master, "open-form");
 
     const child = await channel.screen();
@@ -365,7 +468,7 @@ Deno.test("programs may retain ordinary class and closure state", async () => {
       const event = await callScreen({
         id: "class-program",
         schema: z.object({ visits: z.number() }),
-        model,
+        model: new Model(model),
       });
       assertEquals(event.action, BACK_EVENT);
     }
@@ -377,7 +480,7 @@ Deno.test("programs may retain ordinary class and closure state", async () => {
       const event = await callScreen({
         id: "closure-program",
         schema: z.object({ visits: z.number() }),
-        model,
+        model: new Model(model),
       });
       assertEquals(event.action, BACK_EVENT);
     };

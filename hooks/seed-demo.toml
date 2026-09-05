@@ -1,0 +1,3 @@
+hook = "post-activate"
+description = "Seed demo data after activation"
+program = "the8020/demo/post-activate"

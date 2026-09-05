@@ -1,4 +1,4 @@
-import Customers from "../tables/customers.ts";
+import Customers from "../../tables/customers.ts";
 
 interface ActivationContext {
   package_id: string;
@@ -6,7 +6,10 @@ interface ActivationContext {
   activation_id: string;
 }
 
-export default async function preActivate(context: ActivationContext) {
+export default async function preActivate(
+  _state: Record<string, unknown>,
+  context: Readonly<ActivationContext>,
+) {
   if (
     context.package_id !== "the8020/demo" || context.candidate_commit === "" ||
     context.activation_id === ""

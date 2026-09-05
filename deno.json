@@ -16,7 +16,7 @@
     "zod": "npm:zod@4.1.5"
   },
   "tasks": {
-    "check": "deno fmt --check . && deno lint . && deno check --no-config --import-map=deno.local.json hooks/pre-activate.ts hooks/post-activate.ts services/static/service.ts services/variables/service.ts services/variables-import/service.ts services/database/service.ts programs/demo-form/program.ts programs/demo-master-detail/program.ts programs/demo-responsive-fields/program.ts",
-    "test": "deno test --no-config --import-map=deno.local.json --allow-read=. ."
+    "check": "deno fmt --check . && deno lint . && deno check --import-map=deno.local.json programs/pre-activate/program.ts programs/post-activate/program.ts services/static/service.ts services/variables/service.ts services/variables-import/service.ts services/database/service.ts programs/demo-form/program.ts programs/demo-master-detail/program.ts programs/demo-responsive-fields/program.ts",
+    "test": "deno test --import-map=deno.local.json --allow-read=. ."
   }
 }

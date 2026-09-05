@@ -1,7 +1,9 @@
 import {
   BACK_EVENT,
   callScreen,
+  download,
   field,
+  Model,
   presentModal,
   presentPage,
   ScreenChannel,
@@ -9,6 +11,7 @@ import {
   z,
 } from "/p/the8020/uui/mod.ts";
 import layout from "./layouts/main.json" with { type: "json" };
+import { calculationCsv } from "./downloads.ts";
 
 const FormScreen = z.object({
   username: field(z.string().min(3), {
@@ -51,6 +54,20 @@ const FormScreen = z.object({
     length: "long",
     readOnly: true,
   }),
+  downloadRows: field(
+    z.number().int().min(1_000).max(1_000_000).multipleOf(1_000),
+    {
+      label: "CSV rows",
+      description: "Each row adds its row number to the previous total.",
+      group: "downloads",
+      control: "range",
+      length: "long",
+      minimum: 1_000,
+      maximum: 1_000_000,
+      step: 1_000,
+      valueSuffix: " rows",
+    },
+  ),
 });
 
 const initial: z.infer<typeof FormScreen> = {
@@ -61,6 +78,7 @@ const initial: z.infer<typeof FormScreen> = {
   role: "administrator",
   saveCount: 0,
   status: "",
+  downloadRows: 100_000,
 };
 
 const PresentationScreen = z.object({
@@ -77,12 +95,14 @@ export default async function demoForm(): Promise<void> {
   const asyncMessages = new AbortController();
   const pendingMessageRuns = new Set<Promise<void>>();
   try {
+    const screenModel = new Model(model);
     while (true) {
+      screenModel.data = model;
       const event = await callScreen({
         id: "demo-form",
         title: "[[icon=edit color=primary]] Form and binding demonstration",
         schema: FormScreen,
-        model,
+        model: screenModel,
         layout,
         controls: [
           { id: "username", bind: "username" },
@@ -97,6 +117,7 @@ export default async function demoForm(): Promise<void> {
           { id: "role", bind: "role" },
           { id: "saveCount", bind: "saveCount" },
           { id: "status", bind: "status" },
+          { id: "downloadRows", bind: "downloadRows" },
         ],
         actions: [
           { id: "confirm-choice", label: "Confirm Yes/No" },
@@ -106,6 +127,8 @@ export default async function demoForm(): Promise<void> {
           { id: "message-markdown", label: "Long Markdown" },
           { id: "message-async", label: "Async messages" },
           { id: "message-limits", label: "Message limits" },
+          { id: "download-file", label: "Download text file" },
+          { id: "download-csv", label: "Download calculations CSV" },
         ],
         header: {
           actions: [
@@ -143,6 +166,27 @@ export default async function demoForm(): Promise<void> {
           model.saveCount === 1 ? "" : "s"
         }.`;
       }
+      if (event.action === "download-file") {
+        const file = new File(
+          [
+            "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n",
+          ],
+          "demo-example.txt",
+          { type: "text/plain; charset=utf-8" },
+        );
+        download({
+          filename: file.name,
+          contentType: file.type,
+          body: file.stream(),
+        });
+      }
+      if (event.action === "download-csv") {
+        download({
+          filename: `calculations-${model.downloadRows}.csv`,
+          contentType: "text/csv; charset=utf-8",
+          body: calculationCsv(model.downloadRows),
+        });
+      }
       if (event.action === "message-single") {
         sendMessage("The demo sent one informational message.");
       }
@@ -177,7 +221,7 @@ async function confirmDecision(
       title: "Confirm choice",
       description: question,
       schema: z.object({}),
-      model: {},
+      model: new Model({}),
       actions: [
         { id: "no", label: "No" },
         { id: "yes", label: "Yes", kind: "primary" },
@@ -195,6 +239,7 @@ async function runPresentationFlow(): Promise<void> {
       value: "Edit this before the background redraw",
       status: "Waiting for background redraw",
     };
+    const screenModel1 = new Model(model);
     while (true) {
       const channel = new ScreenChannel();
       const redraw = setTimeout(() => {
@@ -203,12 +248,13 @@ async function runPresentationFlow(): Promise<void> {
       }, 800);
       let action: string;
       try {
+        screenModel1.data = model;
         action = (await callScreen({
           id: "presentation-modal-b",
           title: "Presentation modal B",
           description: "This ordinary screen is running in a modal surface.",
           schema: PresentationScreen,
-          model,
+          model: screenModel1,
           channel,
           actions: [
             { id: "open-modal", label: "Open nested modal" },
@@ -233,13 +279,15 @@ async function runPresentationFlow(): Promise<void> {
 async function runPresentationPage(): Promise<void> {
   await presentPage(async () => {
     const model = { value: "Page D", status: "Ready" };
+    const screenModel2 = new Model(model);
     while (true) {
+      screenModel2.data = model;
       const event = await callScreen({
         id: "presentation-page-d",
         title: "Presentation page D",
         description: "The earlier page and modal remain suspended behind it.",
         schema: PresentationScreen,
-        model,
+        model: screenModel2,
         actions: [{ id: "open-modal", label: "Open modal E" }],
       });
       if (event.action === BACK_EVENT) return;
@@ -252,12 +300,14 @@ async function runPresentationPage(): Promise<void> {
 
 async function presentationLeaf(title: string): Promise<void> {
   const model = { value: title, status: "Ready" };
+  const screenModel3 = new Model(model);
   while (true) {
+    screenModel3.data = model;
     const event = await callScreen({
       id: "presentation-leaf",
       title,
       schema: PresentationScreen,
-      model,
+      model: screenModel3,
       header: { actions: [{ id: "close", label: "Close modal" }] },
     });
     if (event.action === BACK_EVENT || event.action === "close") return;

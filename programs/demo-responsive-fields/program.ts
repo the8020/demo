@@ -1,4 +1,4 @@
-import { BACK_EVENT, callScreen, field, z } from "/p/the8020/uui/mod.ts";
+import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
 const ResponsiveFieldsScreen = z.object({
@@ -128,14 +128,16 @@ const initial: z.infer<typeof ResponsiveFieldsScreen> = {
 
 export default async function responsiveFieldsDemo(): Promise<void> {
   const model = structuredClone(initial);
+  const screenModel = new Model(model);
   while (true) {
+    screenModel.data = model;
     const event = await callScreen({
       id: "demo-responsive-fields",
       title: "Responsive field layout demonstration",
       description:
         "Resize the screen to see semantic field lengths and field groups reflow without changing their order.",
       schema: ResponsiveFieldsScreen,
-      model,
+      model: screenModel,
       layout,
       header: {
         actions: [{

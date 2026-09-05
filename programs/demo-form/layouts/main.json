@@ -49,6 +49,20 @@
             "controls": ["saveCount", "status"]
           }
         ]
+      },
+      {
+        "id": "download-section",
+        "type": "section",
+        "title": "Downloads",
+        "children": [
+          {
+            "id": "downloads",
+            "type": "field-group",
+            "title": "Files and calculations",
+            "controls": ["downloadRows"],
+            "actions": ["download-file", "download-csv"]
+          }
+        ]
       }
     ]
   }

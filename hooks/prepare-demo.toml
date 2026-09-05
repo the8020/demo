@@ -1,0 +1,3 @@
+hook = "pre-activate"
+description = "Seed demo data before activation"
+program = "the8020/demo/pre-activate"

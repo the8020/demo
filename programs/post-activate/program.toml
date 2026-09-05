@@ -1,0 +1,4 @@
+schema = 1
+description = "Seed demo data after activation"
+entrypoint = "program.ts"
+discoverable = false
