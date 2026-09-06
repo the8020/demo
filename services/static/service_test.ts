@@ -7,7 +7,7 @@ function context() {
   return {
     signal: new AbortController().signal,
     meta: {
-      requestId: "request-demo-test",
+      contextId: "request-demo-test",
       serviceId: "the8020/demo/static",
       serviceGeneration: 1,
       canonicalBasePath,
@@ -17,10 +17,8 @@ function context() {
       auth: { authenticated: false },
       execution: {
         nodeId: "node-test",
-        runtimeGroupId: "group-test",
         sandboxId: "sandbox-test",
         workerId: "worker-test",
-        workerExecutionId: "execution-test",
       },
     },
   };
