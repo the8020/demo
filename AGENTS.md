@@ -207,6 +207,13 @@ below.
 
 # Work Guidance
 
+- Demonstrate ordinary package APIs, shared runtime execution, and UUI
+  composition with small standalone examples. A demo must not require a
+  demo-specific kernel branch or embed a competing implementation of the
+  capability it demonstrates.
+- Use the real shared path to expose defects, repair them at their owner, and
+  keep fixtures, streams, and retained output bounded.
+
 - Keep the page lightweight, responsive, accessible, and useful for visually
   exercising common Bootstrap-style controls.
 - User-visible descriptions, hints, placeholders, notices, and empty-state copy

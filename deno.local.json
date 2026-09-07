@@ -4,6 +4,7 @@
     "/p/the8020/": "../",
     "@the8020/http": "../kernel/defaults/config/runtime/deno/http/mod.ts",
     "@the8020/kernel": "../kernel/defaults/config/runtime/deno/kernel/mod.ts",
+    "@the8020/context": "../kernel/defaults/config/runtime/deno/context/mod.ts",
     "@the8020/protocol": "../kernel/defaults/config/runtime/protocol/generated.ts",
     "hono": "jsr:@hono/hono@4.9.8",
     "kysely": "npm:kysely@0.29.4",
