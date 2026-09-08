@@ -114,8 +114,8 @@ below.
   and ordinary activation handler programs.
 - [services/AGENTS.md](services/AGENTS.md): Own service demonstrations for
   static content, variables, package imports, and database access.
-- [src/AGENTS.md](src/AGENTS.md): Share small demonstration helpers across
-  package entrypoints.
+- [src/AGENTS.md](src/AGENTS.md): Share semantic fields and small demonstration
+  helpers across package entrypoints.
 - [tables/AGENTS.md](tables/AGENTS.md): Describe the demo customer/order
   database integration fixture.
 

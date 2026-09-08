@@ -7,14 +7,15 @@ import {
   type TableDatabase,
   type Updateable,
 } from "/p/the8020/db/mod.ts";
+import { customerFields } from "../src/fields.ts";
 import { auditColumns } from "../src/database/audit_columns.ts";
 
 const Customers = table("the8020__demo__customers", {
   ...auditColumns,
   id: t.text().primaryKey(),
-  name: t.text(),
-  email: t.text().unique(),
-  enabled: t.boolean().default(true),
+  name: t.from(customerFields.shape.name),
+  email: t.from(customerFields.shape.email).unique(),
+  enabled: t.from(customerFields.shape.enabled).default(true),
   profile: t.json<{ tier: "standard" | "priority"; notes?: string }>()
     .nullable(),
 });

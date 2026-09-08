@@ -1,16 +1,13 @@
 import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
+import { orderSelection } from "../../src/fields.ts";
 import demoForm from "../demo-form/program.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
-const Order = z.object({
-  id: z.string(),
-  number: z.string(),
-  customer: z.string(),
-  status: z.enum(["draft", "confirmed"]),
-});
+const Order = orderSelection;
 const MasterDetailScreen = z.object({
   orders: field(z.array(Order), {
     label: "Orders",
+    description: "Select an order to review its details.",
     control: "list",
     readOnly: true,
   }),

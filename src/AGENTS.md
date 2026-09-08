@@ -6,9 +6,14 @@ Parent DOX: [demo DOX](../AGENTS.md).
 
 # Ownership
 
-- Own `greeting.ts` and reusable database audit columns under `database/`.
+- Own `greeting.ts`, semantic demo fields in `fields.ts`, and reusable database
+  audit columns under `database/`.
 
 # Local Contracts
+
+- `fields.ts` owns reusable demo profile, customer, order, and interaction
+  fields. Customer and order tables reuse compatible fields. Sample usernames
+  and roles do not navigate to real accounts or grant permissions.
 
 - Service imports remain package-local and reusable columns retain the shared
   database DSL contract.

@@ -12,6 +12,11 @@ Parent DOX: [demo DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Reuse `src/fields.ts` for shared labels, help, validation, and enum choices.
+  The responsive fixture keeps selected unhinted fields through explicit
+  `description: undefined`, plus its two long geometry hints and screen-specific
+  sample labels.
+
 - Only the three interactive demos declare `uui = true`; activation programs
   remain hidden non-UUI handlers.
 - Retain UUI Model wrappers across ordinary calls and presentation returns.

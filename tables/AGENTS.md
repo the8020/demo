@@ -11,6 +11,9 @@ Parent DOX: [demo DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Customer names, emails, enablement, and order states reuse `src/fields.ts`
+  through `t.from()` without changing stored column types.
+
 - Default-export authored table descriptors through `/p/the8020/db/mod.ts`;
   table identity follows the package and file path.
 - Preserve coverage of reusable columns, logical references, generated

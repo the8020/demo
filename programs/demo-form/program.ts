@@ -10,64 +10,53 @@ import {
   sendMessage,
   z,
 } from "/p/the8020/uui/mod.ts";
+import { demoFields } from "../../src/fields.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 import { calculationCsv } from "./downloads.ts";
 
 const FormScreen = z.object({
-  username: field(z.string().min(3), {
-    label: "Username",
+  username: field(demoFields.shape.username, {
     group: "account",
     control: "text",
     readOnly: true,
   }),
-  email: field(z.string().email(), {
-    label: "Email",
+  email: field(demoFields.shape.email, {
     group: "account",
     control: "email",
     length: "long",
   }),
-  biography: field(z.string().optional(), {
-    label: "Biography",
+  biography: field(demoFields.shape.biography, {
     group: "profile",
     control: "textarea",
     length: "long",
     rowSpan: 2,
   }),
-  enabled: field(z.boolean(), {
-    label: "Enabled",
+  enabled: field(demoFields.shape.enabled, {
     group: "status",
     control: "switch",
     length: "short",
   }),
-  role: field(z.enum(["administrator", "operator", "viewer"]), {
-    label: "Role",
+  role: field(demoFields.shape.role, {
     group: "account",
     control: "select",
   }),
-  saveCount: field(z.number().int().nonnegative(), {
-    label: "Save count",
+  saveCount: field(demoFields.shape.saveCount, {
     length: "short",
     readOnly: true,
   }),
-  status: field(z.string(), {
-    label: "Status",
+  status: field(demoFields.shape.status, {
     length: "long",
     readOnly: true,
   }),
-  downloadRows: field(
-    z.number().int().min(1_000).max(1_000_000).multipleOf(1_000),
-    {
-      label: "CSV rows",
-      description: "Each row adds its row number to the previous total.",
-      group: "downloads",
-      control: "range",
-      length: "long",
-      minimum: 1_000,
-      maximum: 1_000_000,
-      step: 1_000,
-      valueSuffix: " rows",
-    },
-  ),
+  downloadRows: field(demoFields.shape.downloadRows, {
+    group: "downloads",
+    control: "range",
+    length: "long",
+    minimum: 1_000,
+    maximum: 1_000_000,
+    step: 1_000,
+    valueSuffix: " rows",
+  }),
 });
 
 const initial: z.infer<typeof FormScreen> = {
@@ -82,9 +71,8 @@ const initial: z.infer<typeof FormScreen> = {
 };
 
 const PresentationScreen = z.object({
-  value: field(z.string(), { label: "Value", length: "long" }),
-  status: field(z.string(), {
-    label: "Background status",
+  value: field(demoFields.shape.value, { length: "long" }),
+  status: field(demoFields.shape.backgroundStatus, {
     length: "long",
     readOnly: true,
   }),

@@ -1,67 +1,101 @@
 import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
+import { demoFields } from "../../src/fields.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
 const ResponsiveFieldsScreen = z.object({
-  honorific: field(z.enum(["Mx", "Ms", "Mr", "Dr"]), {
-    label: "Title",
+  honorific: field(demoFields.shape.honorific, {
+    description: undefined,
     length: "short",
   }),
-  firstName: field(z.string(), { label: "First name" }),
-  lastName: field(z.string(), { label: "Last name" }),
-  employeeId: field(z.string(), {
-    label: "Employee ID",
+  firstName: field(demoFields.shape.firstName, { description: undefined }),
+  lastName: demoFields.shape.lastName,
+  employeeId: field(demoFields.shape.employeeId, {
     length: "short",
     readOnly: true,
   }),
-  email: field(z.string().email(), { label: "Email", length: "long" }),
-  phone: field(z.string(), { label: "Phone" }),
-  extension: field(z.string(), { label: "Extension", length: "short" }),
-  timeZone: field(z.string(), { label: "Time zone" }),
-  shortOne: field(z.string(), { label: "Short 1", length: "short" }),
-  shortTwo: field(z.string(), { label: "Short 2", length: "short" }),
-  shortThree: field(z.string(), { label: "Short 3", length: "short" }),
-  shortFour: field(z.string(), { label: "Short 4", length: "short" }),
-  mediumOne: field(z.string(), { label: "Medium 1" }),
-  mediumTwo: field(z.string(), { label: "Medium 2" }),
-  longOne: field(z.string(), { label: "Long 1", length: "long" }),
-  longTwo: field(z.string(), { label: "Long 2", length: "long" }),
-  username: field(z.string(), {
-    label: "Username",
+  email: field(demoFields.shape.email, { length: "long" }),
+  phone: demoFields.shape.phone,
+  extension: field(demoFields.shape.extension, { length: "short" }),
+  timeZone: demoFields.shape.timeZone,
+  shortOne: field(demoFields.shape.sampleText, {
+    label: "Short 1",
+    description: undefined,
+    length: "short",
+  }),
+  shortTwo: field(demoFields.shape.sampleText, {
+    label: "Short 2",
+    length: "short",
+  }),
+  shortThree: field(demoFields.shape.sampleText, {
+    label: "Short 3",
+    length: "short",
+  }),
+  shortFour: field(demoFields.shape.sampleText, {
+    label: "Short 4",
+    length: "short",
+  }),
+  mediumOne: field(demoFields.shape.sampleText, { label: "Medium 1" }),
+  mediumTwo: field(demoFields.shape.sampleText, { label: "Medium 2" }),
+  longOne: field(demoFields.shape.sampleText, {
+    label: "Long 1",
+    length: "long",
+  }),
+  longTwo: field(demoFields.shape.sampleText, {
+    label: "Long 2",
+    length: "long",
+  }),
+  username: field(demoFields.shape.username, {
     description:
       "This deliberately long hint proves that supporting field messages stay on one reserved line across neighboring cards.",
   }),
-  role: field(z.enum(["Admin", "Operator", "Viewer"]), {
-    label: "Role",
+  role: field(demoFields.shape.roleDisplay, {
+    description: undefined,
     length: "short",
   }),
-  language: field(z.enum(["English", "German", "Spanish"]), {
-    label: "Language",
+  language: field(demoFields.shape.language, { description: undefined }),
+  locale: field(demoFields.shape.locale, { length: "short" }),
+  street: field(demoFields.shape.street, {
+    description: undefined,
+    length: "long",
   }),
-  locale: field(z.string(), { label: "Locale", length: "short" }),
-  street: field(z.string(), { label: "Street address", length: "long" }),
-  postalCode: field(z.string(), { label: "Postal code", length: "short" }),
-  city: field(z.string(), { label: "City" }),
-  country: field(z.string(), { label: "Country" }),
-  accent: field(z.string(), { label: "Accent", length: "short" }),
-  notifications: field(z.boolean(), {
-    label: "Notifications",
+  postalCode: field(demoFields.shape.postalCode, { length: "short" }),
+  city: demoFields.shape.city,
+  country: demoFields.shape.country,
+  accent: field(demoFields.shape.accent, { length: "short" }),
+  notifications: field(demoFields.shape.notifications, {
     length: "short",
   }),
-  summary: field(z.string(), { label: "Summary", length: "long" }),
-  adaptiveOne: field(z.string(), { label: "Adaptive 1", length: "short" }),
-  adaptiveTwo: field(z.string(), { label: "Adaptive 2", length: "short" }),
-  adaptiveThree: field(z.string(), {
+  summary: field(demoFields.shape.summary, { length: "long" }),
+  adaptiveOne: field(demoFields.shape.sampleText, {
+    label: "Adaptive 1",
+    description: undefined,
+    length: "short",
+  }),
+  adaptiveTwo: field(demoFields.shape.sampleText, {
+    label: "Adaptive 2",
+    length: "short",
+  }),
+  adaptiveThree: field(demoFields.shape.sampleText, {
     label: "Adaptive 3",
     length: "short",
   }),
-  adaptiveFour: field(z.string(), { label: "Adaptive 4", length: "short" }),
-  adaptiveFive: field(z.string(), { label: "Adaptive 5", length: "short" }),
-  adaptiveSix: field(z.string(), { label: "Adaptive 6", length: "short" }),
-  adaptiveNote: field(z.string(), {
+  adaptiveFour: field(demoFields.shape.sampleText, {
+    label: "Adaptive 4",
+    length: "short",
+  }),
+  adaptiveFive: field(demoFields.shape.sampleText, {
+    label: "Adaptive 5",
+    length: "short",
+  }),
+  adaptiveSix: field(demoFields.shape.sampleText, {
+    label: "Adaptive 6",
+    length: "short",
+  }),
+  adaptiveNote: field(demoFields.shape.sampleText, {
     label: "Following long field",
     length: "long",
   }),
-  spanningNote: field(z.string(), {
+  spanningNote: field(demoFields.shape.sampleText, {
     label: "Two-row note",
     control: "textarea",
     length: "long",
@@ -69,15 +103,16 @@ const ResponsiveFieldsScreen = z.object({
     description:
       "The supporting-message slot participates in this field's two-row geometry.",
   }),
-  spanningShortOne: field(z.string(), {
+  spanningShortOne: field(demoFields.shape.sampleText, {
     label: "A deliberately long one-line short-field label",
+    description: undefined,
     length: "short",
   }),
-  spanningShortTwo: field(z.string(), {
+  spanningShortTwo: field(demoFields.shape.sampleText, {
     label: "Row 1 short B",
     length: "short",
   }),
-  spanningLong: field(z.string(), {
+  spanningLong: field(demoFields.shape.sampleText, {
     label: "Row 2 long field",
     length: "long",
   }),

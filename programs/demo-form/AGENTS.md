@@ -10,6 +10,9 @@ Parent DOX: [demo/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Form and presentation fields reuse `src/fields.ts`; controls, layout, and
+  range presentation remain local.
+
 - Use public UUI APIs for messages, modal/page presentation, ScreenChannel
   redraws, and downloads.
 - Capture the selected CSV row count per transfer and emit lazy batches of at

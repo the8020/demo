@@ -1,5 +1,5 @@
 import { Model } from "/p/the8020/uui/mod.ts";
-import { assertEquals, assertRejects } from "@std/assert";
+import { assert, assertEquals, assertRejects } from "@std/assert";
 import {
   BACK_EVENT,
   callScreen,
@@ -126,6 +126,12 @@ Deno.test("form program mutates its model and returns through Back", async () =>
   try {
     const running = demoForm();
     const initial = await channel.screen();
+    for (const control of initial.screen.controls) {
+      assert(
+        control.label && control.description,
+        `Missing field help: ${control.bind}`,
+      );
+    }
     assertEquals(
       initial.screen.title,
       "[[icon=edit color=primary]] Form and binding demonstration",
@@ -371,6 +377,12 @@ Deno.test("master-detail statically calls form and resumes its natural stack", a
     assertEquals(orderList.rows.length, orderList.state.pageSize);
     assertEquals(orderList.totalItems, 60);
     assertEquals(orderList.state.measured, false);
+    for (const column of orderList.columns) {
+      assert(
+        column.heading && column.description,
+        `Missing order help: ${column.id}`,
+      );
+    }
     channel.event(master, "open-form");
 
     const child = await channel.screen();
@@ -393,6 +405,15 @@ Deno.test("responsive field demo publishes semantic lengths and row spans", asyn
     const running = responsiveFieldsDemo();
     const screen = await channel.screen();
     assertEquals(screen.screen.id, "demo-responsive-fields");
+    assertEquals(
+      screen.screen.controls.find((control) => control.bind === "firstName")
+        ?.description,
+      undefined,
+    );
+    assert(
+      screen.screen.controls.find((control) => control.bind === "email")
+        ?.description,
+    );
     const lengths = new Map(
       screen.screen.controls.map((control) => [control.bind, control.length]),
     );

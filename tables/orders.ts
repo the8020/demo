@@ -7,6 +7,7 @@ import {
   type TableDatabase,
   type Updateable,
 } from "/p/the8020/db/mod.ts";
+import { orderFields } from "../src/fields.ts";
 import { auditColumns } from "../src/database/audit_columns.ts";
 import Customers from "./customers.ts";
 
@@ -14,7 +15,7 @@ const Orders = table("the8020__demo__orders", {
   ...auditColumns,
   id: t.integer().primaryKey().generated(),
   customerId: t.text().references(() => Customers.id),
-  status: t.enum(["draft", "confirmed", "cancelled"] as const).default(
+  status: t.from(orderFields.shape.status).default(
     "draft",
   ),
   total: t.decimal(18, 2),
