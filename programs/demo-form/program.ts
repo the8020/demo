@@ -13,8 +13,14 @@ import {
 import { demoFields } from "../../src/fields.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 import { calculationCsv } from "./downloads.ts";
+import { codeEditor } from "/p/the8020/uui/services/shell/frontend/components/code-editor/mod.ts";
 
 const FormScreen = z.object({
+  source: field(demoFields.shape.source, {
+    custom: codeEditor({ language: "typescript" }),
+    length: "long",
+    rowSpan: 6,
+  }),
   username: field(demoFields.shape.username, {
     group: "account",
     control: "text",
@@ -60,6 +66,7 @@ const FormScreen = z.object({
 });
 
 const initial: z.infer<typeof FormScreen> = {
+  source: 'console.log("Hello from 80|20");\n',
   username: "admin",
   email: "admin@example.com",
   biography: "",
@@ -93,6 +100,7 @@ export default async function demoForm(): Promise<void> {
         model: screenModel,
         layout,
         controls: [
+          { id: "source", bind: "source" },
           { id: "username", bind: "username" },
           { id: "primary-email", bind: "email", label: "Primary email" },
           {

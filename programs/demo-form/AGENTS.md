@@ -18,6 +18,9 @@ Parent DOX: [demo/programs DOX](../AGENTS.md).
 - Capture the selected CSV row count per transfer and emit lazy batches of at
   most 1,000 rows; the default is 100,000 rows.
 - Keep both download actions and the CSV size slider in the same field group.
+- The Code section uses the shared code editor with its component-owned agent
+  fallback. Save/Reset keep using the same model as native fields; the UUI
+  native agent fixture edits the code headlessly and then opens it in Chromium.
 
 # Work Guidance
 

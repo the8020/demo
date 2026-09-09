@@ -51,6 +51,17 @@
         ]
       },
       {
+        "type": "section",
+        "title": "Code",
+        "children": [
+          {
+            "type": "field-group",
+            "title": "TypeScript",
+            "controls": ["source"]
+          }
+        ]
+      },
+      {
         "id": "download-section",
         "type": "section",
         "title": "Downloads",

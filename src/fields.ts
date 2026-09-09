@@ -2,6 +2,10 @@ import { field, z } from "/p/the8020/db/fields.ts";
 import { username } from "/p/the8020/users/types/user.ts";
 
 export const demoFields = z.object({
+  source: field(z.string(), {
+    label: "Code",
+    description: "Edit the sample TypeScript.",
+  }),
   username: field(username.min(3), {
     label: "Username",
     description:
