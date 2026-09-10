@@ -14,6 +14,10 @@ Parent DOX: [demo DOX](../AGENTS.md).
 - `fields.ts` owns reusable demo profile, customer, order, and interaction
   fields. Customer and order tables reuse compatible fields. Sample usernames
   and roles do not navigate to real accounts or grant permissions.
+- Background states offer known choices. Time-zone help uses `UTC` and the
+  runtime's `Intl.supportedValuesOf("timeZone")` on demand without restricting
+  free-form UTC offsets. Existing role, title, language, and order enums retain
+  inferred value help.
 
 - Service imports remain package-local and reusable columns retain the shared
   database DSL contract.

@@ -1,4 +1,4 @@
-import { field, z } from "/p/the8020/db/fields.ts";
+import { choiceHelp, field, z } from "/p/the8020/db/fields.ts";
 import { username } from "/p/the8020/users/types/user.ts";
 
 export const demoFields = z.object({
@@ -59,6 +59,11 @@ export const demoFields = z.object({
   backgroundStatus: field(z.string(), {
     label: "Background status",
     description: "Whether the background update has completed.",
+    valueHelp: choiceHelp(z.string(), [
+      "Ready",
+      "Waiting for background redraw",
+      "Background redraw completed",
+    ]),
   }),
   honorific: field(z.enum(["Mx", "Ms", "Mr", "Dr"]), {
     label: "Title",
@@ -88,6 +93,10 @@ export const demoFields = z.object({
   timeZone: field(z.string(), {
     label: "Time zone",
     description: "The time zone or UTC offset used by this sample contact.",
+    valueHelp: (request) =>
+      choiceHelp(z.string(), ["UTC", ...Intl.supportedValuesOf("timeZone")])(
+        request,
+      ),
   }),
   language: field(z.enum(["English", "German", "Spanish"]), {
     label: "Language",
