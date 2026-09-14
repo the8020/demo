@@ -1,5 +1,5 @@
 import { db, sql } from "/p/the8020/db/mod.ts";
-import { defineService, z } from "@the8020/http";
+import { defineService, z } from "/p/the8020/services/http.ts";
 import Customers from "../../tables/customers.ts";
 import OrderItems from "../../tables/order_items.ts";
 import Orders from "../../tables/orders.ts";

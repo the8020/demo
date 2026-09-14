@@ -1,15 +1,26 @@
-import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
+import {
+  BACK_EVENT,
+  callScreen,
+  field,
+  Model,
+  presentModal,
+  z,
+} from "/p/the8020/uui/mod.ts";
 import { orderSelection } from "../../src/fields.ts";
 import demoForm from "../demo-form/program.ts";
 import layout from "./layouts/main.json" with { type: "json" };
 
 const Order = orderSelection;
 const MasterDetailScreen = z.object({
-  orders: field(z.array(Order), {
+  orders: field(z.array(Order.extend({ selected: z.boolean() })), {
     label: "Orders",
     description: "Select an order to review its details.",
     control: "list",
     readOnly: true,
+  }),
+  newCustomer: field(Order.shape.customer, {
+    label: "New customer",
+    length: "short",
   }),
   selectedOrderId: z.string(),
   selectedOrder: Order,
@@ -43,7 +54,8 @@ export default async function masterDetail(): Promise<void> {
     ),
   ];
   const model: z.infer<typeof MasterDetailScreen> = {
-    orders,
+    orders: orders.map((order) => ({ ...order, selected: false })),
+    newCustomer: "New customer",
     selectedOrderId: orders[0]!.id,
     selectedOrder: structuredClone(orders[0]!),
   };
@@ -75,6 +87,74 @@ export default async function masterDetail(): Promise<void> {
       if (selected !== undefined) {
         model.selectedOrderId = selected.id;
         model.selectedOrder = structuredClone(selected);
+      }
+    }
+    if (event.action === "add-row") {
+      const id = String(
+        Math.max(1000, ...model.orders.map((order) => Number(order.id))) + 1,
+      );
+      model.orders.push({
+        id,
+        number: `ORD-${id}`,
+        customer: model.newCustomer,
+        status: "draft",
+        selected: false,
+      });
+    }
+    if (event.action === "confirm-selected") {
+      for (const order of model.orders) {
+        if (order.selected) {
+          order.status = "confirmed";
+          if (order.id === model.selectedOrderId) {
+            model.selectedOrder.status = order.status;
+          }
+        }
+      }
+    }
+    if (
+      event.action === "delete-selected" &&
+      model.orders.some((order) => order.selected)
+    ) {
+      const choice = await presentModal(() =>
+        callScreen({
+          id: "delete-orders",
+          title: "Delete selected orders?",
+          description: `${
+            model.orders.filter((order) => order.selected).length
+          } orders will be deleted.`,
+          schema: z.object({}),
+          model: new Model({}),
+          layout: {
+            schema: 1,
+            id: "decision",
+            root: {
+              type: "actions",
+              elements: [
+                { id: "cancel-delete", label: "Cancel" },
+                { type: "separator" },
+                {
+                  id: "confirm-delete",
+                  label: "Delete orders",
+                  kind: "danger",
+                },
+              ],
+            },
+          },
+        })
+      );
+      if (choice.action === "confirm-delete") {
+        model.orders = model.orders.filter((order) => !order.selected);
+        if (!model.orders.some((order) => order.id === model.selectedOrderId)) {
+          model.selectedOrder = structuredClone(
+            model.orders[0] ?? {
+              id: "",
+              number: "",
+              customer: "",
+              status: "draft",
+            },
+          );
+          model.selectedOrderId = model.selectedOrder.id;
+        }
       }
     }
     if (event.action === "change-status") {

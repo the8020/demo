@@ -20,6 +20,11 @@ Parent DOX: [demo DOX](../AGENTS.md).
 - Only the three interactive demos declare `uui = true`; activation programs
   remain hidden non-UUI handlers.
 - Retain UUI Model wrappers across ordinary calls and presentation returns.
+- Master-detail orders bind `selected` booleans to the list's first checkbox
+  column. Its custom toolbar edits the new customer and adds an order, confirms
+  selected orders, or deletes them after an ordinary modal confirmation. Shared
+  separators split toolbar groups and Cancel/Delete modal actions. Row clicks
+  still show order details; deleting the last row clears the detail.
 - Keep deliberate uncaught exception actions so the standard shared recovery
   path is exercised.
 
@@ -28,6 +33,8 @@ Parent DOX: [demo DOX](../AGENTS.md).
 # Verification
 
 - From the repository root, run `deno task check` and `deno task test`.
+- UUI `deno task test:list-selection-browser` runs the real master-detail demo
+  through its normal add, selection, bulk confirm, and delete/cancel flows.
 
 # Child DOX Index
 

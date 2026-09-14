@@ -50,9 +50,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@hono/hono@4.9.8",
-      "jsr:@std/assert@1.0.14",
-      "npm:zod@4.1.5"
+      "jsr:@std/assert@1.0.14"
     ]
   }
 }

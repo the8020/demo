@@ -1,4 +1,4 @@
-import { defineService, z } from "@the8020/http";
+import { defineService, z } from "/p/the8020/services/http.ts";
 
 interface StaticAsset {
   source: URL;

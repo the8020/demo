@@ -4,7 +4,10 @@
   "root": {
     "id": "root",
     "type": "split",
-    "ratio": [50, 50],
+    "ratio": [
+      50,
+      50
+    ],
     "responsive": "stack",
     "children": [
       {
@@ -13,7 +16,37 @@
         "title": "Orders",
         "bind": "orders",
         "key": "id",
-        "display": ["number", "customer", "status"]
+        "display": [
+          "number",
+          "customer",
+          "status"
+        ],
+        "selection": "selected",
+        "toolbar": [
+          {
+            "id": "new-customer",
+            "bind": "newCustomer"
+          },
+          {
+            "id": "add-row",
+            "label": "Add order"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "id": "confirm-selected",
+            "label": "Confirm selected"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "id": "delete-selected",
+            "label": "Delete selected",
+            "kind": "danger"
+          }
+        ]
       },
       {
         "id": "order-detail",

@@ -4,17 +4,19 @@
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "useUnknownInCatchVariables": true,
-    "lib": ["deno.ns", "dom", "dom.iterable", "esnext"]
+    "lib": [
+      "deno.ns",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1.0.14",
     "/p/": "file:///workspace/packages/",
-    "@the8020/http": "file:///opt/runtime/http/the8020_http.js",
     "@the8020/kernel": "file:///opt/runtime/kernel/mod.ts",
     "@the8020/context": "file:///opt/runtime/context/mod.ts",
-    "@the8020/protocol": "file:///opt/runtime/protocol.ts",
-    "hono": "jsr:@hono/hono@4.9.8",
-    "zod": "npm:zod@4.1.5"
+    "@the8020/protocol": "file:///opt/runtime/protocol.ts"
   },
   "tasks": {
     "check": "deno fmt --check . && deno lint . && deno check --import-map=deno.local.json programs/pre-activate/program.ts programs/post-activate/program.ts services/static/service.ts services/variables/service.ts services/variables-import/service.ts services/database/service.ts programs/demo-form/program.ts programs/demo-master-detail/program.ts programs/demo-responsive-fields/program.ts",

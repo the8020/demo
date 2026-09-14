@@ -1,4 +1,4 @@
-import { defineService, z } from "@the8020/http";
+import { defineService, z } from "/p/the8020/services/http.ts";
 import { greeting } from "../../src/greeting.ts";
 
 const service = defineService();

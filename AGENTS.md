@@ -207,6 +207,12 @@ below.
 
 # Work Guidance
 
+- Build only what the request and established contracts require. Before adding a
+  mechanism, identify that need and why existing owners or standard tools cannot
+  meet it. Do not invent stronger guarantees for hypothetical cases. Remove
+  unsupported additions at closeout; agent-written tests and DOX do not
+  authorize them. Preserve required correctness, security, and data integrity.
+
 - Demonstrate ordinary package APIs, shared runtime execution, and UUI
   composition with small standalone examples. A demo must not require a
   demo-specific kernel branch or embed a competing implementation of the
