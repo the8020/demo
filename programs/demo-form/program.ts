@@ -1,8 +1,11 @@
 import {
   BACK_EVENT,
   callScreen,
+  captureMessages,
   download,
+  type DownloadOptions,
   field,
+  type MessageOutput,
   Model,
   presentModal,
   presentPage,
@@ -91,9 +94,13 @@ export default async function demoForm(): Promise<void> {
   const pendingMessageRuns = new Set<Promise<void>>();
   try {
     const screenModel = new Model(model);
+    let nextDownload: DownloadOptions | undefined;
+    let nextMessages = false;
     while (true) {
+      const channel = new ScreenChannel();
       screenModel.data = model;
-      const event = await callScreen({
+      const pending = callScreen({
+        channel,
         id: "demo-form",
         title: "[[icon=edit color=primary]] Form and binding demonstration",
         schema: FormScreen,
@@ -142,6 +149,20 @@ export default async function demoForm(): Promise<void> {
           ],
         },
       });
+      if (nextDownload) {
+        download(nextDownload, channel.downloads);
+        nextDownload = undefined;
+      }
+      if (nextMessages) {
+        const run = sendAsyncMessages(captureMessages(), asyncMessages.signal);
+        pendingMessageRuns.add(run);
+        void run.then(
+          () => pendingMessageRuns.delete(run),
+          () => pendingMessageRuns.delete(run),
+        );
+        nextMessages = false;
+      }
+      const event = await pending;
       if (event.action === "throw-type-error") raiseDemoTypeError();
       if (event.action === BACK_EVENT) return;
       if (event.action === "confirm-choice") {
@@ -170,18 +191,18 @@ export default async function demoForm(): Promise<void> {
           "demo-example.txt",
           { type: "text/plain; charset=utf-8" },
         );
-        download({
+        nextDownload = {
           filename: file.name,
           contentType: file.type,
           body: file.stream(),
-        });
+        };
       }
       if (event.action === "download-csv") {
-        download({
+        nextDownload = {
           filename: `calculations-${model.downloadRows}.csv`,
           contentType: "text/csv; charset=utf-8",
           body: calculationCsv(model.downloadRows),
-        });
+        };
       }
       if (event.action === "message-single") {
         sendMessage("The demo sent one informational message.");
@@ -189,12 +210,7 @@ export default async function demoForm(): Promise<void> {
       if (event.action === "message-types") sendMessageTypes();
       if (event.action === "message-markdown") sendMarkdownMessages();
       if (event.action === "message-async") {
-        const run = sendAsyncMessages(asyncMessages.signal);
-        pendingMessageRuns.add(run);
-        void run.then(
-          () => pendingMessageRuns.delete(run),
-          () => pendingMessageRuns.delete(run),
-        );
+        nextMessages = true;
       }
       if (event.action === "message-limits") {
         for (let sequence = 1; sequence <= 105; sequence++) {
@@ -363,7 +379,10 @@ The remaining detail keeps this card taller than the standard collapsed stack ro
   sendMessage("A short error card completes the alternating stack.", "error");
 }
 
-async function sendAsyncMessages(signal: AbortSignal): Promise<void> {
+async function sendAsyncMessages(
+  output: MessageOutput,
+  signal: AbortSignal,
+): Promise<void> {
   const messages = [
     ["The background task started.", "info"],
     ["The background task reached its checkpoint.", "success"],
@@ -371,7 +390,12 @@ async function sendAsyncMessages(signal: AbortSignal): Promise<void> {
   ] as const;
   for (const [body, kind] of messages) {
     if (!await waitForMessage(120, signal)) return;
-    sendMessage(body, kind);
+    try {
+      output.send(body, kind);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      throw error;
+    }
   }
 }
 

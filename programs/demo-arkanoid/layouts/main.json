@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "id": "arkanoid-main",
+  "root": {
+    "type": "stack",
+    "children": [
+      { "type": "actions", "actions": ["reset"] },
+      { "type": "custom", "customElement": "arkanoid" },
+      {
+        "type": "field-group",
+        "title": "Settings · apply on Reset game",
+        "controls": ["ballSpeed", "paddleWidth", "paddleSpeed", "deadZone"]
+      }
+    ]
+  }
+}

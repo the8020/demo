@@ -14,7 +14,14 @@ Parent DOX: [demo/programs DOX](../AGENTS.md).
   range presentation remain local.
 
 - Use public UUI APIs for messages, modal/page presentation, ScreenChannel
-  redraws, and downloads.
+  redraws, and downloads. Between-screen outcomes use sendMessage domain state.
+  Start delayed messages only after creating the next pending call; capture its
+  output before awaits, and end stale output instead of rebinding to another
+  call.
+- Prepare download options after the action, explicitly create the next pending
+  screen, and start with its captured ScreenChannel.downloads attachment. Never
+  start detached or rebind an old transfer. Settlement/reset/replacement cancels
+  unfinished exports; download completion means native handoff, not a disk path.
 - Capture the selected CSV row count per transfer and emit lazy batches of at
   most 1,000 rows; the default is 100,000 rows.
 - Keep both download actions and the CSV size slider in the same field group.

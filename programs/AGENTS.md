@@ -6,8 +6,8 @@ Parent DOX: [demo DOX](../AGENTS.md).
 
 # Ownership
 
-- Own master-detail and responsive-fields demos, activation handlers, and
-  `program_test.ts`; the form child owns its larger interactive/download
+- Own master-detail, responsive-fields and Arkanoid demos, activation handlers,
+  and `program_test.ts`; the form child owns its larger interactive/download
   fixture.
 
 # Local Contracts
@@ -17,8 +17,8 @@ Parent DOX: [demo DOX](../AGENTS.md).
   `description: undefined`, plus its two long geometry hints and screen-specific
   sample labels.
 
-- Only the three interactive demos declare `uui = true`; activation programs
-  remain hidden non-UUI handlers.
+- The four interactive demos declare `uui = true`; activation programs remain
+  hidden non-UUI handlers.
 - Retain UUI Model wrappers across ordinary calls and presentation returns.
 - Master-detail orders bind `selected` booleans to the list's first checkbox
   column. Its custom toolbar edits the new customer and adds an order, confirms
@@ -40,3 +40,6 @@ Parent DOX: [demo DOX](../AGENTS.md).
 
 - [demo-form/AGENTS.md](demo-form/AGENTS.md): Exercise UUI fields, messages,
   presentation stacks, and streamed downloads.
+
+- [demo-arkanoid/AGENTS.md](demo-arkanoid/AGENTS.md): Spectator game, state
+  stream, backend controller and browser verification.

@@ -1,3 +1,4 @@
+import type { UUIMessage } from "/p/the8020/uui/messages.ts";
 import { Model } from "/p/the8020/uui/mod.ts";
 import { assert, assertEquals, assertRejects } from "@std/assert";
 import {
@@ -13,19 +14,22 @@ import type {
   UUIWorkerOutbound,
 } from "/p/the8020/uui/mod.ts";
 import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
-import { BrowserDownloads } from "/p/the8020/uui/services/shell/frontend/downloads.ts";
+import { ChannelRouter } from "/p/the8020/uui/channel.ts";
+import {
+  DOWNLOAD_POLICY,
+  downloadMetadata,
+} from "/p/the8020/uui/download_metadata.ts";
+import { connectChannels } from "/p/the8020/uui/session.ts";
 import demoForm from "./demo-form/program.ts";
 import masterDetail from "./demo-master-detail/program.ts";
+import arkanoidDemo from "./demo-arkanoid/program.ts";
 import responsiveFieldsDemo from "./demo-responsive-fields/program.ts";
 
 interface WorkerScreenShow {
   surfaceId: string;
   screen: ScreenSnapshot;
 }
-type WorkerNotification = Extract<
-  UUIWorkerOutbound,
-  { type: "notification.show" }
->;
+type WorkerMessage = Pick<UUIMessage, "level" | "message">;
 
 class ProgramChannel implements SessionChannel {
   readonly sessionId = "ui-session-program-test";
@@ -34,6 +38,9 @@ class ProgramChannel implements SessionChannel {
   #server: UUIWorkerOutbound[] = [];
   #serverWaiters: Array<(message: UUIWorkerOutbound) => void> = [];
   #clientSequence = 0;
+  #messageSequence = 0;
+  #messages: WorkerMessage[] = [];
+  #messageWaiters: Array<(message: WorkerMessage) => void> = [];
 
   constructor(
     readonly observe?: (message: UUIWorkerOutbound | Uint8Array) => void,
@@ -42,6 +49,19 @@ class ProgramChannel implements SessionChannel {
   send(message: UUIWorkerOutbound | Uint8Array): void {
     this.observe?.(message);
     if (message instanceof Uint8Array) return;
+    const items = message.type === "presentation.show"
+      ? message.presentation.messages ?? []
+      : message.type === "channel.frame" && message.id === "append"
+      ? [message.value as UUIMessage]
+      : [];
+    for (const item of items) {
+      if (item.sequence <= this.#messageSequence) continue;
+      this.#messageSequence = item.sequence;
+      const value = { level: item.level, message: item.message };
+      const receive = this.#messageWaiters.shift();
+      if (receive) receive(value);
+      else this.#messages.push(value);
+    }
     const waiter = this.#serverWaiters.shift();
     if (waiter === undefined) this.#server.push(message);
     else waiter(message);
@@ -66,15 +86,15 @@ class ProgramChannel implements SessionChannel {
     }
   }
 
-  async message(): Promise<WorkerNotification> {
-    while (true) {
-      const message = await this.#nextServer();
-      if (message.type === "notification.show") return message;
-    }
+  message(): Promise<WorkerMessage> {
+    const item = this.#messages.shift();
+    return item
+      ? Promise.resolve(item)
+      : new Promise((resolve) => this.#messageWaiters.push(resolve));
   }
 
-  async messages(count: number): Promise<WorkerNotification[]> {
-    const messages: WorkerNotification[] = [];
+  async messages(count: number): Promise<WorkerMessage[]> {
+    const messages: WorkerMessage[] = [];
     for (let index = 0; index < count; index++) {
       messages.push(await this.message());
     }
@@ -165,6 +185,7 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
   const channel = new ProgramChannel();
   const unbind = bindSession(channel);
   try {
+    connectChannels("demo-messages");
     const running = demoForm();
     let screen = await channel.screen();
     assertEquals(
@@ -184,7 +205,6 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
 
     channel.event(screen, "message-single");
     assertEquals(await channel.message(), {
-      type: "notification.show",
       level: "info",
       message: "The demo sent one informational message.",
     });
@@ -218,8 +238,8 @@ Deno.test("form program demonstrates bounded, Markdown, and async messages", asy
     );
 
     channel.event(screen, "message-limits");
-    const burst = await channel.messages(105);
-    assertEquals(burst[0]?.message, "Burst message 1 of 105.");
+    const burst = await channel.messages(100);
+    assertEquals(burst[0]?.message, "Burst message 6 of 105.");
     assertEquals(burst.at(-1)?.message, "Burst message 105 of 105.");
     screen = await channel.screen();
     channel.event(screen, BACK_EVENT);
@@ -234,27 +254,71 @@ Deno.test("form downloads run in the background and capture the selected CSV siz
     string,
     { contentType: string; stream: ReadableStream<Uint8Array> }
   >();
-  const channel = new ProgramChannel((message) => {
-    if (message instanceof Uint8Array) browser.bytes(message);
-    else if (
-      message.type === "download.begin" || message.type === "download.end" ||
-      message.type === "download.error"
-    ) browser.receive(message);
-  });
-  const browser = new BrowserDownloads((command) =>
+  const lifetimes = new Map<string, AbortController>();
+  const browser = new ChannelRouter("client", (command) => {
+    if (command instanceof Uint8Array) {
+      throw new Error("This fixture only consumes downloads");
+    }
     channel.input({
       ...command,
       protocol: UUI_PROTOCOL_VERSION,
       clientSequence: 0,
       sessionId: channel.sessionId,
-    }), (metadata, stream) => {
-    downloads.set(metadata.filename, {
-      contentType: metadata.contentType,
-      stream,
     });
-    return Promise.resolve(() => {});
   });
+  browser.connect("demo-download-test");
+  const channel = new ProgramChannel((message) => {
+    if (message instanceof Uint8Array) browser.bytes(message);
+    else if (message.type === "channel.frame") browser.receive(message);
+    else if (message.type === "presentation.show") {
+      const screen = message.presentation.surfaces.at(-1)?.screen;
+      if (!screen?.channelGeneration || !screen.downloadNamespace) return;
+      if (!lifetimes.has(screen.channelGeneration)) {
+        for (const lifetime of lifetimes.values()) lifetime.abort();
+        lifetimes.clear();
+        const lifetime = new AbortController();
+        lifetimes.set(screen.channelGeneration, lifetime);
+        const endpoint = browser.register(
+          screen.downloadNamespace,
+          screen.channelGeneration,
+          () => {},
+          lifetime.signal,
+          DOWNLOAD_POLICY,
+        );
+        const metadata = new Map<
+          string,
+          ReturnType<typeof downloadMetadata.parse>
+        >();
+        endpoint.subscribe("*", async (id, data) => {
+          if (id === "forget") {
+            metadata.delete(String(data));
+            return;
+          }
+          if (id === "save") {
+            const description = data as { token: string };
+            metadata.set(description.token, downloadMetadata.parse(data));
+            return;
+          }
+          if (!(data instanceof ReadableStream)) return;
+          const description = metadata.get(id)!;
+          metadata.delete(id);
+          downloads.set(description.filename, {
+            contentType: description.contentType,
+            stream: data,
+          });
+          contents.set(description.filename, await new Response(data).text());
+        });
+      }
+    }
+  });
+  const contents = new Map<string, string>();
   const unbind = bindSession(channel);
+  connectChannels("demo-download-test");
+  const untilSaved = async (name: string) => {
+    while (!contents.has(name)) {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+  };
   try {
     const running = demoForm();
     let screen = await channel.screen();
@@ -274,6 +338,7 @@ Deno.test("form downloads run in the background and capture the selected CSV siz
 
     channel.event(screen, "download-file");
     screen = await channel.screen();
+    await untilSaved("demo-example.txt");
     channel.event(screen, "download-csv", [{
       bind: "downloadRows",
       value: 25_000,
@@ -283,7 +348,8 @@ Deno.test("form downloads run in the background and capture the selected CSV siz
       (screen.screen.model as { downloadRows: number }).downloadRows,
       25_000,
     );
-    // Both streams remain unconsumed while the form accepts another interaction.
+    await untilSaved("calculations-25000.csv");
+    // Completed saves survive subsequent full screen replacement.
     channel.event(screen, "reset");
     screen = await channel.screen();
     assertEquals(
@@ -294,12 +360,12 @@ Deno.test("form downloads run in the background and capture the selected CSV siz
     const file = downloads.get("demo-example.txt")!;
     assertEquals(file.contentType, "text/plain; charset=utf-8");
     assertEquals(
-      await new Response(file.stream).text(),
+      contents.get("demo-example.txt"),
       "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n",
     );
     const csv = downloads.get("calculations-25000.csv")!;
     assertEquals(csv.contentType, "text/csv; charset=utf-8");
-    const lines = (await new Response(csv.stream).text()).trimEnd().split(
+    const lines = contents.get("calculations-25000.csv")!.trimEnd().split(
       "\r\n",
     );
     assertEquals(lines.length, 25_001);
@@ -308,7 +374,7 @@ Deno.test("form downloads run in the background and capture the selected CSV siz
     channel.event(screen, BACK_EVENT);
     await running;
   } finally {
-    browser.close();
+    browser.disconnect();
     unbind();
   }
 });
@@ -341,7 +407,6 @@ Deno.test("form program presents a Yes/No confirmation and reports the choice", 
     );
     channel.event(confirmation, "yes");
     assertEquals(await channel.message(), {
-      type: "notification.show",
       level: "success",
       message: "You chose Yes.",
     });
@@ -351,7 +416,6 @@ Deno.test("form program presents a Yes/No confirmation and reports the choice", 
     confirmation = await channel.screen();
     channel.event(confirmation, "no");
     assertEquals(await channel.message(), {
-      type: "notification.show",
       level: "info",
       message: "You chose No.",
     });
@@ -521,6 +585,38 @@ Deno.test("programs may retain ordinary class and closure state", async () => {
     assertEquals(closureScreen.screen.model, { visits: 1 });
     channel.event(closureScreen, BACK_EVENT);
     await closureRunning;
+  } finally {
+    unbind();
+  }
+});
+
+Deno.test("Arkanoid publishes local assets, bounded settings and a fresh run on Reset", async () => {
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = arkanoidDemo();
+    const first = await channel.screen();
+    assertEquals(first.screen.id, "demo-arkanoid");
+    const component = first.screen.customElements[0]!;
+    assertEquals(
+      component.module,
+      "/the8020/uui/shell/package-assets/the8020/demo/arkanoid.js",
+    );
+    assertEquals(component.preserve, true);
+    assertEquals((first.screen.model as { ballSpeed: number }).ballSpeed, 260);
+    assert(first.screen.actions.some((action) => action.id === "reset"));
+    channel.event(first, "reset", [{ bind: "ballSpeed", value: 400 }]);
+    const reset = await channel.screen();
+    assertEquals((reset.screen.model as { ballSpeed: number }).ballSpeed, 400);
+    assertEquals(reset.screen.customElements[0]!.config.settings, {
+      ballSpeed: 400,
+      paddleWidth: 100,
+      paddleSpeed: 360,
+      deadZone: 8,
+    });
+    assert(reset.screen.customElements[0]!.config.run !== component.config.run);
+    channel.event(reset, BACK_EVENT);
+    await running;
   } finally {
     unbind();
   }

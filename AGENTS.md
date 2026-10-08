@@ -112,6 +112,7 @@ below.
 - [hooks/AGENTS.md](hooks/AGENTS.md): Declare demo package activation handlers.
 - [programs/AGENTS.md](programs/AGENTS.md): Own interactive UUI demonstrations
   and ordinary activation handler programs.
+- [public/AGENTS.md](public/AGENTS.md): Local generated UUI browser assets.
 - [services/AGENTS.md](services/AGENTS.md): Own service demonstrations for
   static content, variables, package imports, and database access.
 - [src/AGENTS.md](src/AGENTS.md): Share semantic fields and small demonstration
@@ -130,7 +131,8 @@ below.
 - Own the `the8020/demo/static`, `the8020/demo/variables`,
   `the8020/demo/variables-import`, and disabled-by-default
   `the8020/demo/database` services; the demo form, master-detail, and
-  responsive-fields programs; shared demo helpers; and their tests/assets.
+  responsive-fields and Arkanoid programs; shared demo helpers; and their
+  tests/assets.
 - The form and master-detail programs deliberately expose uncaught exception
   actions so standard UUI recovery can be exercised across package boundaries.
 - The static service owns its allowlist, generated and physical download paths,
@@ -141,8 +143,8 @@ below.
 
 # Local Contracts
 
-- The three interactive demos declare `uui = true`; activation hook programs
-  keep the non-UUI default and stay out of Home.
+- The four interactive demos declare `uui = true`; activation hook programs keep
+  the non-UUI default and stay out of Home.
 - `/` and `/index.html` return the same HTML document.
 - `/assets/styles.css`, `/assets/app.js`, and `/assets/favicon.svg` return
   explicit content types; every other asset path returns `404`.
@@ -184,7 +186,9 @@ below.
   background sequence, and a 105-message burst. These fixtures exercise UUI
   roundtrip clearing, asynchronous delivery, expanding a long card after a
   shorter predecessor, stacked-card geometry, and the 10-toast/100-history
-  limits through the public `sendMessage()` import.
+  limits through public `sendMessage()` domain outcomes and pending-screen
+  `captureMessages()` asynchronous output. Late output cannot rebind after
+  navigation or reconnect.
 - The form program's Presentation flow is the browser fixture for an ordinary
   screen shown as a modal, a nested modal, a later page and modal, restoration
   of the earlier page-plus-modal continuation, and a `ScreenChannel` background
@@ -197,13 +201,19 @@ below.
   permits 1,000 through 1,000,000 in steps of 1,000. The ordinary example uses a
   small text `File`; the virtual CSV yields a header followed by batches of at
   most 1,000 rows with `row,previous_total,total`, where each total adds the row
-  number to the preceding total. Both call public UUI `download()` without
-  awaiting completion. Each transfer captures the selected row count and remains
-  independent of subsequent edits or Reset.
+  number to the preceding total. Both prepare options after the export action,
+  explicitly create the next pending callScreen with a ScreenChannel, then call
+  public download(options, channel.downloads). Each transfer captures its
+  selected row count; settling or replacing that screen cancels unfinished work,
+  including Reset.
 
 - Demo screen functions retain UUI Model wrappers across ordinary calls and
   presentation returns. The master-detail list uses the shared measured-capacity
   and query pipeline; its source collection remains intact.
+
+- Arkanoid uses a local custom canvas component, continuous bounded game-state
+  upload, discrete 50 ms backend controls, and settings applied on Reset. Its
+  child DOX owns simulation, transport and lifecycle checks.
 
 # Work Guidance
 
@@ -230,7 +240,8 @@ below.
   `Value is stored per-session in the user storage.` or
   `The value is sent directly to kernel secret storage and is not shown again.`
   in the UI.
-- Add new browser files to the service allowlist and its verification together.
+- Add static-page browser files to the service allowlist and its verification
+  together.
 - Preserve response-stream backpressure and client cancellation; never allocate
   the selected generated-download size eagerly.
 
@@ -239,7 +250,7 @@ below.
 - `service_test.ts` verifies both index routes, local asset bodies and content
   types, missing-file behavior, `HEAD` semantics, generated-download bounds and
   byte counts, and the complete physical 25 MiB response.
-- `program_test.ts` covers the three UUI demos, nested invocation, shared model
+- `program_test.ts` covers the four UUI demos, nested invocation, shared model
   bindings, field metadata including responsive hint fixtures, synchronous and
   asynchronous message variants and limits, and deliberate exception behavior.
 - Download tests verify the default 100,000-row export, a partial final batch,
@@ -253,3 +264,7 @@ below.
   connection.
 - Package-owned `deno task check` formats, lints, and type-checks every service
   and program; `deno task test` runs the service and program tests.
+
+- `deno task build:arkanoid` publishes the local browser bundle;
+  `deno task test:arkanoid-browser` checks the real game through UUI in
+  Chromium.
