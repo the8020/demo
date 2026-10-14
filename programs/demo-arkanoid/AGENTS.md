@@ -16,6 +16,9 @@ Parent DOX: [programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Each screen iteration creates its component Channel, which internally owns the
+  surface's managed next screen. The program takes no injected ScreenChannel.
+  Disposal/unsubscribe in finally ends the controller even before rendering.
 - Settings apply on Reset. The spectator has no paddle input controls.
 - One stream per active run samples latest state at 100 ms with no history
   queue. Records are bounded to 2048 bytes. Controls are individual JSON

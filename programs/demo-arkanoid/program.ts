@@ -5,7 +5,6 @@ import {
   field,
   Model,
   packageAssetURL,
-  ScreenChannel,
   z,
 } from "/p/the8020/uui/mod.ts";
 import { controlStream } from "./controller.ts";
@@ -31,9 +30,7 @@ export const SettingsSchema = z.object({
   }),
 });
 
-export default async function arkanoidDemo(
-  screen = new ScreenChannel(),
-): Promise<void> {
+export default async function arkanoidDemo(): Promise<void> {
   const model = new Model({ ...defaults });
   while (true) {
     const channel = new Channel();
@@ -69,7 +66,6 @@ export default async function arkanoidDemo(
         description:
           "Adjust the settings, then Reset game to start a new match.",
         schema: SettingsSchema,
-        channel: screen,
         model,
         layout,
         actions: [{ id: "reset", label: "[[icon=refresh]] Reset game" }],
@@ -86,6 +82,7 @@ export default async function arkanoidDemo(
     } finally {
       active?.abort();
       subscription.unsubscribe();
+      channel.dispose();
     }
   }
 }

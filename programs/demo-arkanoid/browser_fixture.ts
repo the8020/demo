@@ -2,9 +2,11 @@ import { assert, assertEquals } from "@std/assert";
 import {
   callScreen,
   Channel,
+  currentScreenChannel,
   Model,
+  nextScreenChannel,
   presentModal,
-  ScreenChannel,
+  type ScreenChannel,
   z,
 } from "/p/the8020/uui/mod.ts";
 import type {
@@ -83,16 +85,15 @@ export default async function fixture(root: string) {
       }) as AttachedChannel["send"],
     };
   };
-  const next = new ScreenChannel();
-  const gameScreen = new ScreenChannel();
+  let next: ScreenChannel | undefined;
   return {
     async run() {
-      await arkanoidDemo(gameScreen);
+      await arkanoidDemo();
+      next = nextScreenChannel();
       returned = true;
       await callScreen({
         id: "after-arkanoid",
         title: "After Arkanoid",
-        channel: next,
         schema: z.object({}),
         model: new Model({}),
       });
@@ -158,9 +159,9 @@ export default async function fixture(root: string) {
       );
       // Same-config redraw retains the board and its stream/subscription.
       const streamsBefore = totalStreams;
-      gameScreen.redraw();
+      currentScreenChannel()!.redraw();
       await delay(100);
-      gameScreen.redraw();
+      currentScreenChannel()!.redraw();
       await delay(200);
       assertEquals(totalStreams, streamsBefore);
       assertEquals(await page.evaluate(`${board}.dataset.run`), run);
@@ -235,16 +236,16 @@ export default async function fixture(root: string) {
       );
       // Cover/resume releases activity and resumes this board, with a new segment.
       const saved = await page.evaluate<string>(`${board}.dataset.run`);
-      const modalChannel = new ScreenChannel();
-      const modal = presentModal(() =>
-        callScreen({
+      let modalChannel!: ScreenChannel;
+      const modal = presentModal(() => {
+        modalChannel = nextScreenChannel();
+        return callScreen({
           id: "cover-game",
           title: "Paused match",
-          channel: modalChannel,
           schema: z.object({}),
           model: new Model({}),
-        })
-      );
+        });
+      });
       void modal.catch(() => {});
       await wait(
         "document.querySelector('dialog.presentation-modal .screen-title')?.textContent === 'Paused match'",
@@ -400,7 +401,7 @@ export default async function fixture(root: string) {
     },
     close() {
       releaseHold?.();
-      next.exit();
+      next?.exit();
       Channel.prototype.subscribe = subscribe;
       Channel.prototype.capture = capture;
       return Promise.resolve();

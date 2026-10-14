@@ -143,6 +143,10 @@ below.
 
 # Local Contracts
 
+- Demo `0.8.0` requires the managed-channel API in UUI `0.8.1`; select these
+  releases together on the kernel `0.8` line. Package tags use bare semantic
+  versions; the manifest and runtime `/p/` imports remain unversioned.
+
 - The four interactive demos declare `uui = true`; activation hook programs keep
   the non-UUI default and stay out of Home.
 - `/` and `/index.html` return the same HTML document.
@@ -202,7 +206,7 @@ below.
   small text `File`; the virtual CSV yields a header followed by batches of at
   most 1,000 rows with `row,previous_total,total`, where each total adds the row
   number to the preceding total. Both prepare options after the export action,
-  explicitly create the next pending callScreen with a ScreenChannel, then call
+  capture nextScreenChannel(), create the next pending callScreen, then call
   public download(options, channel.downloads). Each transfer captures its
   selected row count; settling or replacing that screen cancels unfinished work,
   including Reset.

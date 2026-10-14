@@ -7,9 +7,9 @@ import {
   field,
   type MessageOutput,
   Model,
+  nextScreenChannel,
   presentModal,
   presentPage,
-  ScreenChannel,
   sendMessage,
   z,
 } from "/p/the8020/uui/mod.ts";
@@ -97,10 +97,9 @@ export default async function demoForm(): Promise<void> {
     let nextDownload: DownloadOptions | undefined;
     let nextMessages = false;
     while (true) {
-      const channel = new ScreenChannel();
+      const channel = nextScreenChannel();
       screenModel.data = model;
       const pending = callScreen({
-        channel,
         id: "demo-form",
         title: "[[icon=edit color=primary]] Form and binding demonstration",
         schema: FormScreen,
@@ -253,7 +252,7 @@ async function runPresentationFlow(): Promise<void> {
     };
     const screenModel1 = new Model(model);
     while (true) {
-      const channel = new ScreenChannel();
+      const channel = nextScreenChannel();
       const redraw = setTimeout(() => {
         model.status = "Background redraw completed";
         channel.redraw();
@@ -267,7 +266,6 @@ async function runPresentationFlow(): Promise<void> {
           description: "This ordinary screen is running in a modal surface.",
           schema: PresentationScreen,
           model: screenModel1,
-          channel,
           actions: [
             { id: "open-modal", label: "Open nested modal" },
             { id: "open-page", label: "Open page" },
