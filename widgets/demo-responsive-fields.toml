@@ -1,0 +1,9 @@
+schema = 1
+title = "Responsive fields"
+description = "Semantic field lengths and grouped layout"
+icon = "dashboard"
+category = "demos"
+order = 30
+
+[open]
+program = "the8020/demo/demo-responsive-fields"

@@ -1,0 +1,9 @@
+schema = 1
+title = "Master-detail"
+description = "Responsive master-detail and nested programs"
+icon = "view_list"
+category = "demos"
+order = 20
+
+[open]
+program = "the8020/demo/demo-master-detail"

@@ -1,0 +1,9 @@
+schema = 1
+title = "Arkanoid"
+description = "Watch a predictive controller play Arkanoid"
+icon = "sports_esports"
+category = "demos"
+order = 40
+
+[open]
+program = "the8020/demo/demo-arkanoid"

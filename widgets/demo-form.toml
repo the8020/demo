@@ -1,0 +1,9 @@
+schema = 1
+title = "Form"
+description = "Form controls, shared binding and validation"
+icon = "edit_note"
+category = "demos"
+order = 10
+
+[open]
+program = "the8020/demo/demo-form"

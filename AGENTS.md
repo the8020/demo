@@ -128,6 +128,8 @@ below.
 
 # Ownership
 
+- `widgets/` declares this package's Home tiles and categories through the
+  `the8020/packages/widgets.ts` format.
 - Own the `the8020/demo/static`, `the8020/demo/variables`,
   `the8020/demo/variables-import`, and disabled-by-default
   `the8020/demo/database` services; the demo form, master-detail, and
