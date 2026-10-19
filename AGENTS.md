@@ -260,6 +260,9 @@ below.
 
 # Verification
 
+- Run package tasks inside an 80|20 Deno workspace; its root config supplies
+  platform imports. The package config owns dependencies and tasks.
+
 - `service_test.ts` verifies both index routes, local asset bodies and content
   types, missing-file behavior, `HEAD` semantics, generated-download bounds and
   byte counts, and the complete physical 25 MiB response.
