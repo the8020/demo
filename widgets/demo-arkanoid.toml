@@ -7,3 +7,6 @@ order = 40
 
 [open]
 program = "the8020/demo/demo-arkanoid"
+
+[visible]
+public = true
