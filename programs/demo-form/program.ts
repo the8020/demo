@@ -2,6 +2,7 @@ import {
   BACK_EVENT,
   callScreen,
   captureMessages,
+  CONFIRM_CLASS,
   download,
   type DownloadOptions,
   field,
@@ -229,6 +230,7 @@ async function confirmDecision(
   return await presentModal(async () => {
     const event = await callScreen({
       id: "demo-confirm-decision",
+      class: CONFIRM_CLASS,
       title: "Confirm choice",
       description: question,
       schema: z.object({}),

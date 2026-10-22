@@ -1,6 +1,7 @@
 import {
   BACK_EVENT,
   callScreen,
+  CONFIRM_CLASS,
   field,
   Model,
   presentModal,
@@ -118,6 +119,7 @@ export default async function masterDetail(): Promise<void> {
       const choice = await presentModal(() =>
         callScreen({
           id: "delete-orders",
+          class: CONFIRM_CLASS,
           title: "Delete selected orders?",
           description: `${
             model.orders.filter((order) => order.selected).length
