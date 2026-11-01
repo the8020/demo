@@ -19,7 +19,7 @@
     "test": "deno test --allow-read=. .",
     "build:arkanoid": "deno bundle --platform browser --minify --output public/arkanoid.js programs/demo-arkanoid/frontend.ts",
     "test:arkanoid-browser": "deno run -A ../uui/presentation_browser_e2e.ts --fixture=../demo/programs/demo-arkanoid/browser_fixture.ts",
-    "check:i18n": "deno run --allow-read ../i18n/check.ts --complete=cs ."
+    "check:i18n": "deno run --allow-read ../i18n/check.ts --complete=builtin ."
   },
   "fmt": {
     "exclude": [
