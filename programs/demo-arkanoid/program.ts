@@ -1,3 +1,5 @@
+import { currentLocalization } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import {
   BACK_EVENT,
   callScreen,
@@ -13,19 +15,19 @@ import layout from "./layouts/main.json" with { type: "json" };
 
 export const SettingsSchema = z.object({
   ballSpeed: field(z.number().min(100).max(600), {
-    label: "Ball speed",
+    label: msg("program.ball_speed"),
     length: "short",
   }),
   paddleWidth: field(z.number().min(50).max(160), {
-    label: "Paddle width",
+    label: msg("program.paddle_width"),
     length: "short",
   }),
   paddleSpeed: field(z.number().min(100).max(700), {
-    label: "Paddle speed",
+    label: msg("program.paddle_speed"),
     length: "short",
   }),
   deadZone: field(z.number().min(0).max(30), {
-    label: "Aim dead zone",
+    label: msg("program.aim_dead_zone"),
     length: "short",
   }),
 });
@@ -62,20 +64,30 @@ export default async function arkanoidDemo(): Promise<void> {
     try {
       const event = await callScreen({
         id: "demo-arkanoid",
-        title: "Arkanoid · Watch the controller play",
-        description:
-          "Adjust the settings, then Reset game to start a new match.",
+        title: msg("program.arkanoid_watch_the_controller_play"),
+        description: msg("program.adjust_the_settings_then_reset_game_to"),
         schema: SettingsSchema,
         model,
         layout,
-        actions: [{ id: "reset", label: "[[icon=refresh]] Reset game" }],
+        actions: [{ id: "reset", label: msg("program.reset_game") }],
         customElements: [{
           id: "arkanoid",
           channel,
           preserve: true,
           module: packageAssetURL("the8020/demo", "arkanoid.js"),
           styles: [packageAssetURL("the8020/demo", "arkanoid.css")],
-          config: { run, settings },
+          config: {
+            texts: Object.fromEntries(
+              Object.entries(
+                (await currentLocalization()?.bundle("the8020/demo"))?.texts ??
+                  {},
+              ).filter(([key]) =>
+                key.startsWith("frontend.") || key.startsWith("console.")
+              ),
+            ),
+            run,
+            settings,
+          },
         }],
       });
       if (event.action === BACK_EVENT) return;

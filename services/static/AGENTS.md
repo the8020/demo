@@ -11,6 +11,9 @@ Parent DOX: [demo/services DOX](../AGENTS.md).
 
 # Local Contracts
 
+- The index renders escaped `static.*` catalog text in the request language. Its
+  local script reads only the embedded static-text subset; translations never
+  become executable HTML or JavaScript.
 - Resolve assets relative to the module; `/` and `/index.html` serve the same
   document and unknown assets return 404.
 - Generated downloads lazily emit 64 KiB zero-filled chunks for validated sizes

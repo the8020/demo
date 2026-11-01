@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import {
   BACK_EVENT,
   callScreen,
@@ -102,18 +104,22 @@ export default async function demoForm(): Promise<void> {
       screenModel.data = model;
       const pending = callScreen({
         id: "demo-form",
-        title: "[[icon=edit color=primary]] Form and binding demonstration",
+        title: msg("program.form_and_binding_demonstration"),
         schema: FormScreen,
         model: screenModel,
         layout,
         controls: [
           { id: "source", bind: "source" },
           { id: "username", bind: "username" },
-          { id: "primary-email", bind: "email", label: "Primary email" },
+          {
+            id: "primary-email",
+            bind: "email",
+            label: msg("program.primary_email"),
+          },
           {
             id: "confirmation-email",
             bind: "email",
-            label: "Confirmation email",
+            label: msg("program.confirmation_email"),
           },
           { id: "biography", bind: "biography" },
           { id: "enabled", bind: "enabled" },
@@ -123,27 +129,30 @@ export default async function demoForm(): Promise<void> {
           { id: "downloadRows", bind: "downloadRows" },
         ],
         actions: [
-          { id: "confirm-choice", label: "Confirm Yes/No" },
-          { id: "presentation-flow", label: "Presentation flow" },
-          { id: "message-single", label: "Single message" },
-          { id: "message-types", label: "Message types" },
-          { id: "message-markdown", label: "Long Markdown" },
-          { id: "message-async", label: "Async messages" },
-          { id: "message-limits", label: "Message limits" },
-          { id: "download-file", label: "Download text file" },
-          { id: "download-csv", label: "Download calculations CSV" },
+          { id: "confirm-choice", label: msg("program.confirm_yes_no") },
+          { id: "presentation-flow", label: msg("program.presentation_flow") },
+          { id: "message-single", label: msg("program.single_message") },
+          { id: "message-types", label: msg("program.message_types") },
+          { id: "message-markdown", label: msg("program.long_markdown") },
+          { id: "message-async", label: msg("program.async_messages") },
+          { id: "message-limits", label: msg("program.message_limits") },
+          { id: "download-file", label: msg("program.download_text_file") },
+          {
+            id: "download-csv",
+            label: msg("program.download_calculations_csv"),
+          },
         ],
         header: {
           actions: [
             {
               id: "save",
-              label: "[[icon=save color=#ffffff]] Save",
+              label: msg("program.save"),
               kind: "primary",
             },
-            { id: "reset", label: "Reset" },
+            { id: "reset", label: msg("program.reset") },
             {
               id: "throw-type-error",
-              label: "Throw TypeError",
+              label: msg("program.throw_typeerror"),
               kind: "danger",
             },
           ],
@@ -166,11 +175,13 @@ export default async function demoForm(): Promise<void> {
       if (event.action === "throw-type-error") raiseDemoTypeError();
       if (event.action === BACK_EVENT) return;
       if (event.action === "confirm-choice") {
-        const confirmed = await confirmDecision("Would you like to continue?");
+        const confirmed = await confirmDecision(
+          localizedText(msg("program.would_you_like_to_continue")),
+        );
         if (confirmed === true) {
-          sendMessage("You chose Yes.", "success");
+          sendMessage(localizedText(msg("program.you_chose_yes")), "success");
         } else if (confirmed === false) {
-          sendMessage("You chose No.", "info");
+          sendMessage(localizedText(msg("program.you_chose_no")), "info");
         }
       }
       if (event.action === "presentation-flow") await runPresentationFlow();
@@ -186,7 +197,11 @@ export default async function demoForm(): Promise<void> {
       if (event.action === "download-file") {
         const file = new File(
           [
-            "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n",
+            localizedText(
+              msg(
+                "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file",
+              ),
+            ),
           ],
           "demo-example.txt",
           { type: "text/plain; charset=utf-8" },
@@ -205,7 +220,9 @@ export default async function demoForm(): Promise<void> {
         };
       }
       if (event.action === "message-single") {
-        sendMessage("The demo sent one informational message.");
+        sendMessage(
+          localizedText(msg("program.the_demo_sent_one_informational_message")),
+        );
       }
       if (event.action === "message-types") sendMessageTypes();
       if (event.action === "message-markdown") sendMarkdownMessages();
@@ -214,7 +231,14 @@ export default async function demoForm(): Promise<void> {
       }
       if (event.action === "message-limits") {
         for (let sequence = 1; sequence <= 105; sequence++) {
-          sendMessage(`Burst message ${sequence} of 105.`, "info");
+          sendMessage(
+            localizedText(
+              msg("program.burst_message_sequence_of_105", {
+                sequence: sequence,
+              }),
+            ),
+            "info",
+          );
         }
       }
     }
@@ -231,13 +255,13 @@ async function confirmDecision(
     const event = await callScreen({
       id: "demo-confirm-decision",
       class: CONFIRM_CLASS,
-      title: "Confirm choice",
+      title: msg("program.confirm_choice"),
       description: question,
       schema: z.object({}),
       model: new Model({}),
       actions: [
-        { id: "no", label: "No" },
-        { id: "yes", label: "Yes", kind: "primary" },
+        { id: "no", label: msg("program.no") },
+        { id: "yes", label: msg("program.yes"), kind: "primary" },
       ],
     });
     if (event.action === "yes") return true;
@@ -249,14 +273,18 @@ async function confirmDecision(
 async function runPresentationFlow(): Promise<void> {
   await presentModal(async () => {
     const model = {
-      value: "Edit this before the background redraw",
-      status: "Waiting for background redraw",
+      value: localizedText(
+        msg("program.edit_this_before_the_background_redraw"),
+      ),
+      status: localizedText(msg("program.waiting_for_background_redraw")),
     };
     const screenModel1 = new Model(model);
     while (true) {
       const channel = nextScreenChannel();
       const redraw = setTimeout(() => {
-        model.status = "Background redraw completed";
+        model.status = localizedText(
+          msg("program.background_redraw_completed"),
+        );
         channel.redraw();
       }, 800);
       let action: string;
@@ -264,16 +292,16 @@ async function runPresentationFlow(): Promise<void> {
         screenModel1.data = model;
         action = (await callScreen({
           id: "presentation-modal-b",
-          title: "Presentation modal B",
-          description: "This ordinary screen is running in a modal surface.",
+          title: msg("program.presentation_modal_b"),
+          description: msg("program.this_ordinary_screen_is_running_in_a"),
           schema: PresentationScreen,
           model: screenModel1,
           actions: [
-            { id: "open-modal", label: "Open nested modal" },
-            { id: "open-page", label: "Open page" },
+            { id: "open-modal", label: msg("program.open_nested_modal") },
+            { id: "open-page", label: msg("program.open_page") },
           ],
           header: {
-            actions: [{ id: "close", label: "Close modal" }],
+            actions: [{ id: "close", label: msg("program.close_modal") }],
           },
         })).action;
       } finally {
@@ -281,7 +309,9 @@ async function runPresentationFlow(): Promise<void> {
       }
       if (action === BACK_EVENT || action === "close") return;
       if (action === "open-modal") {
-        await presentModal(() => presentationLeaf("Presentation modal C"));
+        await presentModal(() =>
+          presentationLeaf(localizedText(msg("program.presentation_modal_c")))
+        );
       }
       if (action === "open-page") await runPresentationPage();
     }
@@ -290,28 +320,33 @@ async function runPresentationFlow(): Promise<void> {
 
 async function runPresentationPage(): Promise<void> {
   await presentPage(async () => {
-    const model = { value: "Page D", status: "Ready" };
+    const model = {
+      value: "Page D",
+      status: localizedText(msg("program.ready")),
+    };
     const screenModel2 = new Model(model);
     while (true) {
       screenModel2.data = model;
       const event = await callScreen({
         id: "presentation-page-d",
-        title: "Presentation page D",
-        description: "The earlier page and modal remain suspended behind it.",
+        title: msg("program.presentation_page_d"),
+        description: msg("program.the_earlier_page_and_modal_remain_suspended"),
         schema: PresentationScreen,
         model: screenModel2,
-        actions: [{ id: "open-modal", label: "Open modal E" }],
+        actions: [{ id: "open-modal", label: msg("program.open_modal_e") }],
       });
       if (event.action === BACK_EVENT) return;
       if (event.action === "open-modal") {
-        await presentModal(() => presentationLeaf("Presentation modal E"));
+        await presentModal(() =>
+          presentationLeaf(localizedText(msg("program.presentation_modal_e")))
+        );
       }
     }
   });
 }
 
 async function presentationLeaf(title: string): Promise<void> {
-  const model = { value: title, status: "Ready" };
+  const model = { value: title, status: localizedText(msg("program.ready")) };
   const screenModel3 = new Model(model);
   while (true) {
     screenModel3.data = model;
@@ -320,63 +355,52 @@ async function presentationLeaf(title: string): Promise<void> {
       title,
       schema: PresentationScreen,
       model: screenModel3,
-      header: { actions: [{ id: "close", label: "Close modal" }] },
+      header: { actions: [{ id: "close", label: msg("program.close_modal") }] },
     });
     if (event.action === BACK_EVENT || event.action === "close") return;
   }
 }
 
 function sendMessageTypes(): void {
-  sendMessage("An informational update is available.", "info");
-  sendMessage("The requested operation completed.", "success");
-  sendMessage("The operation needs your attention.", "warning");
-  sendMessage("The operation could not be completed.", "error");
+  sendMessage(
+    localizedText(msg("program.an_informational_update_is_available")),
+    "info",
+  );
+  sendMessage(
+    localizedText(msg("program.the_requested_operation_completed")),
+    "success",
+  );
+  sendMessage(
+    localizedText(msg("program.the_operation_needs_your_attention")),
+    "warning",
+  );
+  sendMessage(
+    localizedText(msg("program.the_operation_could_not_be_completed")),
+    "error",
+  );
 }
 
 function sendMarkdownMessages(): void {
   sendMessage(
-    `# Deployment summary
-
-The release completed with **three checks** and a deliberately long explanation so the active toast expands while the cards below remain aligned to its lower edge.
-
-| Component | Result |
-| --- | --- |
-| API | Ready |
-| Worker | Ready |
-| Browser | Ready |
-
-- Review the result
-- Continue when ready
-
-## Notes
-
-The first paragraph is intentionally detailed: every item remains available in the message history after its toast closes, and the currently visible card keeps its content readable without changing the dimensions of the cards stacked beneath it.
-
-The second paragraph adds enough content to exercise the bounded reading area. You can scroll inside the message while the toast remains in place, then open Messages from the session menu to read the same Markdown in the longer history view.
-
-## Follow-up
-
-Run \`deno task check\` for a local verification, review the table above, and continue when the reported components are ready.`,
+    localizedText(
+      msg("program.deployment_summary_the_release_completed_with_three"),
+    ),
     "info",
   );
-  sendMessage("A short success card is stacked underneath.", "success");
   sendMessage(
-    `## Follow-up validation
-
-This second Markdown message is intentionally longer than the short card before it, so advancing the stack proves that a hidden card can expand when it becomes active.
-
-| Check | State |
-| --- | --- |
-| Package scan | Complete |
-| Service health | Ready |
-
-- Inspect the expanded message
-- Dismiss it when finished
-
-The remaining detail keeps this card taller than the standard collapsed stack row without making the short messages around it grow.`,
+    localizedText(msg("program.a_short_success_card_is_stacked_underneath")),
+    "success",
+  );
+  sendMessage(
+    localizedText(
+      msg("program.follow_up_validation_this_second_markdown_message"),
+    ),
     "warning",
   );
-  sendMessage("A short error card completes the alternating stack.", "error");
+  sendMessage(
+    localizedText(msg("program.a_short_error_card_completes_the_alternating")),
+    "error",
+  );
 }
 
 async function sendAsyncMessages(
@@ -384,9 +408,15 @@ async function sendAsyncMessages(
   signal: AbortSignal,
 ): Promise<void> {
   const messages = [
-    ["The background task started.", "info"],
-    ["The background task reached its checkpoint.", "success"],
-    ["The background task finished with a warning.", "warning"],
+    [localizedText(msg("program.the_background_task_started")), "info"],
+    [
+      localizedText(msg("program.the_background_task_reached_its_checkpoint")),
+      "success",
+    ],
+    [
+      localizedText(msg("program.the_background_task_finished_with_a_warning")),
+      "warning",
+    ],
   ] as const;
   for (const [body, kind] of messages) {
     if (!await waitForMessage(120, signal)) return;

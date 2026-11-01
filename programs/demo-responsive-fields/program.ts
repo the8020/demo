@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import { BACK_EVENT, callScreen, field, Model, z } from "/p/the8020/uui/mod.ts";
 import { demoFields } from "../../src/fields.ts";
 import layout from "./layouts/main.json" with { type: "json" };
@@ -18,35 +20,40 @@ const ResponsiveFieldsScreen = z.object({
   extension: field(demoFields.shape.extension, { length: "short" }),
   timeZone: demoFields.shape.timeZone,
   shortOne: field(demoFields.shape.sampleText, {
-    label: "Short 1",
+    label: msg("program.short_1"),
     description: undefined,
     length: "short",
   }),
   shortTwo: field(demoFields.shape.sampleText, {
-    label: "Short 2",
+    label: msg("program.short_2"),
     length: "short",
   }),
   shortThree: field(demoFields.shape.sampleText, {
-    label: "Short 3",
+    label: msg("program.short_3"),
     length: "short",
   }),
   shortFour: field(demoFields.shape.sampleText, {
-    label: "Short 4",
+    label: msg("program.short_4"),
     length: "short",
   }),
-  mediumOne: field(demoFields.shape.sampleText, { label: "Medium 1" }),
-  mediumTwo: field(demoFields.shape.sampleText, { label: "Medium 2" }),
+  mediumOne: field(demoFields.shape.sampleText, {
+    label: msg("program.medium_1"),
+  }),
+  mediumTwo: field(demoFields.shape.sampleText, {
+    label: msg("program.medium_2"),
+  }),
   longOne: field(demoFields.shape.sampleText, {
-    label: "Long 1",
+    label: msg("program.long_1"),
     length: "long",
   }),
   longTwo: field(demoFields.shape.sampleText, {
-    label: "Long 2",
+    label: msg("program.long_2"),
     length: "long",
   }),
   username: field(demoFields.shape.username, {
-    description:
-      "This deliberately long hint proves that supporting field messages stay on one reserved line across neighboring cards.",
+    description: msg(
+      "program.this_deliberately_long_hint_proves_that_supporting",
+    ),
   }),
   role: field(demoFields.shape.roleDisplay, {
     description: undefined,
@@ -67,123 +74,131 @@ const ResponsiveFieldsScreen = z.object({
   }),
   summary: field(demoFields.shape.summary, { length: "long" }),
   adaptiveOne: field(demoFields.shape.sampleText, {
-    label: "Adaptive 1",
+    label: msg("program.adaptive_1"),
     description: undefined,
     length: "short",
   }),
   adaptiveTwo: field(demoFields.shape.sampleText, {
-    label: "Adaptive 2",
+    label: msg("program.adaptive_2"),
     length: "short",
   }),
   adaptiveThree: field(demoFields.shape.sampleText, {
-    label: "Adaptive 3",
+    label: msg("program.adaptive_3"),
     length: "short",
   }),
   adaptiveFour: field(demoFields.shape.sampleText, {
-    label: "Adaptive 4",
+    label: msg("program.adaptive_4"),
     length: "short",
   }),
   adaptiveFive: field(demoFields.shape.sampleText, {
-    label: "Adaptive 5",
+    label: msg("program.adaptive_5"),
     length: "short",
   }),
   adaptiveSix: field(demoFields.shape.sampleText, {
-    label: "Adaptive 6",
+    label: msg("program.adaptive_6"),
     length: "short",
   }),
   adaptiveNote: field(demoFields.shape.sampleText, {
-    label: "Following long field",
+    label: msg("program.following_long_field"),
     length: "long",
   }),
   spanningNote: field(demoFields.shape.sampleText, {
-    label: "Two-row note",
+    label: msg("program.two_row_note"),
     control: "textarea",
     length: "long",
     rowSpan: 2,
-    description:
-      "The supporting-message slot participates in this field's two-row geometry.",
+    description: msg(
+      "program.the_supporting_message_slot_participates_in_this",
+    ),
   }),
   spanningShortOne: field(demoFields.shape.sampleText, {
-    label: "A deliberately long one-line short-field label",
+    label: msg("program.a_deliberately_long_one_line_short_field"),
     description: undefined,
     length: "short",
   }),
   spanningShortTwo: field(demoFields.shape.sampleText, {
-    label: "Row 1 short B",
+    label: msg("program.row_1_short_b"),
     length: "short",
   }),
   spanningLong: field(demoFields.shape.sampleText, {
-    label: "Row 2 long field",
+    label: msg("program.row_2_long_field"),
     length: "long",
   }),
 });
 
-const initial: z.infer<typeof ResponsiveFieldsScreen> = {
-  honorific: "Mx",
-  firstName: "Avery",
-  lastName: "Morgan",
-  employeeId: "EMP-1042",
-  email: "avery.morgan@example.test",
-  phone: "+1 555 0100",
-  extension: "1042",
-  timeZone: "UTC−05:00",
-  shortOne: "One",
-  shortTwo: "Two",
-  shortThree: "Three",
-  shortFour: "Four",
-  mediumOne: "Medium one",
-  mediumTwo: "Medium two",
-  longOne: "A long field occupying half of a wide group",
-  longTwo: "Another long field sharing the row",
-  username: "avery.morgan",
-  role: "Operator",
-  language: "English",
-  locale: "en-US",
-  street: "200 Pareto Avenue",
-  postalCode: "10101",
-  city: "New York",
-  country: "United States",
-  accent: "Indigo",
-  notifications: true,
-  summary: "Four groups collapse from four columns to two and then one.",
-  adaptiveOne: "One",
-  adaptiveTwo: "Two",
-  adaptiveThree: "Three",
-  adaptiveFour: "Four",
-  adaptiveFive: "Five",
-  adaptiveSix: "Six",
-  adaptiveNote:
-    "The incomplete row distributes its unused width without layout-specific code.",
-  spanningNote:
-    "This textarea occupies the left half of two desktop grid rows.",
-  spanningShortOne: "First",
-  spanningShortTwo: "Second",
-  spanningLong: "This field flows beside the textarea on its second row.",
-};
+function initial(): z.infer<typeof ResponsiveFieldsScreen> {
+  return {
+    honorific: "Mx",
+    firstName: localizedText(msg("program.avery")),
+    lastName: localizedText(msg("program.morgan")),
+    employeeId: "EMP-1042",
+    email: "avery.morgan@example.test",
+    phone: "+1 555 0100",
+    extension: "1042",
+    timeZone: "UTC−05:00",
+    shortOne: localizedText(msg("program.one")),
+    shortTwo: localizedText(msg("program.two")),
+    shortThree: localizedText(msg("program.three")),
+    shortFour: localizedText(msg("program.four")),
+    mediumOne: localizedText(msg("program.medium_one")),
+    mediumTwo: localizedText(msg("program.medium_two")),
+    longOne: "A long field occupying half of a wide group",
+    longTwo: localizedText(msg("program.another_long_field_sharing_the_row")),
+    username: "avery.morgan",
+    role: "Operator",
+    language: "English",
+    locale: "en-US",
+    street: "200 Pareto Avenue",
+    postalCode: "10101",
+    city: "New York",
+    country: "United States",
+    accent: localizedText(msg("program.indigo")),
+    notifications: true,
+    summary: localizedText(
+      msg("program.four_groups_collapse_from_four_columns_to"),
+    ),
+    adaptiveOne: localizedText(msg("program.one")),
+    adaptiveTwo: localizedText(msg("program.two")),
+    adaptiveThree: localizedText(msg("program.three")),
+    adaptiveFour: localizedText(msg("program.four")),
+    adaptiveFive: localizedText(msg("program.five")),
+    adaptiveSix: localizedText(msg("program.six")),
+    adaptiveNote: localizedText(
+      msg("program.the_incomplete_row_distributes_its_unused_width"),
+    ),
+    spanningNote: localizedText(
+      msg("program.this_textarea_occupies_the_left_half_of"),
+    ),
+    spanningShortOne: localizedText(msg("program.first")),
+    spanningShortTwo: localizedText(msg("program.second")),
+    spanningLong: localizedText(
+      msg("program.this_field_flows_beside_the_textarea_on"),
+    ),
+  };
+}
 
 export default async function responsiveFieldsDemo(): Promise<void> {
-  const model = structuredClone(initial);
+  const model = initial();
   const screenModel = new Model(model);
   while (true) {
     screenModel.data = model;
     const event = await callScreen({
       id: "demo-responsive-fields",
-      title: "Responsive field layout demonstration",
-      description:
-        "Resize the screen to see semantic field lengths and field groups reflow without changing their order.",
+      title: msg("program.responsive_field_layout_demonstration"),
+      description: msg("program.resize_the_screen_to_see_semantic_field"),
       schema: ResponsiveFieldsScreen,
       model: screenModel,
       layout,
       header: {
         actions: [{
           id: "reset",
-          label: "[[icon=refresh color=warning]] Reset",
+          label: msg("program.reset_2"),
         }],
       },
     });
     if (event.action === BACK_EVENT) return;
     if (event.action === "reset") {
-      Object.assign(model, structuredClone(initial));
+      Object.assign(model, initial());
     }
   }
 }

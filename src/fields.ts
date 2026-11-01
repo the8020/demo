@@ -1,64 +1,60 @@
+import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import { choiceHelp, field, z } from "/p/the8020/db/fields.ts";
 import { username } from "/p/the8020/users/types/user.ts";
 
 export const demoFields = z.object({
   source: field(z.string(), {
-    label: "Code",
-    description: "Edit the sample TypeScript.",
+    label: msg("fields.code"),
+    description: msg("fields.edit_the_sample_typescript"),
   }),
   username: field(username.min(3), {
-    label: "Username",
-    description:
-      "A sample username for this demonstration; it does not change a real account.",
+    label: msg("fields.username"),
+    description: msg("fields.a_sample_username_for_this_demonstration_it"),
     open: undefined,
     valueHelp: undefined,
   }),
   email: field(z.string().email(), {
-    label: "Email",
-    description: "Enter an email address, such as `avery@example.com`.",
+    label: msg("fields.email"),
+    description: msg("fields.enter_an_email_address_such_as_avery"),
   }),
   biography: field(z.string().optional(), {
-    label: "Biography",
-    description: "An optional introduction for this sample profile.",
+    label: msg("fields.biography"),
+    description: msg("fields.an_optional_introduction_for_this_sample_profile"),
   }),
   enabled: field(z.boolean(), {
-    label: "Enabled",
-    description: "Whether this sample profile is enabled.",
+    label: msg("fields.enabled"),
+    description: msg("fields.whether_this_sample_profile_is_enabled"),
   }),
   role: field(z.enum(["administrator", "operator", "viewer"]), {
-    label: "Role",
-    description:
-      "The role assigned to this sample profile. It does not grant system permissions.",
+    label: msg("fields.role"),
+    description: msg("fields.the_role_assigned_to_this_sample_profile"),
   }),
   roleDisplay: field(z.enum(["Admin", "Operator", "Viewer"]), {
-    label: "Role",
-    description:
-      "The displayed role for this sample profile. It does not grant system permissions.",
+    label: msg("fields.role"),
+    description: msg("fields.the_displayed_role_for_this_sample_profile"),
   }),
   saveCount: field(z.number().int().nonnegative(), {
-    label: "Save count",
-    description:
-      "The number of times Save has been used since opening or resetting this form.",
+    label: msg("fields.save_count"),
+    description: msg("fields.the_number_of_times_save_has_been"),
   }),
   status: field(z.string(), {
-    label: "Status",
-    description: "The result of the most recent form action.",
+    label: msg("fields.status"),
+    description: msg("fields.the_result_of_the_most_recent_form"),
   }),
   downloadRows: field(
     z.number().int().min(1_000).max(1_000_000).multipleOf(1_000),
     {
-      label: "CSV rows",
-      description: "Each row adds its row number to the previous total.",
+      label: msg("fields.csv_rows"),
+      description: msg("fields.each_row_adds_its_row_number_to"),
     },
   ),
   value: field(z.string(), {
-    label: "Value",
-    description:
-      "Edit this sample value, then open and close the related pages or modals.",
+    label: msg("fields.value"),
+    description: msg("fields.edit_this_sample_value_then_open_and"),
   }),
   backgroundStatus: field(z.string(), {
-    label: "Background status",
-    description: "Whether the background update has completed.",
+    label: msg("fields.background_status"),
+    description: msg("fields.whether_the_background_update_has_completed"),
     valueHelp: choiceHelp(z.string(), [
       "Ready",
       "Waiting for background redraw",
@@ -66,114 +62,116 @@ export const demoFields = z.object({
     ]),
   }),
   honorific: field(z.enum(["Mx", "Ms", "Mr", "Dr"]), {
-    label: "Title",
-    description: "The title used before this sample contact’s name.",
+    label: msg("fields.title"),
+    description: msg("fields.the_title_used_before_this_sample_contact"),
   }),
   firstName: field(z.string(), {
-    label: "First name",
-    description: "The given name of this sample contact.",
+    label: msg("fields.first_name"),
+    description: msg("fields.the_given_name_of_this_sample_contact"),
   }),
   lastName: field(z.string(), {
-    label: "Last name",
-    description: "The family name of this sample contact.",
+    label: msg("fields.last_name"),
+    description: msg("fields.the_family_name_of_this_sample_contact"),
   }),
   employeeId: field(z.string(), {
-    label: "Employee ID",
-    description: "The sample employee reference for this contact.",
+    label: msg("fields.employee_id"),
+    description: msg("fields.the_sample_employee_reference_for_this_contact"),
   }),
   phone: field(z.string(), {
-    label: "Phone",
-    description:
-      "A contact telephone number, including the country code when needed.",
+    label: msg("fields.phone"),
+    description: msg("fields.a_contact_telephone_number_including_the_country"),
   }),
   extension: field(z.string(), {
-    label: "Extension",
-    description: "The internal telephone extension for this contact.",
+    label: msg("fields.extension"),
+    description: msg(
+      "fields.the_internal_telephone_extension_for_this_contact",
+    ),
   }),
   timeZone: field(z.string(), {
-    label: "Time zone",
-    description: "The time zone or UTC offset used by this sample contact.",
+    label: msg("fields.time_zone"),
+    description: msg("fields.the_time_zone_or_utc_offset_used"),
     valueHelp: (request) =>
       choiceHelp(z.string(), ["UTC", ...Intl.supportedValuesOf("timeZone")])(
         request,
       ),
   }),
   language: field(z.enum(["English", "German", "Spanish"]), {
-    label: "Language",
-    description: "The preferred language for this sample contact.",
+    label: msg("fields.language"),
+    description: msg("fields.the_preferred_language_for_this_sample_contact"),
   }),
   locale: field(z.string(), {
-    label: "Locale",
-    description: "A language and region code, such as `en-US`.",
+    label: msg("fields.locale"),
+    description: msg("fields.a_language_and_region_code_such_as"),
   }),
   street: field(z.string(), {
-    label: "Street address",
-    description: "The street and building number for this sample address.",
+    label: msg("fields.street_address"),
+    description: msg("fields.the_street_and_building_number_for_this"),
   }),
   postalCode: field(z.string(), {
-    label: "Postal code",
-    description: "The postal or ZIP code for this sample address.",
+    label: msg("fields.postal_code"),
+    description: msg("fields.the_postal_or_zip_code_for_this"),
   }),
   city: field(z.string(), {
-    label: "City",
-    description: "The city or locality for this sample address.",
+    label: msg("fields.city"),
+    description: msg("fields.the_city_or_locality_for_this_sample"),
   }),
   country: field(z.string(), {
-    label: "Country",
-    description: "The country for this sample address.",
+    label: msg("fields.country"),
+    description: msg("fields.the_country_for_this_sample_address"),
   }),
   accent: field(z.string(), {
-    label: "Accent",
-    description: "The preferred accent color for this sample profile.",
+    label: msg("fields.accent"),
+    description: msg("fields.the_preferred_accent_color_for_this_sample"),
   }),
   notifications: field(z.boolean(), {
-    label: "Notifications",
-    description: "Whether this sample profile requests notifications.",
+    label: msg("fields.notifications"),
+    description: msg(
+      "fields.whether_this_sample_profile_requests_notifications",
+    ),
   }),
   summary: field(z.string(), {
-    label: "Summary",
-    description: "A short summary for this sample profile.",
+    label: msg("fields.summary"),
+    description: msg("fields.a_short_summary_for_this_sample_profile"),
   }),
   sampleText: field(z.string(), {
-    label: "Sample text",
-    description:
-      "Edit this sample text and resize the window to compare the field layouts.",
+    label: msg("fields.sample_text"),
+    description: msg("fields.edit_this_sample_text_and_resize_the"),
   }),
 });
 
 export const customerFields = z.object({
   name: field(z.string(), {
-    label: "Customer",
-    description: "The customer’s name or organization.",
+    label: msg("fields.customer"),
+    description: msg("fields.the_customer_s_name_or_organization"),
   }),
   email: demoFields.shape.email,
   enabled: field(z.boolean(), {
-    label: "Enabled",
-    description: "Whether this customer is enabled.",
+    label: msg("fields.enabled"),
+    description: msg("fields.whether_this_customer_is_enabled"),
   }),
 });
 
 export const orderFields = z.object({
   id: field(z.string(), {
-    label: "Order ID",
-    description: "The identifier of this sample order.",
+    label: msg("fields.order_id"),
+    description: msg("fields.the_identifier_of_this_sample_order"),
   }),
   number: field(z.string(), {
-    label: "Order number",
-    description: "The reference shown when identifying this sample order.",
+    label: msg("fields.order_number"),
+    description: msg("fields.the_reference_shown_when_identifying_this_sample"),
   }),
   customer: customerFields.shape.name,
   status: field(z.enum(["draft", "confirmed", "cancelled"]), {
-    label: "Status",
-    description:
-      "Draft orders are being prepared; confirmed orders are accepted; cancelled orders are no longer active.",
+    label: msg("fields.status"),
+    description: msg("fields.draft_orders_are_being_prepared_confirmed_orders"),
   }),
 });
 
 export const orderSelection = orderFields.extend({
   status: field(orderFields.shape.status.extract(["draft", "confirmed"]), {
-    label: "Status",
-    description:
-      "Draft orders are being prepared; confirmed orders are accepted. Use Change status to switch this sample order.",
+    label: msg("fields.status"),
+    description: msg(
+      "fields.draft_orders_are_being_prepared_confirmed_orders_2",
+    ),
   }),
 });

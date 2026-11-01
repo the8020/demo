@@ -4,12 +4,29 @@
   "root": {
     "type": "stack",
     "children": [
-      { "type": "actions", "actions": ["reset"] },
-      { "type": "custom", "customElement": "arkanoid" },
+      {
+        "type": "actions",
+        "actions": [
+          "reset"
+        ]
+      },
+      {
+        "type": "custom",
+        "customElement": "arkanoid"
+      },
       {
         "type": "field-group",
-        "title": "Settings · apply on Reset game",
-        "controls": ["ballSpeed", "paddleWidth", "paddleSpeed", "deadZone"]
+        "title": {
+          "package": "the8020/demo",
+          "key": "layouts.demo-arkanoid.main.title.title",
+          "fallback": "Settings · apply on Reset game"
+        },
+        "controls": [
+          "ballSpeed",
+          "paddleWidth",
+          "paddleSpeed",
+          "deadZone"
+        ]
       }
     ]
   }

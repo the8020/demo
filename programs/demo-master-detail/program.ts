@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import {
   BACK_EVENT,
   callScreen,
@@ -14,13 +16,13 @@ import layout from "./layouts/main.json" with { type: "json" };
 const Order = orderSelection;
 const MasterDetailScreen = z.object({
   orders: field(z.array(Order.extend({ selected: z.boolean() })), {
-    label: "Orders",
-    description: "Select an order to review its details.",
+    label: msg("program.orders"),
+    description: msg("program.select_an_order_to_review_its_details"),
     control: "list",
     readOnly: true,
   }),
   newCustomer: field(Order.shape.customer, {
-    label: "New customer",
+    label: msg("program.new_customer"),
     length: "short",
   }),
   selectedOrderId: z.string(),
@@ -56,7 +58,7 @@ export default async function masterDetail(): Promise<void> {
   ];
   const model: z.infer<typeof MasterDetailScreen> = {
     orders: orders.map((order) => ({ ...order, selected: false })),
-    newCustomer: "New customer",
+    newCustomer: localizedText(msg("program.new_customer")),
     selectedOrderId: orders[0]!.id,
     selectedOrder: structuredClone(orders[0]!),
   };
@@ -65,17 +67,21 @@ export default async function masterDetail(): Promise<void> {
     screenModel.data = model;
     const event = await callScreen({
       id: "demo-master-detail",
-      title: "Master-detail demonstration",
+      title: msg("program.master_detail_demonstration"),
       schema: MasterDetailScreen,
       model: screenModel,
       layout,
       header: {
         actions: [
-          { id: "open-form", label: "Open form demo", kind: "primary" },
-          { id: "change-status", label: "Change status" },
+          {
+            id: "open-form",
+            label: msg("program.open_form_demo"),
+            kind: "primary",
+          },
+          { id: "change-status", label: msg("program.change_status") },
           {
             id: "throw-value-error",
-            label: "Throw ValueError",
+            label: msg("program.throw_valueerror"),
             kind: "danger",
           },
         ],
@@ -120,10 +126,10 @@ export default async function masterDetail(): Promise<void> {
         callScreen({
           id: "delete-orders",
           class: CONFIRM_CLASS,
-          title: "Delete selected orders?",
-          description: `${
-            model.orders.filter((order) => order.selected).length
-          } orders will be deleted.`,
+          title: msg("program.delete_selected_orders"),
+          description: msg("program.value1_orders_will_be_deleted", {
+            value1: model.orders.filter((order) => order.selected).length,
+          }),
           schema: z.object({}),
           model: new Model({}),
           layout: {
@@ -132,11 +138,11 @@ export default async function masterDetail(): Promise<void> {
             root: {
               type: "actions",
               elements: [
-                { id: "cancel-delete", label: "Cancel" },
+                { id: "cancel-delete", label: msg("program.cancel") },
                 { type: "separator" },
                 {
                   id: "confirm-delete",
-                  label: "Delete orders",
+                  label: msg("program.delete_orders"),
                   kind: "danger",
                 },
               ],
@@ -177,7 +183,11 @@ class ValueError extends Error {
   readonly rejectedValue: string;
 
   constructor(value: string) {
-    super(`The order number '${value}' is invalid.`);
+    super(
+      localizedText(
+        msg("program.the_order_number_value_is_invalid", { value: value }),
+      ),
+    );
     this.name = "ValueError";
     this.rejectedValue = value;
   }

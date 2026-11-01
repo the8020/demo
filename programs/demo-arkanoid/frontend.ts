@@ -1,3 +1,4 @@
+import { setTexts, t } from "/p/the8020/demo/i18n/browser.ts";
 import type {
   CustomElementContext,
   CustomElementInstance,
@@ -9,6 +10,7 @@ import type { StreamHandle } from "/p/the8020/uui/channel.ts";
 export default function mount(
   context: CustomElementContext,
 ): CustomElementInstance {
+  setTexts(context.config.texts);
   const { host } = context;
   host.classList.add("arkanoid");
   const canvas = document.createElement("canvas");
@@ -17,7 +19,7 @@ export default function mount(
   canvas.setAttribute("role", "img");
   canvas.setAttribute(
     "aria-label",
-    "Arkanoid board: watch the ball break bricks while the paddle follows its landing point.",
+    t("frontend.arkanoid_board_watch_the_ball_break_bricks"),
   );
   const metrics = document.createElement("p");
   metrics.className = "arkanoid-metrics";
@@ -27,7 +29,7 @@ export default function mount(
   notice.setAttribute("role", "status");
   host.append(canvas, metrics, communication, notice);
   const paint = canvas.getContext("2d");
-  if (!paint) throw new Error("Canvas unavailable");
+  if (!paint) throw new Error(t("frontend.canvas_unavailable"));
   let config = context.config;
   let game = new Game(config.settings as Settings, String(config.run));
   let active = false;
@@ -77,21 +79,29 @@ export default function mount(
     paint!.moveTo(target, s.paddleY - 16);
     paint!.lineTo(target, s.paddleY - 4);
     paint!.stroke();
-    metrics.textContent =
-      `Score ${s.score} · Bricks ${s.bricks}/40 · Lives ${s.lives} · ${
-        s.status === "won"
-          ? "You won!"
+    metrics.textContent = t(
+      "frontend.score_value1_bricks_value2_40_lives_value3",
+      {
+        value1: s.score,
+        value2: s.bricks,
+        value3: s.lives,
+        value4: s.status === "won"
+          ? t("frontend.you_won")
           : s.status === "lost"
-          ? "Game over"
+          ? t("frontend.game_over")
           : stopWork
-          ? "Playing"
-          : "Paused"
-      }`;
-    communication.textContent = `State updates/s ${
-      stateRate.toFixed(1)
-    } · Controls received/s ${controlRate.toFixed(1)} · Landing target ${
-      target.toFixed(0)
-    }`;
+          ? t("frontend.playing")
+          : t("frontend.paused"),
+      },
+    );
+    communication.textContent = t(
+      "frontend.state_updates_s_value1_controls_received_s",
+      {
+        value1: stateRate.toFixed(1),
+        value2: controlRate.toFixed(1),
+        value3: target.toFixed(0),
+      },
+    );
     Object.assign(host.dataset, {
       run: s.run,
       status: s.status,
@@ -186,7 +196,9 @@ export default function mount(
         if (stopWork !== cleanup) return;
         interrupted = true;
         stop();
-        notice.textContent = "Connection interrupted. Reset game to resume.";
+        notice.textContent = t(
+          "frontend.connection_interrupted_reset_game_to_resume",
+        );
       });
       const animate = (now: number) => {
         if (owner.signal.aborted) return;
@@ -210,7 +222,9 @@ export default function mount(
     } catch {
       interrupted = true;
       stop();
-      notice.textContent = "Connection interrupted. Reset game to resume.";
+      notice.textContent = t(
+        "frontend.connection_interrupted_reset_game_to_resume",
+      );
     }
     render();
   }

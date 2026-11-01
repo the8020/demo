@@ -1,4 +1,5 @@
 import { defineService, z } from "/p/the8020/services/http.ts";
+import { currentLocalization, translations } from "/p/the8020/i18n/mod.ts";
 
 interface StaticAsset {
   source: URL;
@@ -85,7 +86,21 @@ service.get(
 
 async function indexResponse(canonicalBasePath: string): Promise<Response> {
   const template = await Deno.readTextFile(indexSource);
-  const body = template.replaceAll(basePathPlaceholder, canonicalBasePath);
+  const t = await translations("the8020/demo");
+  const texts = (await currentLocalization()!.bundle("the8020/demo")).texts;
+  const escape = (value: string) =>
+    value.replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  const body = template.replaceAll(basePathPlaceholder, canonicalBasePath)
+    .replaceAll("__language__", escape(currentLocalization()!.language))
+    .replace(/\{\{\s*(static\.[a-z0-9_]+)\s*\}\}/g, (_, key) => escape(t(key)))
+    .replace(
+      '"__texts__"',
+      JSON.stringify(Object.fromEntries(
+        Object.entries(texts).filter(([key]) => key.startsWith("static.")),
+      )).replaceAll("<", "\\u003c"),
+    );
   return new Response(body, {
     headers: {
       "cache-control": "no-cache",

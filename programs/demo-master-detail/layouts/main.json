@@ -13,7 +13,11 @@
       {
         "id": "orders-list",
         "type": "list",
-        "title": "Orders",
+        "title": {
+          "package": "the8020/demo",
+          "key": "program.orders",
+          "fallback": "Orders"
+        },
         "bind": "orders",
         "key": "id",
         "display": [
@@ -29,21 +33,33 @@
           },
           {
             "id": "add-row",
-            "label": "Add order"
+            "label": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-master-detail.main.add-row.label",
+              "fallback": "Add order"
+            }
           },
           {
             "type": "separator"
           },
           {
             "id": "confirm-selected",
-            "label": "Confirm selected"
+            "label": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-master-detail.main.confirm-selected.label",
+              "fallback": "Confirm selected"
+            }
           },
           {
             "type": "separator"
           },
           {
             "id": "delete-selected",
-            "label": "Delete selected",
+            "label": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-master-detail.main.delete-selected.label",
+              "fallback": "Delete selected"
+            },
             "kind": "danger"
           }
         ]
@@ -51,7 +67,11 @@
       {
         "id": "order-detail",
         "type": "detail",
-        "title": "Order details",
+        "title": {
+          "package": "the8020/demo",
+          "key": "layouts.demo-master-detail.main.order-detail.title",
+          "fallback": "Order details"
+        },
         "controls": [
           "selectedOrder.number",
           "selectedOrder.customer",

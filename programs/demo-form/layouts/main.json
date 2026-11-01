@@ -8,7 +8,11 @@
       {
         "id": "form-section",
         "type": "section",
-        "title": "Form fields",
+        "title": {
+          "package": "the8020/demo",
+          "key": "layouts.demo-form.main.form-section.title",
+          "fallback": "Form fields"
+        },
         "children": [
           {
             "id": "form-groups",
@@ -19,7 +23,11 @@
               {
                 "id": "account",
                 "type": "field-group",
-                "title": "Account",
+                "title": {
+                  "package": "the8020/demo",
+                  "key": "layouts.demo-responsive-fields.main.account-group.title",
+                  "fallback": "Account"
+                },
                 "controls": [
                   "username",
                   "primary-email",
@@ -30,8 +38,15 @@
               {
                 "id": "profile",
                 "type": "field-group",
-                "title": "Profile",
-                "controls": ["biography", "enabled"]
+                "title": {
+                  "package": "the8020/demo",
+                  "key": "layouts.demo-form.main.profile.title",
+                  "fallback": "Profile"
+                },
+                "controls": [
+                  "biography",
+                  "enabled"
+                ]
               }
             ]
           }
@@ -40,38 +55,72 @@
       {
         "id": "result-section",
         "type": "section",
-        "title": "Result",
+        "title": {
+          "package": "the8020/demo",
+          "key": "layouts.demo-form.main.result-section.title",
+          "fallback": "Result"
+        },
         "children": [
           {
             "id": "result",
             "type": "field-group",
-            "title": "Latest operation",
-            "controls": ["saveCount", "status"]
+            "title": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-form.main.result.title",
+              "fallback": "Latest operation"
+            },
+            "controls": [
+              "saveCount",
+              "status"
+            ]
           }
         ]
       },
       {
         "type": "section",
-        "title": "Code",
+        "title": {
+          "package": "the8020/demo",
+          "key": "fields.code",
+          "fallback": "Code"
+        },
         "children": [
           {
             "type": "field-group",
-            "title": "TypeScript",
-            "controls": ["source"]
+            "title": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-form.main.title.title",
+              "fallback": "TypeScript"
+            },
+            "controls": [
+              "source"
+            ]
           }
         ]
       },
       {
         "id": "download-section",
         "type": "section",
-        "title": "Downloads",
+        "title": {
+          "package": "the8020/demo",
+          "key": "layouts.demo-form.main.download-section.title",
+          "fallback": "Downloads"
+        },
         "children": [
           {
             "id": "downloads",
             "type": "field-group",
-            "title": "Files and calculations",
-            "controls": ["downloadRows"],
-            "actions": ["download-file", "download-csv"]
+            "title": {
+              "package": "the8020/demo",
+              "key": "layouts.demo-form.main.downloads.title",
+              "fallback": "Files and calculations"
+            },
+            "controls": [
+              "downloadRows"
+            ],
+            "actions": [
+              "download-file",
+              "download-csv"
+            ]
           }
         ]
       }

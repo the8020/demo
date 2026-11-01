@@ -1,3 +1,6 @@
+const texts = JSON.parse(document.getElementById("locale").textContent);
+const t = (key, vars = {}) =>
+  texts[key].replace(/\{(\w+)\}/g, (_, name) => vars[name]);
 const byId = (id) => document.getElementById(id);
 
 const ranges = [...document.querySelectorAll("[data-range-output]")];
@@ -36,14 +39,13 @@ function updateCapacity() {
   );
 
   if (capacity >= 256) {
-    capacityMessage.textContent =
-      "High-throughput profile: verify downstream capacity before deployment.";
+    capacityMessage.textContent = t("static.high_capacity");
   } else if (capacity <= 16) {
-    capacityMessage.textContent =
-      "Compact profile: ideal for low-volume or development workloads.";
+    capacityMessage.textContent = t("static.low_capacity");
   } else {
-    capacityMessage.textContent =
-      "This profile is balanced for a development workload.";
+    capacityMessage.textContent = t(
+      "static.this_profile_is_balanced_for_a_development_workload",
+    );
   }
 }
 
@@ -82,18 +84,19 @@ function updateDownload() {
   downloadSizeOutput.value = formatBinarySize(bytes);
   generatedDownload.href = `${basePath}/downloads/generated?size=${bytes}`;
   generatedDownload.download = `the8020-generated-${bytes}-bytes.bin`;
-  byId("generated-length").textContent = `${bytes.toLocaleString()} bytes`;
+  byId("generated-length").textContent = t("static.bytes", {
+    count: bytes.toLocaleString(document.documentElement.lang),
+  });
 }
 
 downloadSize.addEventListener("input", updateDownload);
 generatedDownload.addEventListener("click", () => {
-  downloadStatus.textContent = `Generated ${
-    formatBinarySize(selectedDownloadBytes())
-  } download started. Follow progress in your browser's Downloads panel.`;
+  downloadStatus.textContent = t("static.download_started", {
+    size: formatBinarySize(selectedDownloadBytes()),
+  });
 });
 staticDownload.addEventListener("click", () => {
-  downloadStatus.textContent =
-    "Physical 25 MiB download started. Follow progress in your browser's Downloads panel.";
+  downloadStatus.textContent = t("static.physical_started");
 });
 updateDownload();
 
@@ -103,7 +106,9 @@ const themeToggle = byId("theme-toggle");
 function applyTheme(theme) {
   const dark = theme === "dark";
   root.dataset.theme = dark ? "dark" : "light";
-  themeToggle.textContent = dark ? "Light mode" : "Dark mode";
+  themeToggle.textContent = dark
+    ? t("static.light_mode")
+    : t("static.dark_mode");
   themeToggle.setAttribute("aria-pressed", String(dark));
 }
 
@@ -124,8 +129,8 @@ const toast = byId("demo-toast");
 let toastTimer;
 
 function showToast(
-  title = "Profile saved",
-  message = "Your demo settings were applied.",
+  title = t("static.profile_saved"),
+  message = t("static.your_demo_settings_were_applied"),
 ) {
   toast.querySelector("strong").textContent = title;
   toast.querySelector("small").textContent = message;
@@ -143,8 +148,11 @@ toast.querySelector("button").addEventListener("click", () => {
 
 byId("show-toast").addEventListener("click", () => showToast());
 byId("save-profile").addEventListener("click", () => {
-  const environment = byId("environment").value;
-  showToast("Profile saved", `${environment} settings were applied.`);
+  const environment = byId("environment").selectedOptions[0].textContent;
+  showToast(
+    t("static.profile_saved"),
+    t("static.settings_applied", { environment }),
+  );
 });
 
 byId("toggle-alert").addEventListener("click", () => {
@@ -163,7 +171,7 @@ byId("reset-demo").addEventListener("click", () => {
   byId("tracing").checked = false;
   byId("dynamic-alert").classList.add("is-hidden");
   updateCapacity();
-  showToast("Controls reset", "The original demo values were restored.");
+  showToast(t("static.controls_reset"), t("static.original_restored"));
 });
 
 byId("run-demo").addEventListener("click", () => {
@@ -177,8 +185,8 @@ byId("run-demo").addEventListener("click", () => {
     if (index === sequence.length) {
       clearInterval(timer);
       showToast(
-        "Demo complete",
-        "The service controls are ready for your input.",
+        t("static.demo_complete"),
+        t("static.controls_ready"),
       );
     }
   }, 260);

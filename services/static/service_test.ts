@@ -1,7 +1,47 @@
+import { test } from "/p/the8020/services/test_localization.ts";
 import { assertEquals, assertStringIncludes } from "@std/assert";
 import service from "./service.ts";
+import {
+  defaultConfiguration,
+  Localization,
+  withLocalization,
+} from "/p/the8020/i18n/mod.ts";
+import czech from "../../i18n/locales/cs.json" with { type: "json" };
 
 const canonicalBasePath = "/the8020/demo/static";
+
+Deno.test("static demo localizes HTML and safely embeds browser texts", async () => {
+  await withLocalization(
+    new Localization(
+      "cs",
+      defaultConfiguration,
+      (packageId) =>
+        Promise.resolve({
+          package: packageId,
+          language: "cs",
+          texts: {
+            ...czech.texts,
+            "static.profile_saved": '</script><img src=x onerror="alert(1)">',
+          },
+        }),
+    ),
+    async () => {
+      const response = await request("/");
+      const body = await response.text();
+      assertEquals(response.status, 200);
+      assertStringIncludes(body, 'lang="cs"');
+      assertStringIncludes(body, "Spustit ukázku");
+      assertEquals(body.includes("{{"), false);
+      assertEquals(body.includes("[!"), false);
+      assertEquals(body.includes("</script><img"), false);
+      const encoded = body.match(/id="locale">([\s\S]*?)<\/script>/)![1]!;
+      assertEquals(
+        JSON.parse(encoded)["static.profile_saved"],
+        '</script><img src=x onerror="alert(1)">',
+      );
+    },
+  );
+});
 
 function context() {
   return {
@@ -31,7 +71,7 @@ async function request(path: string, method = "GET"): Promise<Response> {
   );
 }
 
-Deno.test("static demo serves the same index at slash and index.html", async () => {
+test("static demo serves the same index at slash and index.html", async () => {
   const root = await request("/");
   const index = await request("/index.html");
 
@@ -56,7 +96,7 @@ Deno.test("static demo serves the same index at slash and index.html", async () 
   assertEquals(rootBody.includes("__THE8020_BASE_PATH__"), false);
 });
 
-Deno.test("static demo serves local assets with explicit content types", async () => {
+test("static demo serves local assets with explicit content types", async () => {
   const stylesheet = await request("/assets/styles.css");
   assertEquals(stylesheet.status, 200);
   assertEquals(
@@ -82,13 +122,13 @@ Deno.test("static demo serves local assets with explicit content types", async (
   assertStringIncludes(await icon.text(), "<svg");
 });
 
-Deno.test("static demo rejects files outside its asset allowlist", async () => {
+test("static demo rejects files outside its asset allowlist", async () => {
   const missing = await request("/assets/missing.css");
   assertEquals(missing.status, 404);
   assertEquals(await missing.text(), "Not Found\n");
 });
 
-Deno.test("static demo supports HEAD through the GET routes", async () => {
+test("static demo supports HEAD through the GET routes", async () => {
   const response = await request("/assets/styles.css", "HEAD");
   assertEquals(response.status, 200);
   assertEquals(
@@ -98,7 +138,7 @@ Deno.test("static demo supports HEAD through the GET routes", async () => {
   assertEquals(await response.text(), "");
 });
 
-Deno.test("generated downloads stream the validated byte count", async () => {
+test("generated downloads stream the validated byte count", async () => {
   const size = 70_000;
   const response = await request(`/downloads/generated?size=${size}`);
   assertEquals(response.status, 200);
@@ -116,7 +156,7 @@ Deno.test("generated downloads stream the validated byte count", async () => {
   assertEquals(body.every((value) => value === 0), true);
 });
 
-Deno.test("generated downloads accept 1 GiB without buffering it for HEAD", async () => {
+test("generated downloads accept 1 GiB without buffering it for HEAD", async () => {
   const size = 1024 * 1024 * 1024;
   const response = await request(`/downloads/generated?size=${size}`, "HEAD");
   assertEquals(response.status, 200);
@@ -124,14 +164,14 @@ Deno.test("generated downloads accept 1 GiB without buffering it for HEAD", asyn
   assertEquals(await response.text(), "");
 });
 
-Deno.test("generated downloads reject sizes outside 1 KiB through 1 GiB", async () => {
+test("generated downloads reject sizes outside 1 KiB through 1 GiB", async () => {
   for (const size of [1023, 1024 * 1024 * 1024 + 1]) {
     const response = await request(`/downloads/generated?size=${size}`);
     assertEquals(response.status, 400);
   }
 });
 
-Deno.test("physical download streams the complete 25 MiB package file", async () => {
+test("physical download streams the complete 25 MiB package file", async () => {
   const size = 25 * 1024 * 1024;
   const response = await request("/downloads/static-25mb.bin");
   assertEquals(response.status, 200);
