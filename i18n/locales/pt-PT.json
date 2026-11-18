@@ -333,6 +333,7 @@
     "static.controls_ready": "Os controlos do serviço estão prontos para receber os seus dados.",
     "ui.operator": "Operador",
     "ui.english": "Inglês",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Olá, do formulário de demonstração 80|20!\n\nEste é um pequeno ficheiro de texto de exemplo.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Olá, do formulário de demonstração 80|20!\n\nEste é um pequeno ficheiro de texto de exemplo.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "A demonstração do formulário levantou intencionalmente um número não capturado de TypeError."
   }
 }

@@ -333,6 +333,7 @@
     "static.controls_ready": "Teenuse juhtelemendid on sinu sisendiks valmis.",
     "ui.operator": "Operaator",
     "ui.english": "Inglise keel",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Tervitused 80|20 demovormilt!\n\nSee on väike näidistekstifail.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Tervitused 80|20 demovormilt!\n\nSee on väike näidistekstifail.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Vormi demonstreerimine tõstis tahtlikult kinni jäänud TypeError'i."
   }
 }

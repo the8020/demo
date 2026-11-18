@@ -333,6 +333,7 @@
     "static.controls_ready": "सेवा नियंत्रण आपके इनपुट के लिए तैयार हैं।",
     "ui.operator": "संचालक",
     "ui.english": "हिन्दी",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 डेमो फ़ॉर्म की ओर से नमस्ते!\n\nयह एक छोटी उदाहरण टेक्स्ट फ़ाइल है।\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 डेमो फ़ॉर्म की ओर से नमस्ते!\n\nयह एक छोटी उदाहरण टेक्स्ट फ़ाइल है।\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "फॉर्म डेमो ने जानबूझकर अनकैप्चर TypeError को उठाया।"
   }
 }

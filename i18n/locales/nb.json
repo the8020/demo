@@ -333,6 +333,7 @@
     "static.controls_ready": "Tjenestekontrollene er klare for inndataene dine.",
     "ui.operator": "Operatør",
     "ui.english": "Engelsk",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hei fra 80|20-demoskjemaet!\n\nDette er en liten eksempeltekstfil.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hei fra 80|20-demoskjemaet!\n\nDette er en liten eksempeltekstfil.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demonstrasjonen av skjemaet reiste med vilje opp en ubetatt TypeError."
   }
 }

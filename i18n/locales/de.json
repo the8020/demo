@@ -333,6 +333,7 @@
     "static.controls_ready": "Die Dienstfunktionen sind für Ihre Eingabe bereit.",
     "ui.operator": "Bediener",
     "ui.english": "Englisch",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hallo aus dem 80|20-Demoformular!\n\nDies ist eine kleine Beispieltextdatei.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hallo aus dem 80|20-Demoformular!\n\nDies ist eine kleine Beispieltextdatei.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Die Formulardemonstration erhob absichtlich eine unerfasste TypeError."
   }
 }

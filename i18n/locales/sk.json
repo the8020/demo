@@ -333,6 +333,7 @@
     "static.controls_ready": "Ovládacie prvky služby sú pripravené na použitie.",
     "ui.operator": "Operátor",
     "ui.english": "Slovenčina",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Zdraví vás ukážkový formulár 80|20!\n\nToto je malý ukážkový textový súbor.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Zdraví vás ukážkový formulár 80|20!\n\nToto je malý ukážkový textový súbor.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demonštrácia formulára úmyselne zvýšila nezastavenú sumu TypeError."
   }
 }

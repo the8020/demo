@@ -333,6 +333,7 @@
     "static.controls_ready": "서비스 컨트롤이 입력을 받을 준비가 되었습니다.",
     "ui.operator": "운영자",
     "ui.english": "한국어",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 데모 양식에서 인사드립니다!\n\n작은 예제 텍스트 파일입니다.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 데모 양식에서 인사드립니다!\n\n작은 예제 텍스트 파일입니다.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "양식 시범은 의도적으로 잡히지 않은 TypeError을 올렸다."
   }
 }

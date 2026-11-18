@@ -178,7 +178,7 @@
     "program.edit_this_before_the_background_redraw": "عدّل هذا قبل إعادة الرسم في الخلفية",
     "program.would_you_like_to_continue": "هل تريد المتابعة؟",
     "program.the_order_number_value_is_invalid": "قيمة رقم الطلب '{value}' غير صالحة.",
-    "package.description": "عروض توضيحية لخدمات \u206680|20\u2069 وUUI",
+    "package.description": "عروض توضيحية لخدمات ⁦80|20⁩ وUUI",
     "widgets.demo-master-detail.title": "القائمة والتفاصيل",
     "widgets.demo-master-detail.description": "قائمة وتفاصيل متجاوبة وبرامج متداخلة",
     "widgets.demo-arkanoid.title": "Arkanoid",
@@ -194,7 +194,7 @@
     "programs.demo-arkanoid.description": "مشاهدة Arkanoid بوحدة تحكم تنبؤية وإعدادات وقياسات مباشرة",
     "programs.demo-master-detail.description": "عرض قائمة وتفاصيل متجاوبة وبرامج متداخلة",
     "programs.post-activate.description": "إدراج بيانات العرض بعد التفعيل",
-    "services.static.description": "تقديم عرض مستقل لمكونات \u206680|20\u2069",
+    "services.static.description": "تقديم عرض مستقل لمكونات ⁦80|20⁩",
     "services.variables.description": "إرجاع متغير مسار عبر مساعد محلي للحزمة",
     "services.variables-import.description": "إرجاع متغير مسار عبر استيراد المساعد المشترك للعرض",
     "services.database.description": "اختبار جداول قاعدة البيانات ذات الأنواع وعمليات الربط والمعاملات",
@@ -232,7 +232,7 @@
     "frontend.score_value1_bricks_value2_40_lives_value3": "النقاط {value1} · الطوب {value2}/40 · المحاولات {value3} · {value4}",
     "frontend.canvas_unavailable": "لوحة الرسم غير متاحة",
     "frontend.arkanoid_board_watch_the_ball_break_bricks": "لوحة Arkanoid: شاهد الكرة تكسر الطوب بينما يتبع المضرب نقطة هبوطها.",
-    "static.80_20_ui_playground": "ساحة تجربة واجهة \u206680|20\u2069",
+    "static.80_20_ui_playground": "ساحة تجربة واجهة ⁦80|20⁩",
     "static.service_ready": "الخدمة جاهزة",
     "static.dark_mode": "الوضع الداكن",
     "static.static_service_demonstration": "عرض خدمة ثابتة",
@@ -313,7 +313,7 @@
     "static.only_known_public_assets_are_exposed_unknown_asset_paths_return_404_and_cannot_traver": "تُتاح الأصول العامة المعروفة فقط. تعيد مسارات الأصول غير المعروفة 404 ولا يمكنها اجتياز نظام ملفات الحزمة.",
     "static.browser_behavior": "سلوك المتصفح",
     "static.local_javascript_drives_sliders_status_feedback_theme_switching_notifications_and_acc": "تتحكم JavaScript المحلية في أشرطة التمرير واستجابات الحالة وتبديل المظهر والإشعارات وحالة الأقسام القابلة للطي الميسّرة.",
-    "static.80_20_static_service_demo": "عرض خدمة \u206680|20\u2069 الثابتة",
+    "static.80_20_static_service_demo": "عرض خدمة ⁦80|20⁩ الثابتة",
     "static.profile_saved": "تم حفظ الملف",
     "static.your_demo_settings_were_applied": "طُبّقت إعدادات العرض الخاصة بك.",
     "static.page_controls": "عناصر تحكم الصفحة",
@@ -333,6 +333,7 @@
     "static.controls_ready": "عناصر تحكم الخدمة جاهزة لإدخالك.",
     "ui.operator": "مشغّل",
     "ui.english": "الإنجليزية",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "مرحباً من نموذج \u206680|20\u2069 التجريبي!\n\nهذا ملف نصي تجريبي صغير.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "مرحباً من نموذج ⁦80|20⁩ التجريبي!\n\nهذا ملف نصي تجريبي صغير.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "أطلق نموذج العرض التوضيحي عمدًا استثناء TypeError غير معالج."
   }
 }

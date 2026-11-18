@@ -178,7 +178,7 @@
     "program.edit_this_before_the_background_redraw": "ערכו זאת לפני הציור מחדש ברקע",
     "program.would_you_like_to_continue": "האם ברצונכם להמשיך?",
     "program.the_order_number_value_is_invalid": "מספר ההזמנה '{value}' אינו תקין.",
-    "package.description": "הדגמות שירותים ו-UUI של \u206680|20\u2069",
+    "package.description": "הדגמות שירותים ו-UUI של ⁦80|20⁩",
     "widgets.demo-master-detail.title": "רשימה ופרטים",
     "widgets.demo-master-detail.description": "רשימה ופרטים מסתגלים ותוכניות מקוננות",
     "widgets.demo-arkanoid.title": "Arkanoid",
@@ -194,7 +194,7 @@
     "programs.demo-arkanoid.description": "צפייה ב-Arkanoid עם בקר חיזוי, הגדרות ומדדים חיים",
     "programs.demo-master-detail.description": "הדגמת רשימה ופרטים מסתגלים ותוכניות מקוננות",
     "programs.post-activate.description": "הזנת נתוני הדגמה לאחר הפעלה",
-    "services.static.description": "מגיש הדגמה עצמאית של רכיבי \u206680|20\u2069",
+    "services.static.description": "מגיש הדגמה עצמאית של רכיבי ⁦80|20⁩",
     "services.variables.description": "מחזיר משתנה נתיב באמצעות עזר מקומי בחבילה",
     "services.variables-import.description": "מחזיר משתנה נתיב באמצעות ייבוא עזר ההדגמה המשותף",
     "services.database.description": "מדגים טבלאות מסד נתונים מטיפוסים מוגדרים, צירופים ועסקאות",
@@ -232,7 +232,7 @@
     "frontend.score_value1_bricks_value2_40_lives_value3": "ניקוד {value1} · לבנים {value2}/40 · חיים {value3} · {value4}",
     "frontend.canvas_unavailable": "הקנבס אינו זמין",
     "frontend.arkanoid_board_watch_the_ball_break_bricks": "לוח Arkanoid: צפו בכדור שובר לבנים בזמן שהמחבט עוקב אחר נקודת הנחיתה שלו.",
-    "static.80_20_ui_playground": "מגרש הניסוי לממשק \u206680|20\u2069",
+    "static.80_20_ui_playground": "מגרש הניסוי לממשק ⁦80|20⁩",
     "static.service_ready": "השירות מוכן",
     "static.dark_mode": "מצב כהה",
     "static.static_service_demonstration": "הדגמת שירות סטטי",
@@ -313,7 +313,7 @@
     "static.only_known_public_assets_are_exposed_unknown_asset_paths_return_404_and_cannot_traver": "רק נכסים ציבוריים מוכרים נחשפים. נתיבי נכסים לא מוכרים מחזירים 404 ואינם מאפשרים מעבר במערכת הקבצים של החבילה.",
     "static.browser_behavior": "התנהגות הדפדפן",
     "static.local_javascript_drives_sliders_status_feedback_theme_switching_notifications_and_acc": "JavaScript מקומי מפעיל מחוונים, משוב מצב, החלפת ערכות נושא, התראות ומצב אקורדיון נגיש.",
-    "static.80_20_static_service_demo": "הדגמת שירות סטטי של \u206680|20\u2069",
+    "static.80_20_static_service_demo": "הדגמת שירות סטטי של ⁦80|20⁩",
     "static.profile_saved": "הפרופיל נשמר",
     "static.your_demo_settings_were_applied": "הגדרות ההדגמה שלכם הוחלו.",
     "static.page_controls": "פקדי הדף",
@@ -333,6 +333,7 @@
     "static.controls_ready": "פקדי השירות מוכנים לקלט שלכם.",
     "ui.operator": "מפעיל",
     "ui.english": "אנגלית",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "שלום מטופס ההדגמה של \u206680|20\u2069!\n\nזהו קובץ טקסט קטן לדוגמה.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "שלום מטופס ההדגמה של ⁦80|20⁩!\n\nזהו קובץ טקסט קטן לדוגמה.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "הדמו של הטופס העלה בכוונה TypeError."
   }
 }

@@ -333,6 +333,7 @@
     "static.controls_ready": "Τα χειριστήρια υπηρεσίας είναι έτοιμα για την είσοδό σας.",
     "ui.operator": "Χειριστής",
     "ui.english": "Αγγλικά",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Γεια σας από τη φόρμα επίδειξης 80|20!\n\nΑυτό είναι ένα μικρό δοκιμαστικό αρχείο κειμένου.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Γεια σας από τη φόρμα επίδειξης 80|20!\n\nΑυτό είναι ένα μικρό δοκιμαστικό αρχείο κειμένου.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Το demo φόρμας σκόπιμα έφερε ένα αιχμαλωτισμένο TypeError."
   }
 }

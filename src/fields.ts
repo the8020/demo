@@ -56,9 +56,9 @@ export const demoFields = z.object({
     label: msg("fields.background_status"),
     description: msg("fields.whether_the_background_update_has_completed"),
     valueHelp: choiceHelp(z.string(), [
-      "Ready",
-      "Waiting for background redraw",
-      "Background redraw completed",
+      msg("program.ready"),
+      msg("program.waiting_for_background_redraw"),
+      msg("program.background_redraw_completed"),
     ]),
   }),
   honorific: field(z.enum(["Mx", "Ms", "Mr", "Dr"]), {

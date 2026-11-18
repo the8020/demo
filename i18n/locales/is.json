@@ -333,6 +333,7 @@
     "static.controls_ready": "Þjónustustýringarnar eru tilbúnar fyrir inntakið þitt.",
     "ui.operator": "Rekstraraðili",
     "ui.english": "Enska",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Halló frá 80|20-sýnieyðublaðinu!\n\nÞetta er lítil dæmigerð textaskrá.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Halló frá 80|20-sýnieyðublaðinu!\n\nÞetta er lítil dæmigerð textaskrá.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Í sýningunni á eyðublaðinu var upptekin TypeError."
   }
 }

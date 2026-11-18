@@ -333,6 +333,7 @@
     "static.controls_ready": "Palvelun ohjaimet ovat valmiina syötteitäsi varten.",
     "ui.operator": "Operaattori",
     "ui.english": "Englanti",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Terveisiä 80|20-demolomakkeesta!\n\nTämä on pieni esimerkkitekstitiedosto.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Terveisiä 80|20-demolomakkeesta!\n\nTämä on pieni esimerkkitekstitiedosto.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Muodostuslaitteessa esiintyi tahallisesti havaitsematon TypeError."
   }
 }

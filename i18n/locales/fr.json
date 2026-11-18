@@ -333,6 +333,7 @@
     "static.controls_ready": "Les contrôles du service sont prêts à recevoir vos données.",
     "ui.operator": "Opérateur",
     "ui.english": "Anglais",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Bonjour depuis le formulaire de démonstration 80|20 !\n\nVoici un petit fichier texte d’exemple.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Bonjour depuis le formulaire de démonstration 80|20 !\n\nVoici un petit fichier texte d’exemple.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "La démonstration du formulaire a intentionnellement suscité un TypeError non capturé."
   }
 }

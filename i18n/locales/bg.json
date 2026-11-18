@@ -333,6 +333,7 @@
     "static.controls_ready": "Контролите на услугата са готови за вашето въвеждане.",
     "ui.operator": "Оператор",
     "ui.english": "Английски",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Здравейте от демонстрационната форма на 80|20!\n\nТова е малък примерен текстов файл.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Здравейте от демонстрационната форма на 80|20!\n\nТова е малък примерен текстов файл.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Демонстрацията на формуляра умишлено повдигна неизхваната TypeError."
   }
 }
