@@ -333,6 +333,7 @@
     "static.controls_ready": "Tarnybos valdikliai parengti jūsų įvesčiai.",
     "ui.operator": "Operatorius",
     "ui.english": "Anglų",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Sveiki iš 80|20 demonstracinės formos!\n\nTai mažas pavyzdinis teksto failas.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Sveiki iš 80|20 demonstracinės formos!\n\nTai mažas pavyzdinis teksto failas.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Pranešimo forma ketinama surinkti netekusią sumą TypeError."
   }
 }

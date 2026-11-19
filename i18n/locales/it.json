@@ -333,6 +333,7 @@
     "static.controls_ready": "I controlli del servizio sono pronti per il tuo input.",
     "ui.operator": "Operatore",
     "ui.english": "Inglese",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Ciao dal modulo demo di 80|20!\n\nQuesto è un piccolo file di testo di esempio.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Ciao dal modulo demo di 80|20!\n\nQuesto è un piccolo file di testo di esempio.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "La dimostrazione del modulo ha intenzionalmente sollevato un numero non catturato di TypeError."
   }
 }

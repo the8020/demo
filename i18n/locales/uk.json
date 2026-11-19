@@ -333,6 +333,7 @@
     "static.controls_ready": "Елементи керування сервісом готові до введення.",
     "ui.operator": "Оператор",
     "ui.english": "Англійська",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Вітання з демонстраційної форми 80|20!\n\nЦе невеликий приклад текстового файла.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Вітання з демонстраційної форми 80|20!\n\nЦе невеликий приклад текстового файла.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Демонстрація форми навмисно підняла невзятого TypeError."
   }
 }

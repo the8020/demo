@@ -178,7 +178,7 @@
     "program.edit_this_before_the_background_redraw": "این را پیش از بازترسیم پس‌زمینه ویرایش کنید",
     "program.would_you_like_to_continue": "می‌خواهید ادامه دهید؟",
     "program.the_order_number_value_is_invalid": "شمارهٔ سفارش '{value}' نامعتبر است.",
-    "package.description": "نمونه‌های سرویس و UUI در \u206680|20\u2069",
+    "package.description": "نمونه‌های سرویس و UUI در ⁦80|20⁩",
     "widgets.demo-master-detail.title": "فهرست و جزئیات",
     "widgets.demo-master-detail.description": "فهرست و جزئیات واکنش‌گرا و برنامه‌های تو‌در‌تو",
     "widgets.demo-arkanoid.title": "Arkanoid",
@@ -194,7 +194,7 @@
     "programs.demo-arkanoid.description": "تماشای Arkanoid با کنترل‌گر پیش‌بین، تنظیمات و معیارهای زنده",
     "programs.demo-master-detail.description": "نمایش فهرست و جزئیات واکنش‌گرا و برنامهٔ تو‌در‌تو",
     "programs.post-activate.description": "درج دادهٔ نمونه پس از فعال‌سازی",
-    "services.static.description": "ارائهٔ نمونهٔ مستقل مؤلفه‌های \u206680|20\u2069",
+    "services.static.description": "ارائهٔ نمونهٔ مستقل مؤلفه‌های ⁦80|20⁩",
     "services.variables.description": "بازگرداندن متغیر مسیر با کمک تابع محلی بسته",
     "services.variables-import.description": "بازگرداندن متغیر مسیر با وارد کردن تابع کمکی مشترک نمونه",
     "services.database.description": "آزمودن جدول‌های نوع‌دار پایگاه داده، پیوندها و تراکنش‌ها",
@@ -232,7 +232,7 @@
     "frontend.score_value1_bricks_value2_40_lives_value3": "امتیاز {value1} · آجر {value2}/40 · جان {value3} · {value4}",
     "frontend.canvas_unavailable": "بوم در دسترس نیست",
     "frontend.arkanoid_board_watch_the_ball_break_bricks": "صفحهٔ Arkanoid: شکستن آجرها با توپ را تماشا کنید، در حالی که راکت نقطهٔ فرود آن را دنبال می‌کند.",
-    "static.80_20_ui_playground": "محیط آزمایش رابط کاربری \u206680|20\u2069",
+    "static.80_20_ui_playground": "محیط آزمایش رابط کاربری ⁦80|20⁩",
     "static.service_ready": "سرویس آماده است",
     "static.dark_mode": "حالت تیره",
     "static.static_service_demonstration": "نمایش سرویس ایستا",
@@ -313,7 +313,7 @@
     "static.only_known_public_assets_are_exposed_unknown_asset_paths_return_404_and_cannot_traver": "فقط دارایی‌های عمومی شناخته‌شده ارائه می‌شوند. مسیرهای ناشناخته 404 برمی‌گردانند و نمی‌توانند در فایل‌سیستم بسته پیمایش کنند.",
     "static.browser_behavior": "رفتار مرورگر",
     "static.local_javascript_drives_sliders_status_feedback_theme_switching_notifications_and_acc": "JavaScript محلی لغزنده‌ها، بازخورد وضعیت، تغییر پوسته، اعلان‌ها و وضعیت آکاردئون دسترس‌پذیر را کنترل می‌کند.",
-    "static.80_20_static_service_demo": "نمونهٔ سرویس ایستای \u206680|20\u2069",
+    "static.80_20_static_service_demo": "نمونهٔ سرویس ایستای ⁦80|20⁩",
     "static.profile_saved": "نمایه ذخیره شد",
     "static.your_demo_settings_were_applied": "تنظیمات نمونهٔ شما اعمال شد.",
     "static.page_controls": "کنترل‌های صفحه",
@@ -333,6 +333,7 @@
     "static.controls_ready": "کنترل‌های سرویس آمادهٔ ورودی شما هستند.",
     "ui.operator": "اپراتور",
     "ui.english": "انگلیسی",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "سلام از فرم نمونهٔ \u206680|20\u2069!\n\nاین یک فایل متنی نمونهٔ کوچک است.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "سلام از فرم نمونهٔ ⁦80|20⁩!\n\nاین یک فایل متنی نمونهٔ کوچک است.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "نمايش نامه عمداً يه TypeError غير دستگير شده رو بالا برد"
   }
 }

@@ -333,6 +333,7 @@
     "static.controls_ready": "サービスの操作部品は入力を受け付ける準備ができています。",
     "ui.operator": "オペレーター",
     "ui.english": "日本語",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 デモフォームからこんにちは！\n\nこれは小さなサンプルテキストファイルです。\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 デモフォームからこんにちは！\n\nこれは小さなサンプルテキストファイルです。\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "試行表は意図的にTypeErrorを 引き上げました"
   }
 }

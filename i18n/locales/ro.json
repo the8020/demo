@@ -333,6 +333,7 @@
     "static.controls_ready": "Controalele serviciului sunt pregătite pentru datele dvs.",
     "ui.operator": "Operator",
     "ui.english": "Engleză",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Salutări din formularul demo 80|20!\n\nAcesta este un mic fișier text de exemplu.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Salutări din formularul demo 80|20!\n\nAcesta este un mic fișier text de exemplu.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demonstrarea formularului a ridicat în mod intenţionat un număr netăcut de TypeError."
   }
 }

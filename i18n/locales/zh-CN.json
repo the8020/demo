@@ -333,6 +333,7 @@
     "static.controls_ready": "服务控件已就绪，可开始输入。",
     "ui.operator": "操作员",
     "ui.english": "简体中文",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 演示表单向您问好！\n\n这是一个小型示例文本文件。\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "80|20 演示表单向您问好！\n\n这是一个小型示例文本文件。\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "这张表格的演示意图提升了未被捕的TypeError."
   }
 }

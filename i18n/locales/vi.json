@@ -333,6 +333,7 @@
     "static.controls_ready": "Các điều khiển dịch vụ đã sẵn sàng để bạn nhập.",
     "ui.operator": "Người vận hành",
     "ui.english": "Tiếng Việt",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Xin chào từ biểu mẫu minh họa 80|20!\n\nĐây là một tệp văn bản mẫu nhỏ.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Xin chào từ biểu mẫu minh họa 80|20!\n\nĐây là một tệp văn bản mẫu nhỏ.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Phương trình biểu diễn cố tình đưa ra TypeError không bị bắt."
   }
 }

@@ -333,6 +333,7 @@
     "static.controls_ready": "Handa na ang mga kontrol ng serbisyo sa iyong input.",
     "ui.operator": "Operator",
     "ui.english": "Filipino",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Kumusta mula sa demo form ng 80|20!\n\nIsa itong maliit na halimbawang text file.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Kumusta mula sa demo form ng 80|20!\n\nIsa itong maliit na halimbawang text file.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Ang demo ng form ay sinasadya na nagpataas ng isang hindi nakukuha na TypeError."
   }
 }

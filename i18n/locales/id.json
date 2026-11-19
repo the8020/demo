@@ -333,6 +333,7 @@
     "static.controls_ready": "Kontrol layanan siap menerima input Anda.",
     "ui.operator": "Operator",
     "ui.english": "Bahasa Indonesia",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Halo dari formulir demo 80|20!\n\nIni adalah contoh file teks kecil.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Halo dari formulir demo 80|20!\n\nIni adalah contoh file teks kecil.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demo formulir sengaja mengangkat TypeError yang tidak tertangkap."
   }
 }

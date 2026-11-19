@@ -3,4 +3,5 @@ uui = true
 description = "Spectator Arkanoid with a predictive controller, settings and live metrics"
 entrypoint = "program.ts"
 default_layout = "layouts/main.json"
+
 shortcut = "ARK"

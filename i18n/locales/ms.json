@@ -333,6 +333,7 @@
     "static.controls_ready": "Kawalan perkhidmatan sedia menerima input anda.",
     "ui.operator": "Pengendali",
     "ui.english": "Bahasa Melayu",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Helo daripada borang demo 80|20!\n\nIni ialah fail teks contoh yang kecil.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Helo daripada borang demo 80|20!\n\nIni ialah fail teks contoh yang kecil.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demo borang itu sengaja meningkatkan jumlah TypeError."
   }
 }

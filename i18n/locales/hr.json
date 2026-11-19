@@ -333,6 +333,7 @@
     "static.controls_ready": "Kontrole servisa spremne su za vaš unos.",
     "ui.operator": "Operater",
     "ui.english": "Engleski",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Pozdrav iz demonstracijskog obrasca 80|20!\n\nOvo je mala ogledna tekstna datoteka.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Pozdrav iz demonstracijskog obrasca 80|20!\n\nOvo je mala ogledna tekstna datoteka.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "Demonstranti namjerno su uzimali TypeError."
   }
 }

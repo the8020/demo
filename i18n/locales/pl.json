@@ -333,6 +333,7 @@
     "static.controls_ready": "Kontrolki usługi są gotowe na Twoje dane.",
     "ui.operator": "Operator",
     "ui.english": "Angielski",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Witaj z formularza demonstracyjnego 80|20!\n\nTo mały przykładowy plik tekstowy.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Witaj z formularza demonstracyjnego 80|20!\n\nTo mały przykładowy plik tekstowy.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "W demonstracji formularza celowo zwiększono liczbę TypeError."
   }
 }

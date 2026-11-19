@@ -333,6 +333,7 @@
     "static.controls_ready": "Els controls del servei estan a punt per a les teves entrades.",
     "ui.operator": "Operador",
     "ui.english": "Anglès",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hola des del formulari de demostració de 80|20!\n\nAquest és un petit fitxer de text d'exemple.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hola des del formulari de demostració de 80|20!\n\nAquest és un petit fitxer de text d'exemple.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "La demostració del formulari va plantejar intencionadament un TypeError no capturat."
   }
 }
