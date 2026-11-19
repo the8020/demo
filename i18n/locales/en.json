@@ -333,6 +333,7 @@
     "static.controls_ready": "The service controls are ready for your input.",
     "ui.operator": "Operator",
     "ui.english": "English",
-    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n"
+    "ui.hello_from_the_80_20_demo_form_this_is_a_small_example_text_file": "Hello from the 80|20 demo form!\n\nThis is a small example text file.\n",
+    "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror": "The form demo intentionally raised an uncaught TypeError."
   }
 }

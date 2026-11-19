@@ -1,3 +1,5 @@
+import { text as formatMessage } from "/p/the8020/i18n/mod.ts";
+import { msg as messageSymbol } from "/p/the8020/demo/i18n/messages.ts";
 import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import { msg } from "/p/the8020/demo/i18n/messages.ts";
 import {
@@ -449,6 +451,10 @@ function waitForMessage(
 
 function raiseDemoTypeError(): never {
   throw new TypeError(
-    "The form demo intentionally raised an uncaught TypeError.",
+    formatMessage(
+      messageSymbol(
+        "errors.the_form_demo_intentionally_raised_an_uncaught_typeerror",
+      ),
+    ),
   );
 }

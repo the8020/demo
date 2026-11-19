@@ -3,3 +3,4 @@ uui = true
 description = "Responsive semantic field lengths and grouped layout demonstration"
 entrypoint = "program.ts"
 default_layout = "layouts/main.json"
+shortcut = "DEMO3"
